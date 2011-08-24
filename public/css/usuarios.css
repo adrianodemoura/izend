@@ -1,0 +1,50 @@
+#info
+{
+	border: 1px solid #ccc;
+	width: 500px;
+	margin: 10px auto;
+	padding: 4px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	background-color: #fff;
+}
+
+#info h2
+{
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+#info dl dt
+{
+	width: 150px;
+	float: left;
+	margin: 0px 5px 0px 0px;
+	text-align: right;
+	font-weight: bold;
+}
+
+#login
+{
+	border: 3px solid #595858;
+	width: 300px;
+	margin: 10px auto;
+	padding: 4px;
+	background-color: #CECE90;
+}
+#login .registro
+{
+	margin-top: 5px;
+}
+
+#login .botoes
+{
+	text-align: center;
+}
+
+#login #btEnviar
+{
+	margin: 15px 5px 5px 5px;
+	width: 100px;
+}

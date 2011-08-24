@@ -1,0 +1,4 @@
+SetEnv APPLICATION_ENV development
+RewriteEngine on
+RewriteRule ^(.*)$ public/$1 [L]
+

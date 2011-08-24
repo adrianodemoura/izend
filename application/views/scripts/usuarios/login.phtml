@@ -1,0 +1,7 @@
+<div id='login' class='quadro'>
+	<form name='frLogin' action='' method='post'>
+	<div class='registro'><?=$this->formLabel('frLogin', 'Login').$this->formText('ed_login',null,array('size'=>'10','maxlength'=>'20'))?></div>
+	<div class='registro'><?=$this->formLabel('frSenha', 'Senha').$this->formPassword('ed_senha',null,array('size'=>'10','maxlength'=>'20'))?></div>
+	<div class='botoes'><?=$this->formSubmit('btEnviar', 'Enviar', array('type'=>'submit'))?></div>
+	</form>
+</div>

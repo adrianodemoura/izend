@@ -1,0 +1,91 @@
+body
+{
+	margin: 0px;
+	padding: 0px;
+	font-family: verdana;
+}
+
+.quadro
+{
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+input:hover
+{
+	background-color: #ddd;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+a
+{
+	text-decoration: none;
+	color: #333;
+}
+
+a:hover,
+button:hover
+{
+	color: #4AB72C;
+}
+
+label
+{
+	display: block;
+	min-width: 110px;
+	float: left;
+	text-align: right;
+	margin: 0px 5px 0px 0px;
+}
+
+
+#cabecalho
+{
+	background-color: #936230;
+	border-bottom: 5px solid #595858;
+	height: 50px;
+	background: url('../img/bg2.gif') repeat;
+}
+
+#cabecalho a
+{
+	color: white;
+}
+
+#cabecalho a:hover
+{
+	color: #333;
+}
+
+
+#sigla
+{
+	padding: 5px;
+	font-weight: bold;
+}
+
+#menu_usuario
+{
+	padding: 2px;
+	margin-right: 5px;
+	font-size: 12px;
+	color: #fff;
+	text-align: right;
+}
+
+#logos
+{
+	position: absolute;
+	top: 9px;
+	right: 5px;
+}
+
+#index
+{
+	margin: 90px auto;
+	width: 185px;
+	height: 187px;
+	background-color: #ddd;
+	background: url('../img/zend_framework.png') no-repeat;
+}
