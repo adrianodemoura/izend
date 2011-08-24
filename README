@@ -1,0 +1,33 @@
+Aplicação Exemplo iZend
+autor: Adriano C. de Moura
+contato: adrianodemoura@gmail.com
+
+1 - Considerações
+2 - Instalação
+3 - Requisitos
+
+1 - Considerações
+Este é o iZend, uma aplicação exemplo com o Zend Framework.
+
+2 - Instalação
+Copie todo o diretório izend para dentro do diretório de aplicações do apache. 
+O padrão para distribuições debian e derivados fica em "/var/www", portanto 
+seu diretório deve ficar algo como "/var/www/izend". É preciso que seu usuário 
+tenha permissão de escrita neste diretório.
+
+Configure a base url no seguinte arquivo '/var/www/izend/application/configs/application.ini',
+como no exemplo a seguir: 
+resources.frontController.baseUrl = /izend
+
+Certifique-se de o módulo rewrite do apache esteja ativado.
+
+A aplicação pode ser acessada no link http://localhost/izend
+
+Na primeira tentativa de login você será redirecionado para a página de instalação, aonde receberá 
+informações da instalação do banco de dados e/ou dos módulos nativos da aplicação.
+
+3 - Requisitos
+* Sistema operacional GNU/Linux, debian ou derivado.
+* Apache 2
+* PHP 5 ou superior
+* mysql 5 ou superior
