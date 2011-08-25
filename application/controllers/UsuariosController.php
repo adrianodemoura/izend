@@ -9,8 +9,7 @@
  * @package		izend
  * @subpackage	izend.controller
  */
-class UsuariosController extends Zend_Controller_Action
-{
+class UsuariosController extends Zend_Controller_Action {
 	/**
 	 * Antes de tudo
 	 * 
@@ -24,12 +23,13 @@ class UsuariosController extends Zend_Controller_Action
 	}
 
 	/**
-	 * Exibe a tela principal do cadastro de usuários
+	 * Redireciona para a tela de login ou para tela de informação caso o usuário já esteja logado
+	 * 
+	 * @return void
 	 */
 	public function indexAction()
 	{
-		//$this->_helper->redirector('login','Usuarios');
-		$this->_redirect('usuarios/login');
+		if (isset($this->sessaon->usuario)) $this->_redirect('usuarios/login'); else $this->_redirect('usuarios/info');
 	}
 
 	/**
@@ -49,15 +49,28 @@ class UsuariosController extends Zend_Controller_Action
 
         if ($this->getRequest()->isPost())
         {
-			$dataForm	 	= $this->getRequest()->getPost();
-			Zend_Loader::loadClass('Usuario');
-			//$dataUsuario	= $this->Usuario->fetchAll();
-			//echo '<pre>'.print_r($dataUsuario,true).'</pre>';
+			$dataForm	= $this->getRequest()->getPost();
+			$Usuario 	= new Application_Model_Usuario_Table();
+			try
+			{
+				$dataUsuario= $Usuario->fetchAll();
+				echo '<pre>'.print_r($dataUsuario).'</pre>';
+				/*$this->sessao->usuario = array('id'=>2, 'login'=>'adrianoc', 'nome'=>'Adriano C. de Moura', 'acessos'=>49);
+				$this->view->usuario = $sessao->usuario;
+				$this->_helper->redirector('info', 'usuarios');
+				*/
+			} catch (Exception $e)
+			{
+				switch($e->getCode())
+				{
+					case 1045:
+					case 1049:
+					case 42:
+						$this->_redirect('ferramentas/instalardb');
+						break;
+				}
+			}
 		}
-		/*$this->sessao->usuario = array('id'=>2, 'login'=>'adrianoc', 'nome'=>'Adriano C. de Moura', 'acessos'=>49);
-		$this->view->usuario = $sessao->usuario;
-		$this->_helper->redirector('info', 'usuarios');
-		*/
     }
 
 	/**

@@ -1,27 +1,27 @@
 <div id='info'>
 
 <?php if (isset($this->usuario)) : ?>
-<h2>Informações do Usuário</h2>
+	<h2>Informações do Usuário</h2>
 
-<dl>
-<?php foreach($this->usuario as $_campo => $_valor) : ?>
-<?php if (in_array($_campo,array('login','nome','email','ultimo_acesso','acessos'))) : ?>
-<dt><?=$_campo?></dt><dd><?=$_valor?></dd>
-<?php endif; ?>
-<?php endforeach; ?>
-</dl>
+	<dl>
+	<?php foreach($this->usuario as $_campo => $_valor) : ?>
+		<?php if (in_array($_campo,array('login','nome','email','ultimo_acesso','acessos'))) : ?>
+			<dt><?=$_campo?></dt><dd><?=$_valor?></dd>
+		<?php endif; ?>
+	<?php endforeach; ?>
+	</dl>
 <?php endif; ?>
 
 <?php if (isset($this->perfis)) : ?>
-<h2>Perfis</h2>
+	<h2>Perfis</h2>
 
-<dl>
-	<?php foreach($this->perfis as $_campo => $_valor) : ?>
-	<?php if (in_array($_campo,array('nome'))) : ?>
-	<dt><?=$_campo?></dt><dd><?=$_valor?></dd>
-	<?php endif; ?>
-	<?php endforeach; ?>
-</dl>
+	<dl>
+		<?php foreach($this->perfis as $_campo => $_valor) : ?>
+			<?php if (in_array($_campo,array('nome'))) : ?>
+				<dt><?=$_campo?></dt><dd><?=$_valor?></dd>
+			<?php endif; ?>
+		<?php endforeach; ?>
+	</dl>
 <?php endif; ?>
 
 </div>
