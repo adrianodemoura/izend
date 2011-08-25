@@ -1,0 +1,35 @@
+<div id='instalardb'>
+<?php if (isset($this->message)) : ?>
+<div id='message' class='quadro'>
+	<?=$this->message?>
+</div>
+<?php endif;?>
+	
+<?php if (isset($this->code) && (in_array($this->code,array(1045,1049))) ) : ?>
+	<div id='configDB' class='quadro'>
+
+	<p class='titulo'>Peça ao Administrador do Banco de dados para executar os comandos abaixo.</p>
+
+<pre class='quadro'>create database <?=$this->configDB->dbname?> CHARACTER SET utf8;
+grant all privileges on <?=$this->configDB->dbname?>.* to <?=$this->configDB->username?>@<?=$this->configDB->host?> identified by "<?=$this->configDB->password?>" with grant option;
+flush privileges;</pre>
+	
+	<p class='obs'>* Para alterar as configurações do banco de dados,<br />edite o arquivo <strong>application/configs/application.ini</strong></p>
+	
+	<p class='atualizar'>Cliquei <a href='<?=$this->url;?>'>aqui</a> para atualizar.</p>
+
+	</div>
+<?php endif;?>
+
+<?php if (isset($this->code) && $this->code == 42) : ?>
+
+<div id='instalaAD' class='quadro'>
+<p class='titulo'>Preencha os dados do Administrador e <br />clique em <strong>enviar</strong> para executar a instalação da aplicação exemplo.</p>
+
+<?php echo $this->form; ?>
+
+</div>
+	
+<?php endif;?>
+
+</div>

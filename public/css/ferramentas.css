@@ -1,0 +1,86 @@
+#message
+{
+	width: 90%;
+	margin: 10px auto;
+	background-color: #FC0000;
+	color: #fff;
+	padding: 10px;
+	font-weight: bold;
+	font-size: 12px;
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+#configDB h2
+{
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+#instalaAD,
+#configDB
+{
+	width: 800px;
+	margin: 10px auto;
+	border: 1px solid #ddd;
+	padding: 10px;
+}
+
+#configDB pre
+{
+	padding: 5px;
+	background-color: #ddd;
+}
+
+#configDB .atualizar
+{
+	text-align: center;
+}
+
+#configDB .atualizar a
+{
+	color: red;
+	font-weight: bold;
+}
+
+#configDB .obs
+{
+	text-align: center;
+}
+
+#configDB dt
+{
+	width: 150px;
+	float: left;
+	margin: 0px 5px 0px 0px;
+	text-align: right;
+	font-weight: bold;
+}
+
+#configDB dd
+{
+	line-height: 20px;
+}
+
+#instalaAD
+{
+	margin: 10px auto;
+	width: 800px;
+}
+
+#instalaAD .titulo
+{
+	text-align: center;
+}
+
+#instalaAD label
+{
+	width: 200px;
+	display: block;
+}
+
+#instalaAD #enviar
+{
+	margin: 0px auto;
+}
