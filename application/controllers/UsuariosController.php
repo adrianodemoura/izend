@@ -17,10 +17,6 @@ class UsuariosController extends Zend_Controller_Action {
 	 */
 	public function init()
 	{
-		// atualizando a view
-		$this->view->controllerName = $this->getRequest()->getControllerName();
-		$this->view->actionName 	= $this->getRequest()->getActionName();
-
 		// instanciando alguns objetos internos para usuário
 		$this->Sessao	= new Zend_Session_Namespace(SISTEMA);
 		$this->Usuario 	= new Application_Model_Usuario();
@@ -29,6 +25,12 @@ class UsuariosController extends Zend_Controller_Action {
 			$this->view->msg = $this->Sessao->msg;
 			unset($this->Sessao->msg);
 		}
+
+		// atualizando a view
+		$this->view->controllerName = $this->getRequest()->getControllerName();
+		$this->view->actionName 	= $this->getRequest()->getActionName();
+		$this->view->usuario 		= isset($this->Sessao->usuario) ? $this->Sessao->usuario : array();
+		$this->view->perfis  		= isset($this->Sessao->perfis)  ? $this->Sessao->perfis  : array();
 	}
 
 	/**
@@ -115,10 +117,30 @@ class UsuariosController extends Zend_Controller_Action {
 	 */
 	public function infoAction()
 	{
-		$this->view->usuario = isset($this->Sessao->usuario) ? $this->Sessao->usuario : array();
-		$this->view->perfis  = isset($this->Sessao->perfis)  ? $this->Sessao->perfis  : array();
 		$this->view->titulo  = 'Informações do Usuário';
 		$this->view->posicao = 'Usuários | Informações';
+	}
+
+	/**
+	 * Exibe a lista do cadastro
+	 * 
+	 * @return	void
+	 */
+	public function listarAction()
+	{
+		$this->view->titulo  = 'Listagem dos Usuários';
+		$this->view->posicao = 'Usuários | Listar';
+	}
+
+	/**
+	 * Exibe a tela de edição lista do cadastro
+	 * 
+	 * @return	void
+	 */
+	public function editarAction()
+	{
+		$this->view->titulo  = 'Edição de Usuário';
+		$this->view->posicao = 'Usuários | Edição';
 	}
 }
 
