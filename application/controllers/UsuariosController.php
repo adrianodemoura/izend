@@ -11,15 +11,24 @@
  */
 class UsuariosController extends Zend_Controller_Action {
 	/**
-	 * Antes de tudo
+	 * Método de inicialização do controlador
 	 * 
 	 * @return void
 	 */
 	public function init()
 	{
+		// atualizando a view
 		$this->view->controllerName = $this->getRequest()->getControllerName();
 		$this->view->actionName 	= $this->getRequest()->getActionName();
-		$this->sessao = new Zend_Session_Namespace(SISTEMA);
+
+		// instanciando alguns objetos internos para usuário
+		$this->Sessao	= new Zend_Session_Namespace(SISTEMA);
+		$this->Usuario 	= new Application_Model_Usuario();
+		if (isset($this->Sessao->msg))
+		{
+			$this->view->msg = $this->Sessao->msg;
+			unset($this->Sessao->msg);
+		}
 	}
 
 	/**
@@ -29,7 +38,7 @@ class UsuariosController extends Zend_Controller_Action {
 	 */
 	public function indexAction()
 	{
-		if (isset($this->sessaon->usuario)) $this->_redirect('usuarios/login'); else $this->_redirect('usuarios/info');
+		if (isset($this->Sessao->usuario)) $this->_redirect('usuarios/login'); else $this->_redirect('usuarios/info');
 	}
 
 	/**
@@ -41,24 +50,37 @@ class UsuariosController extends Zend_Controller_Action {
 	 */
     public function loginAction()
     {
-		if (isset($this->sessao->usuario)) $this->_helper->redirector('info');
+		if (isset($this->Sessao->usuario)) $this->_helper->redirector('info');
 
-		$this->view->titulo 	= 'iZend - login';
-        $this->view->posicao	= array(1=>'Usuários', 2=>'Login');
+		$this->view->titulo 	= 'Login';
+        $this->view->posicao	= 'Usuários | Login';
         $this->view->on_read	= '$("#ed_login").focus()';
 
         if ($this->getRequest()->isPost())
         {
 			$dataForm	= $this->getRequest()->getPost();
-			$Usuario 	= new Application_Model_Usuario_Table();
 			try
 			{
-				$dataUsuario= $Usuario->fetchAll();
-				echo '<pre>'.print_r($dataUsuario).'</pre>';
-				/*$this->sessao->usuario = array('id'=>2, 'login'=>'adrianoc', 'nome'=>'Adriano C. de Moura', 'acessos'=>49);
-				$this->view->usuario = $sessao->usuario;
-				$this->_helper->redirector('info', 'usuarios');
-				*/
+				$filtro		= 'login="'.$dataForm['ed_login'].'" AND senha=sha1("'.$dataForm['ed_senha'].'")';
+				$dataUsuario= $this->Usuario->fetchRow($this->Usuario->select()->where($filtro));
+				if (!empty($dataUsuario))
+				{
+					$dataUs = $dataUsuario->toArray();
+					$this->Sessao->usuario['login'] 		= $dataUs['login'];
+					$this->Sessao->usuario['nome']			= $dataUs['nome'];
+					$this->Sessao->usuario['email']			= $dataUs['email'];
+					$this->Sessao->usuario['acessos']		= $dataUs['acessos'];
+					$this->Sessao->usuario['ultimo_acesso']	= $dataUs['ultimo_acesso'];					
+					$this->Sessao->msg = 'Usuário autenticado com sucesso !!!';
+
+					$this->Usuario->update(array('acessos'=>$dataUs['acessos']+1, 'ultimo_acesso'=>date('Y/m/d h:i:s')), 'id='.$dataUs['id']);
+					
+					$this->_helper->redirector('info');
+				} else
+				{
+					$this->view->msg = 'Usuário inválido !!!';
+				}
+				
 			} catch (Exception $e)
 			{
 				switch($e->getCode())
@@ -66,6 +88,7 @@ class UsuariosController extends Zend_Controller_Action {
 					case 1045:
 					case 1049:
 					case 42:
+						echo $e->getMessage();
 						$this->_redirect('ferramentas/instalardb');
 						break;
 				}
@@ -80,8 +103,8 @@ class UsuariosController extends Zend_Controller_Action {
 	 */
 	public function sairAction()
 	{
-		unset($this->sessao->usuario);
-		unset($this->sessao->perfis);
+		unset($this->Sessao->usuario);
+		unset($this->Sessao->perfis);
 		$this->_helper->redirector('index', 'Index');
 	}
 
@@ -92,8 +115,10 @@ class UsuariosController extends Zend_Controller_Action {
 	 */
 	public function infoAction()
 	{
-		$this->view->usuario = isset($this->sessao->usuario) ? $this->sessao->usuario : array();
-		$this->view->perfis  = isset($this->sessao->perfis)  ? $this->sessao->perfis  : array();
+		$this->view->usuario = isset($this->Sessao->usuario) ? $this->Sessao->usuario : array();
+		$this->view->perfis  = isset($this->Sessao->perfis)  ? $this->Sessao->perfis  : array();
+		$this->view->titulo  = 'Informações do Usuário';
+		$this->view->posicao = 'Usuários | Informações';
 	}
 }
 

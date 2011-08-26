@@ -39,10 +39,11 @@ $(document).ready (function()
 	<div id="cabecalho">
 
 		<div id='sigla'>
-			<a href='<?=URL?>'><?=SISTEMA?></a>
+			<a href='<?=URL?>'><?=SISTEMA?></a><?php if (isset($this->posicao)) echo ' | '.$this->posicao; ?>
 		</div>
 		
 		<div id='msg'>
+			<?php if(isset($this->msg)) echo $this->msg; ?>
 		</div>
 
 		<div id="logos">

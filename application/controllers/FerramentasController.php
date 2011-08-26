@@ -32,7 +32,7 @@ class FerramentasController extends Zend_Controller_Action {
 	{
 		try
 		{
-			$Usuario = new Application_Model_Usuario_Table();
+			$Usuario = new Application_Model_Usuario();
 			$dataUsuario= $Usuario->fetchAll();
 			$this->_redirect('usuarios/login');
 		} catch (Exception $e)
@@ -61,11 +61,24 @@ class FerramentasController extends Zend_Controller_Action {
 							} else
 							{
 								// instala módulos nativo
-								if ($this->getInstalaModulos()) $this->view->message = 'A instalação';
-								
-								// insere usuários administrador
-								
-								// populas tabelas
+								if ($this->getInstalaModulos()) 
+								{
+									// insere usuários administrador
+									$bd   = Zend_Db_Table_Abstract::getDefaultAdapter();
+									$sql  = 'INSERT INTO usuarios (login,senha,nome,email,ativo,acessos,ultimo_acesso,created,modified) ';
+									$sql .= 'VALUES ("'.$dataForm['login'].'",sha1("'.$dataForm['login'].'"),"'.$dataForm['nome'].'","'.$dataForm['email'].'",1,1,sysdate(),sysdate(),sysdate())';
+									try
+									{
+										$bd->query($sql);
+									} catch (Exception $e)
+									{
+										echo '<pre>'.$sql.'</pre>';
+										exit($e->getMessage());
+									}
+									$sessao = new Zend_Session_Namespace(SISTEMA);
+									$sessao->msg = 'A instalação foi executada com sucesso!!!';
+									$this->_redirect('usuarios/login');
+								} else $this->view->message = 'Erro ao tentar instalar módulos navitos do sistema!!!';
 							}
 						}
 					}
@@ -75,6 +88,131 @@ class FerramentasController extends Zend_Controller_Action {
 			}
 			
 		}
+	}
+
+	/**
+	 * Executa a instalação das tabelas dos módulos nativos do sistema.
+	 * 
+	 * Este módulo executa a sql, que deve estar em docs/sql/izend.sql, este arquivo deve conter o comando sql para criar as tabelas.
+	 * Cada tabela pode ser populada, basta criar o arquivo CSV com o mesmo nome, a primeira linha deve conter o nome dos campos.
+	 * 
+	 * Em caso de sucesso o sistema será redirecionado à página de login.
+	 * 
+	 * @return	boolean
+	 */
+	private function getInstalaModulos()
+	{
+		// csv a importar
+		$arrCsv = array('estados','cidades','perfis','usuarios_perfis');
+
+		// instanciando o banco de dados
+		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
+
+		// instala todas as tabelas do sistema
+		$arq = '../docs/sql/'.mb_strtolower(SISTEMA).'.sql';
+		if (!file_exists($arq))
+		{
+			exit('não foi possível localizar o arquivo '.$arq);
+			return false;
+		}
+		$handle  = fopen($arq,"r");
+		$texto   = fread($handle, filesize($arq));
+		$sqls	 = explode(";",$texto);
+		fclose($handle);
+		foreach($sqls as $sql) // executando sql a sql
+		{
+			if (trim($sql))
+			{
+				try
+				{
+					$bd->query($sql);
+				} catch(Exception $e)
+				{
+					exit($e->getMessage());
+				}
+			}
+		}
+
+		// atualiza outras tabelas vias CSV
+		foreach($arrCsv as $tabela)
+		{
+			$arq = '../docs/sql/'.$tabela.'.csv';
+
+			// mandando bala se o csv existe
+			if (file_exists($arq))
+			{
+				$handle  	= fopen($arq,"r");
+				$l 			= 0;
+				$campos 	= '';
+				$cmps	 	= array();
+				$valores 	= '';
+
+				// executando linha a linha
+				while ($linha = fgetcsv($handle, 2048, ";"))
+				{
+					if (!$l)
+					{
+						$i = 0;
+						$t = count($linha);
+						foreach($linha as $campo)
+						{
+							$campos .= $campo;
+							$i++;
+							if ($i!=$t) $campos .= ',';
+						}
+						// montand os campos da tabela
+						$arr_campos = explode(',',$campos);
+					} else
+					{
+						$valores  = '';
+						$i = 0;
+						$t = count($linha);
+						foreach($linha as $valor)
+						{
+							if ($arr_campos[$i]=='created' || $arr_campos[$i]=='modified') $valor = date("Y-m-d H:i:s");
+							$valores .= "'".str_replace("'","\'",$valor)."'";
+							$i++;
+							if ($i!=$t) $valores .= ',';
+						}
+						$sql = 'INSERT INTO '.$tabela.' ('.$campos.') VALUES ('.$valores.')';
+						try
+						{
+							$bd->query($sql);
+						} catch(Exception $e)
+						{
+							exit($e->getMessage());
+						}
+					}
+					$l++;
+				}
+				fclose($handle);
+
+				// verificando se a tabela possui created e modified
+				$res = $bd->fetchAll('SHOW FULL COLUMNS FROM '.$tabela);
+
+				foreach($res as $_linha => $_arrCmp)
+				{
+					if ($_arrCmp['Field']=='modified')	array_push($cmps,'modified');
+					if ($_arrCmp['Field']=='created')	array_push($cmps,'created');
+				}
+				if (count($cmps))
+				{
+					$sql = '';
+					foreach($cmps as $_campo) $sql .= "$_campo='".date("Y-m-d H:i:s")."', ";
+					$sql = substr($sql,0,strlen($sql)-2);
+					$sql = 'UPDATE '.$tabela.' SET '.$sql;
+					try
+					{
+						$bd->query($sql);
+					} catch(Exception $e)
+					{
+						exit($e->getMessage());
+					}
+				}
+			} else exit('não foi possivel localizar '.$arq);
+		}
+
+		return true;
 	}
 }
 

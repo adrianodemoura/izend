@@ -62,6 +62,7 @@ label
 {
 	padding: 5px;
 	font-weight: bold;
+	color: #fff;
 }
 
 #menu_usuario
@@ -87,4 +88,12 @@ label
 	height: 187px;
 	background-color: #ddd;
 	background: url('../img/zend_framework.png') no-repeat;
+}
+
+#msg
+{
+	color: #fff;
+	position: absolute;
+	right: 200px;
+	top: 28px;
 }
