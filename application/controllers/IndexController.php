@@ -19,6 +19,7 @@ class IndexController extends Zend_Controller_Action
 	public function init()
 	{
 		$sessao = new Zend_Session_Namespace(SISTEMA);
+		$this->view->controllerName = $this->getRequest()->getControllerName();
 		$this->view->usuario	= isset($sessao->usuario) ? $sessao->usuario : array();
 		$this->view->perfis		= isset($sessao->perfis)  ? $sessao->perfis : array();
 	}
@@ -32,5 +33,12 @@ class IndexController extends Zend_Controller_Action
     {
         $this->view->titulo = 'iZend - Aplicação Exemplo';
     }
+
+	/**
+	 * 
+	 */
+	public function erropermissaoAction()
+	{
+	}
 }
 

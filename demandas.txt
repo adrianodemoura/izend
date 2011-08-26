@@ -1,2 +1,3 @@
 26/08/2011
-- Mascarar campos na view - ok por adrianodemoura
+- implementar cadastro de ACL
+ok, adrianodemoura - Mascarar campos na view

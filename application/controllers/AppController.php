@@ -12,8 +12,12 @@
 class AppController extends Zend_Controller_Action {
 	/**
 	 * Método de inicialização do controlador.
-	 * Verifica se o usuário está logado, castro contrário redireciona para tela de login
-	 * Atualiza a camada de visão com alguns itens importantes a todo o sittema.
+	 * 
+	 * Inicia a sessão para todos os controladores.
+	 * Verifica se o usuário está logado, caso não esteja, redireciona para tela de login.
+	 * Atualiza a camada de visão com alguns itens importantes de cada controlador.
+	 * Verifica a permissão do usuário com o método solicitado, caso o mesmo não tenha 
+	 * permissão, redireciona para a tela de erro de permissão.
 	 * 
 	 * @return void
 	 */
@@ -26,19 +30,48 @@ class AppController extends Zend_Controller_Action {
 			$this->view->msg = $this->Sessao->msg;
 			unset($this->Sessao->msg);
 		}
+		
+		// área administrativa só logado
 		if (!isset($this->Sessao->usuario) && $this->getRequest()->getPathInfo() != '/usuarios/login')
 		{
 			$this->Sessao->msg = 'Autenticação necessária !!!';
 			$this->_redirect('usuarios/login');
 		}
 
+		// verifica permissão
+		if ($this->getRequest()->getPathInfo() != '/usuarios/sair')
+		{
+			if (!$this->getPermissao()) $this->_redirect('index/erro_permissao');
+		}
+
 		// atualizando a view
 		$this->view->controllerName = $this->getRequest()->getControllerName();
 		$this->view->actionName 	= $this->getRequest()->getActionName();
-		$this->view->usuario 		= isset($this->Sessao->usuario) ? $this->Sessao->usuario : array();
-		$this->view->perfis  		= isset($this->Sessao->perfis)  ? $this->Sessao->perfis  : array();
+		$this->view->usuario 		= isset($this->Sessao->usuario)  ? $this->Sessao->usuario   : array();
+		$this->view->perfis  		= isset($this->Sessao->perfis)   ? $this->Sessao->perfis    : array();
+		$this->view->permissao 		= isset($this->Sessao->permissao)? $this->Sessao->permissao : array();
 		$this->view->campos			= array();
 		$this->view->posicao 		= $this->view->controllerName.' | '.$this->view->actionName;
+	}
+
+	/**
+	 * Verifia a permissão do usuário logado
+	 * 
+	 * @return	boolean	Verdadeir|Falso
+	 */
+	public function getPermissao()
+	{
+		$controlador = strtolower($this->getRequest()->getControllerName());
+		$acao		 = strtolower($this->getRequest()->getActionName());
+		$permissoes	 = $this->Sessao->permissao;
+		if (count($permissoes))
+		{
+			foreach($permissoes as $_controlador => $_arrAcao)
+			{
+				if ($_controlador == $controlador && in_array($acao,$_arrAcao) ) return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -49,7 +82,7 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function listarAction($pag=1)
 	{
-		$this->view->titulo  = 'Lista';
+		if (!isset($this->view->titulo)) $this->view->titulo  = 'Lista';
 		$this->renderScript('index/listar.phtml');
 	}
 
@@ -61,7 +94,7 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function editarAction($id=0)
 	{
-		$this->view->titulo  = 'Edição';
+		if (!isset($this->view->titulo)) $this->view->titulo  = 'Edição';
 		$this->renderScript('index/editar.phtml');
 	}
 
@@ -72,7 +105,7 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function novoAction()
 	{
-		$this->view->titulo  = 'Inclusão';
+		if (!isset($this->view->titulo)) $this->view->titulo  = 'Inclusão';
 		$this->renderScript('index/editar.phtml');
 	}
 
@@ -84,7 +117,7 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function excluirAction($id=0)
 	{
-		$this->view->titulo  = 'Exclusão';
+		if (!isset($this->view->titulo)) $this->view->titulo  = 'Exclusão';
 		$this->view->excluir = true;
 		$this->renderScript('index/editar.phtml');
 	}

@@ -82,11 +82,20 @@ class UsuariosController extends AppController {
 				if (!empty($dataUsuario))
 				{
 					$dataUs = $dataUsuario->toArray();
+
+					// recuperando dados do usuário
 					$this->Sessao->usuario['login'] 		= $dataUs['login'];
 					$this->Sessao->usuario['nome']			= $dataUs['nome'];
 					$this->Sessao->usuario['email']			= $dataUs['email'];
 					$this->Sessao->usuario['acessos']		= $dataUs['acessos'];
-					$this->Sessao->usuario['ultimo_acesso']	= $dataUs['ultimo_acesso'];					
+					$this->Sessao->usuario['ultimo_acesso']	= $dataUs['ultimo_acesso'];
+	
+					// jogando na sessão os perfis do usuário
+					
+					// jogando na sessão as permissão do usuário
+					//$this->Sessao->permissao['usuarios'] = array('editar');
+
+					// msg de saudação
 					$this->Sessao->msg = 'Usuário autenticado com sucesso !!!';
 
 					$this->Usuario->update(array('acessos'=>$dataUs['acessos']+1, 'ultimo_acesso'=>date('Y/m/d h:i:s')), 'id='.$dataUs['id']);
@@ -121,6 +130,7 @@ class UsuariosController extends AppController {
 	{
 		unset($this->Sessao->usuario);
 		unset($this->Sessao->perfis);
+		unset($this->Sessao->permissao);
 		$this->_redirect('/');
 	}
 
