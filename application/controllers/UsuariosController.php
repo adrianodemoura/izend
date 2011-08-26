@@ -21,12 +21,30 @@ class UsuariosController extends AppController {
 		parent::init();
 		$this->Usuario 	= new Application_Model_Usuario();
 
+		// definindo o link posição
+		switch($this->getRequest()->getActionName())
+		{
+			case 'listar':
+				$this->view->posicao = 'Usuários | Listar';
+				break;
+			case 'editar':
+				$this->view->posicao = 'Usuários | Edição';
+				break;
+			case 'novo':
+				$this->view->posicao = 'Usuários | Inclusão';
+				break;
+		}
+
 		// atualizando a view
-		$this->view->campos['login']['label'] 			= 'Login';
-		$this->view->campos['nome']['label'] 			= 'Nome';
-		$this->view->campos['email']['label'] 			= 'e-mail';
-		$this->view->campos['acessos']['label'] 		= 'Acessos';
-		$this->view->campos['ultimo_acesso']['label'] 	= 'Último Acesso';
+		if (in_array($this->getRequest()->getActionName(),array('editar','novo','excluir','listar','info','login')))
+		{
+			$this->view->campos['login']['label'] 			= 'Login';
+			$this->view->campos['nome']['label'] 			= 'Nome';
+			$this->view->campos['email']['label'] 			= 'e-mail';
+			$this->view->campos['acessos']['label'] 		= 'Acessos';
+			$this->view->campos['ultimo_acesso']['label'] 	= 'Último Acesso';
+			$this->view->campos['ultimo_acesso']['mascara']	= '99/99/9999 99:99:99';
+		}
 	}
 
 	/**
@@ -103,7 +121,7 @@ class UsuariosController extends AppController {
 	{
 		unset($this->Sessao->usuario);
 		unset($this->Sessao->perfis);
-		$this->_helper->redirector('index', 'Index');
+		$this->_redirect('/');
 	}
 
 	/**

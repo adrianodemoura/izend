@@ -60,3 +60,10 @@
 	margin: 15px 5px 5px 5px;
 	width: 100px;
 }
+
+#fechar
+{
+	margin: 0px auto;
+	width: 100px;
+	text-align: center;
+}

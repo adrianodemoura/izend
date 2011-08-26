@@ -26,7 +26,11 @@ class AppController extends Zend_Controller_Action {
 			$this->view->msg = $this->Sessao->msg;
 			unset($this->Sessao->msg);
 		}
-		if (!isset($this->Sessao->usuario) && $this->getRequest()->getPathInfo() != '/usuarios/login') $this->_redirect('usuarios/login');
+		if (!isset($this->Sessao->usuario) && $this->getRequest()->getPathInfo() != '/usuarios/login')
+		{
+			$this->Sessao->msg = 'Autenticação necessária !!!';
+			$this->_redirect('usuarios/login');
+		}
 
 		// atualizando a view
 		$this->view->controllerName = $this->getRequest()->getControllerName();
@@ -40,21 +44,61 @@ class AppController extends Zend_Controller_Action {
 	/**
 	 * Exibe a lista do cadastro
 	 * 
+	 * @param	integer	$pag	Número da Página
 	 * @return	void
 	 */
-	public function listarAction()
+	public function listarAction($pag=1)
 	{
 		$this->view->titulo  = 'Lista';
+		$this->renderScript('index/listar.phtml');
 	}
 
 	/**
-	 * Exibe a tela de edição lista do cadastro
+	 * Exibe a tela de edição do cadastro
+	 * 
+	 * @param	integer	$id	ID do registro a ser editado
+	 * @return	void
+	 */
+	public function editarAction($id=0)
+	{
+		$this->view->titulo  = 'Edição';
+		$this->renderScript('index/editar.phtml');
+	}
+
+	/**
+	 * Exibe a tela de exclusão do cadastro
 	 * 
 	 * @return	void
 	 */
-	public function editarAction()
+	public function novoAction()
 	{
-		$this->view->titulo  = 'Edição';
+		$this->view->titulo  = 'Inclusão';
+		$this->renderScript('index/editar.phtml');
+	}
+
+	/**
+	 * Exibe a tela de exclusão do cadastro
+	 * 
+	 * @param	integer	$id	ID do registro a ser editado
+	 * @return	void
+	 */
+	public function excluirAction($id=0)
+	{
+		$this->view->titulo  = 'Exclusão';
+		$this->view->excluir = true;
+		$this->renderScript('index/editar.phtml');
+	}
+
+	/**
+	 * Executa a exclusão do registro passado no parâmetro
+	 * 
+	 * @param	integer	$id	ID a ser excluido
+	 * @return	void
+	 */
+	public function deleteAction($id=0)
+	{
+		$this->_redirect('listar');
 	}
 }
 
+?>

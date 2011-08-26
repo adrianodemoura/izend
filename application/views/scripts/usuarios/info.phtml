@@ -4,11 +4,19 @@
 	<h2>Informações do Usuário</h2>
 
 	<dl>
+	
 	<?php foreach($this->usuario as $_campo => $_valor) : ?>
+	
 		<?php if (in_array($_campo,array('login','nome','email','ultimo_acesso','acessos'))) : ?>
-			<dt><?=isset($this->campos[$_campo]['label'])? $this->campos[$_campo]['label'] : $_campo; ?></dt><dd><?=$_valor?></dd>
+	
+			<dt><?=isset($this->campos[$_campo]['label'])? $this->campos[$_campo]['label'] : $_campo; ?></dt>
+	
+			<dd><?=$this->Mascara($_valor,(isset($this->campos[$_campo]['mascara'])) ? $this->campos[$_campo]['mascara'] : '' )?></dd>
+	
 		<?php endif; ?>
+	
 	<?php endforeach; ?>
+	
 	</dl>
 <?php endif; ?>
 
@@ -23,5 +31,6 @@
 		<?php endforeach; ?>
 	</dl>
 <?php endif; ?>
-
 </div>
+
+<div id='fechar'><a href='listar'>Fechar</a></div>
