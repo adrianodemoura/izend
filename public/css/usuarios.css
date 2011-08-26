@@ -16,13 +16,25 @@
 	text-align: center;
 }
 
-#info dl dt
+#info dt
 {
-	width: 150px;
 	float: left;
-	margin: 0px 5px 0px 0px;
 	text-align: right;
+	margin: 0px 5px 0px 0px;
+	width: 150px;
 	font-weight: bold;
+	border-bottom: 1px solid #fff;
+}
+
+#info dt,
+#info dd
+{
+	line-height: 30px;
+}
+
+#info dd
+{
+	border-bottom: 1px dashed #ddd;
 }
 
 #login

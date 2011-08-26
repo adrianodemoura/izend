@@ -9,7 +9,8 @@
  * @package		izend
  * @subpackage	izend.controller
  */
-class UsuariosController extends Zend_Controller_Action {
+include_once('controllers/AppController.php');
+class UsuariosController extends AppController {
 	/**
 	 * Método de inicialização do controlador
 	 * 
@@ -17,20 +18,15 @@ class UsuariosController extends Zend_Controller_Action {
 	 */
 	public function init()
 	{
-		// instanciando alguns objetos internos para usuário
-		$this->Sessao	= new Zend_Session_Namespace(SISTEMA);
+		parent::init();
 		$this->Usuario 	= new Application_Model_Usuario();
-		if (isset($this->Sessao->msg))
-		{
-			$this->view->msg = $this->Sessao->msg;
-			unset($this->Sessao->msg);
-		}
 
 		// atualizando a view
-		$this->view->controllerName = $this->getRequest()->getControllerName();
-		$this->view->actionName 	= $this->getRequest()->getActionName();
-		$this->view->usuario 		= isset($this->Sessao->usuario) ? $this->Sessao->usuario : array();
-		$this->view->perfis  		= isset($this->Sessao->perfis)  ? $this->Sessao->perfis  : array();
+		$this->view->campos['login']['label'] 			= 'Login';
+		$this->view->campos['nome']['label'] 			= 'Nome';
+		$this->view->campos['email']['label'] 			= 'e-mail';
+		$this->view->campos['acessos']['label'] 		= 'Acessos';
+		$this->view->campos['ultimo_acesso']['label'] 	= 'Último Acesso';
 	}
 
 	/**
@@ -119,28 +115,6 @@ class UsuariosController extends Zend_Controller_Action {
 	{
 		$this->view->titulo  = 'Informações do Usuário';
 		$this->view->posicao = 'Usuários | Informações';
-	}
-
-	/**
-	 * Exibe a lista do cadastro
-	 * 
-	 * @return	void
-	 */
-	public function listarAction()
-	{
-		$this->view->titulo  = 'Listagem dos Usuários';
-		$this->view->posicao = 'Usuários | Listar';
-	}
-
-	/**
-	 * Exibe a tela de edição lista do cadastro
-	 * 
-	 * @return	void
-	 */
-	public function editarAction()
-	{
-		$this->view->titulo  = 'Edição de Usuário';
-		$this->view->posicao = 'Usuários | Edição';
 	}
 }
 

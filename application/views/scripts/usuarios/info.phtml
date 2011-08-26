@@ -6,7 +6,7 @@
 	<dl>
 	<?php foreach($this->usuario as $_campo => $_valor) : ?>
 		<?php if (in_array($_campo,array('login','nome','email','ultimo_acesso','acessos'))) : ?>
-			<dt><?=$_campo?></dt><dd><?=$_valor?></dd>
+			<dt><?=isset($this->campos[$_campo]['label'])? $this->campos[$_campo]['label'] : $_campo; ?></dt><dd><?=$_valor?></dd>
 		<?php endif; ?>
 	<?php endforeach; ?>
 	</dl>
