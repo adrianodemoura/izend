@@ -9,7 +9,7 @@
  * @package		izend
  * @subpackage	izend.controller
  */
-include_once('controllers/AppController.php');
+include_once('AppController.php');
 class UsuariosController extends AppController {
 	/**
 	 * Método de inicialização do controlador
