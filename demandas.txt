@@ -1,3 +1,3 @@
-26/08/2011
+- implementar Models para módulo sistema
 - implementar cadastro de ACL
 ok, adrianodemoura - Mascarar campos na view
