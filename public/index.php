@@ -22,4 +22,8 @@ date_default_timezone_set('America/Sao_Paulo');
 // definindo o nome do sistema
 define('SISTEMA','iZend');
 
+// incluindo o M e o C do MVC genérico
+include_once '../application/models/AppModel.php';
+include_once '../application/controllers/AppController.php';
+
 $application->bootstrap()->run();

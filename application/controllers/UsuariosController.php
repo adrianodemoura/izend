@@ -9,7 +9,6 @@
  * @package		izend
  * @subpackage	izend.controller
  */
-include_once('AppController.php');
 class UsuariosController extends AppController {
 	/**
 	 * Método de inicialização do controlador
@@ -20,12 +19,14 @@ class UsuariosController extends AppController {
 	{
 		parent::init();
 		$this->Usuario 	= new Application_Model_Usuario();
-
-		// definindo o link posição
 		switch($this->getRequest()->getActionName())
 		{
 			case 'listar':
 				$this->view->posicao = 'Usuários | Listar';
+				$select = $this->Usuario->select()
+					->order('login ASC')
+					->limit(10);
+				$this->view->data = $this->Usuario->fetchAll($select)->toArray();
 				break;
 			case 'editar':
 				$this->view->posicao = 'Usuários | Edição';
@@ -34,27 +35,6 @@ class UsuariosController extends AppController {
 				$this->view->posicao = 'Usuários | Inclusão';
 				break;
 		}
-
-		// atualizando a view
-		if (in_array($this->getRequest()->getActionName(),array('editar','novo','excluir','listar','info','login')))
-		{
-			$this->view->campos['login']['label'] 			= 'Login';
-			$this->view->campos['nome']['label'] 			= 'Nome';
-			$this->view->campos['email']['label'] 			= 'e-mail';
-			$this->view->campos['acessos']['label'] 		= 'Acessos';
-			$this->view->campos['ultimo_acesso']['label'] 	= 'Último Acesso';
-			$this->view->campos['ultimo_acesso']['mascara']	= '99/99/9999 99:99:99';
-		}
-	}
-
-	/**
-	 * Redireciona para a tela de login ou para tela de informação caso o usuário já esteja logado
-	 * 
-	 * @return void
-	 */
-	public function indexAction()
-	{
-		if (isset($this->Sessao->usuario)) $this->_redirect('usuarios/login'); else $this->_redirect('usuarios/info');
 	}
 
 	/**

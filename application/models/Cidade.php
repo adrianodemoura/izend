@@ -1,6 +1,6 @@
 <?php
 /**
- * Model Usuários
+ * Model Cidades
  * 
  * @package		izend
  * @subpackage	izend.model
@@ -9,21 +9,22 @@
  * @package		izend
  * @subpackage	izend.model 
  */
-class Application_Model_Usuario extends AppModel {
+class Application_Model_Cidade extends AppModel {
 	/**
 	 * Nome do model
 	 * 
 	 * @var		string
-	 * @access	public
+	 * @access	protected
 	 */
-	protected $_name 	= 'usuarios';
+	protected $_name 	= 'cidades';
 
 	/**
 	 * Chave primária
 	 * 
 	 * @var		string
-	 * @access	public
+	 * @access	protected
 	 */
 	protected $_primary	= 'id';
 }
+
 ?>

@@ -75,6 +75,16 @@ class AppController extends Zend_Controller_Action {
 	}
 
 	/**
+	 * Redireciona para a tela de login ou para tela de informação caso o usuário já esteja logado
+	 * 
+	 * @return void
+	 */
+	public function indexAction()
+	{
+		$this->_helper->redirector('listar');
+	}
+
+	/**
 	 * Exibe a lista do cadastro
 	 * 
 	 * @param	integer	$pag	Número da Página
@@ -83,7 +93,7 @@ class AppController extends Zend_Controller_Action {
 	public function listarAction($pag=1)
 	{
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Lista';
-		$this->renderScript('index/listar.phtml');
+		$this->renderScript('app/listar.phtml');
 	}
 
 	/**
@@ -95,7 +105,7 @@ class AppController extends Zend_Controller_Action {
 	public function editarAction($id=0)
 	{
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Edição';
-		$this->renderScript('index/editar.phtml');
+		$this->renderScript('app/editar.phtml');
 	}
 
 	/**
@@ -106,7 +116,7 @@ class AppController extends Zend_Controller_Action {
 	public function novoAction()
 	{
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Inclusão';
-		$this->renderScript('index/editar.phtml');
+		$this->renderScript('app/editar.phtml');
 	}
 
 	/**
@@ -119,7 +129,7 @@ class AppController extends Zend_Controller_Action {
 	{
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Exclusão';
 		$this->view->excluir = true;
-		$this->renderScript('index/editar.phtml');
+		$this->renderScript('app/editar.phtml');
 	}
 
 	/**
