@@ -52,6 +52,11 @@ class AppController extends Zend_Controller_Action {
 		$this->view->permissao 		= isset($this->Sessao->permissao)? $this->Sessao->permissao : array();
 		$this->view->campos			= array();
 		$this->view->posicao 		= $this->view->controllerName.' | '.$this->view->actionName;
+	
+		$this->view->campos			= array();
+		$this->view->campos['nome']['label'] = 'Nome';
+		$this->view->campos['ultimo_acesso']['label']	= 'Último Acesso';
+		$this->view->campos['ultimo_acesso']['mascara']	= '99/99/9999 99:99:99';
 	}
 
 	/**

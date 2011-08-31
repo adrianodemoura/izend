@@ -94,6 +94,29 @@ label
 	background: url('../img/zend_framework.png') no-repeat;
 }
 
+#menu_modulos
+{
+	top: 31px;
+	left: 5px;
+	min-width: 200px;
+	min-height: 24px;
+	position: absolute;
+	font-size: 13px;
+}
+
+#menu_modulos ul
+{
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+	color: #fff;
+}
+
+#menu_modulos ul li
+{
+	display: inline;
+}
+
 #msg
 {
 	color: #fff;

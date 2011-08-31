@@ -7,10 +7,16 @@
 
 	$this->headLink()->appendStylesheet(URL.'css/izend.css',array('media'=>'all'));
 	if (file_exists('css/'.$this->controllerName.'.css')) $this->headLink()->appendStylesheet(URL.'css/'.$this->controllerName.'.css',array('media'=>'all'));
+	if (file_exists('css/'.$this->actionName.'.css')) $this->headLink()->appendStylesheet(URL.'css/'.$this->actionName.'.css',array('media'=>'all'));
 	
 	$this->headScript()->appendFile(URL.'js/jquery-1.6.2.min.js');
 	$this->headScript()->appendFile(URL.'js/izend.js');
 	if (file_exists('js/'.$this->controllerName.'.js')) $this->headScript()->appendFile(URL.'js/'.$this->controllerName.'.js');
+	if (file_exists('js/'.$this->actionName.'.js')) $this->headScript()->appendFile(URL.'js/'.$this->actionName.'.js');
+	
+	// opçõs do menu de módulos
+	$opcModulos['Clientes'] = URL . 'clientes';
+	$opcModulos['Sistema']	= URL . 'cidades';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,6 +55,16 @@ $(document).ready (function()
 		<div id="logos">
 			<a href='http://www.zendbrasil.com.br/' target='_blanck'><img src='<?=URL?>img/zend_power.png'   border='none' alt='' /></a>
 			<a href='http://www.jquery.com'  		target='_blanck'><img src='<?=URL?>img/jquery_power.png' border='none' alt='' /></a>
+		</div>
+
+		<div id='menu_modulos'>
+		<?php if (isset($this->usuario['login'])) : ?>
+			<ul>
+				<?php foreach($opcModulos as $_titulo => $_link) : ?>
+				<li><a href='<?=$_link ?>'><?= $_titulo ?></a> : </li>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
 		</div>
 
 		<div id='menu_sistema'>

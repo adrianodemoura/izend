@@ -22,8 +22,10 @@ class UsuariosController extends AppController {
 		switch($this->getRequest()->getActionName())
 		{
 			case 'listar':
-				$this->view->posicao = 'Usuários | Listar';
+				$this->view->posicao 		= 'Usuários | Listar';
+				$this->view->listaCampos	= array('login','nome');
 				$select = $this->Usuario->select()
+					->from(array('u'=>'usuarios'), array())
 					->order('login ASC')
 					->limit(10);
 				$this->view->data = $this->Usuario->fetchAll($select)->toArray();

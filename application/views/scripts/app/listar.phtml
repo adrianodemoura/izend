@@ -1,2 +1,25 @@
-<?php Listando ?>
-<?php if (isset($this->data)) echo '<pre>'.print_r($this->data,true).'</pre>'; ?>
+<div id='listar'>
+	<div id='barra'>
+		<div id='botoes'>
+		</div>
+		<div id='pesquisa'>
+		</div>
+	</div>
+	<div id='tabela'>
+		<div id='menu'>
+		</div>
+		<div id='grade'>
+			<table width='100%' cellspacing='0px' cellpadding='0px' border=1>
+			<?php foreach($this->data as $_linha => $_arrCampos) : ?>
+				<tr>
+					<?php foreach($this->listaCampos as $_campo) : ?>
+						<td>
+							<?=$this->Mascara($_arrCampos[$_campo],(isset($this->campos[$_campo]['mascara'])) ? $this->campos[$_campo]['mascara'] : '' )?>
+						</td>
+					<?php endforeach ?>
+				</tr>
+			<?php endforeach; ?>
+			</table>
+		</div>
+	</div>
+</div>
