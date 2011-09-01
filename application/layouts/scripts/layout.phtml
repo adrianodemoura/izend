@@ -13,10 +13,6 @@
 	$this->headScript()->appendFile(URL.'js/izend.js');
 	if (file_exists('js/'.$this->controllerName.'.js')) $this->headScript()->appendFile(URL.'js/'.$this->controllerName.'.js');
 	if (file_exists('js/'.$this->actionName.'.js')) $this->headScript()->appendFile(URL.'js/'.$this->actionName.'.js');
-	
-	// opçõs do menu de módulos
-	$opcModulos['Clientes'] = URL . 'clientes';
-	$opcModulos['Sistema']	= URL . 'cidades';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,8 +56,11 @@ $(document).ready (function()
 		<div id='menu_modulos'>
 		<?php if (isset($this->usuario['login'])) : ?>
 			<ul>
-				<?php foreach($opcModulos as $_titulo => $_link) : ?>
-				<li><a href='<?=$_link ?>'><?= $_titulo ?></a> : </li>
+				<?php $l=0; foreach($this->menuModulos as $_titulo => $_link) : ?>
+				<li>
+						<?php if ($l) echo ' : '; $l++; ?>
+						<a href='<?=$_link ?>'><?= $_titulo ?></a>
+				</li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>

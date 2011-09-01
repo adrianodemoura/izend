@@ -1,14 +1,37 @@
 <div id='listar'>
+
 	<div id='barra'>
-		<div id='botoes'>
+		<div id='botoes'><!-- botões da lista -->
+			<?php if (isset($this->listaBotoes)) : ?>
+				<?php foreach($this->listaBotoes as $_botao => $_arrOpcoes) : ?>
+				<?php endforeach ?>
+			<?php endif ?>
 		</div>
-		<div id='pesquisa'>
+
+		<div id='pesquisa'><!-- campos para pesquisa -->
+			<?php if (isset($this->listaPesquisa)) : ?>
+				<form>
+				<?php foreach($this->listaPesquisa as $_campo => $_valor) : ?>
+				<?php endforeach ?>
+				</form>
+			<?php endif ?>
 		</div>
+
 	</div>
-	<div id='tabela'>
-		<div id='menu'>
+
+	<div id='grade'>
+
+		<div id='menu'><!-- subMenu -->
+			<?php if (isset($this->subMenuModulos)) : ?>
+			<ul>
+				<?php foreach($this->subMenuModulos as $_titulo => $_link) : ?>
+					<li><a href='<?=$_link?>'><?=$_titulo?></a></li>
+				<?php endforeach ?>
+			</ul>
+			<?php endif ?>
 		</div>
-		<div id='grade'>
+
+		<div id='tabela'><!-- registros da página -->
 			<table width='100%' cellspacing='0px' cellpadding='0px' border=1>
 			<?php foreach($this->data as $_linha => $_arrCampos) : ?>
 				<tr>
@@ -21,5 +44,7 @@
 			<?php endforeach; ?>
 			</table>
 		</div>
+
 	</div>
+
 </div>

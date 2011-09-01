@@ -44,7 +44,7 @@ class AppController extends Zend_Controller_Action {
 			if (!$this->getPermissao()) $this->_redirect('index/erro_permissao');
 		}
 
-		// atualizando a view
+		// atualizando a view com algumas propriedades genéricas a todas as telas
 		$this->view->controllerName = $this->getRequest()->getControllerName();
 		$this->view->actionName 	= $this->getRequest()->getActionName();
 		$this->view->usuario 		= isset($this->Sessao->usuario)  ? $this->Sessao->usuario   : array();
@@ -52,7 +52,14 @@ class AppController extends Zend_Controller_Action {
 		$this->view->permissao 		= isset($this->Sessao->permissao)? $this->Sessao->permissao : array();
 		$this->view->campos			= array();
 		$this->view->posicao 		= $this->view->controllerName.' | '.$this->view->actionName;
+		$url						= rtrim(Zend_Controller_Front::getInstance()->getBaseUrl(),'/').'/';
+
+		// configurando as opções de menu para o layout 
+		$this->view->menuModulos	= array();
+		$this->view->menuModulos['Clientes']= $url . 'clientes';
+		$this->view->menuModulos['Sistema']	= $url . 'cidades';
 	
+		// configurando as propriedades de cada campo que será usada na view
 		$this->view->campos			= array();
 		$this->view->campos['nome']['label'] = 'Nome';
 		$this->view->campos['ultimo_acesso']['label']	= 'Último Acesso';

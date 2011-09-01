@@ -1,3 +1,8 @@
-- implementar Models para módulo sistema
-- implementar cadastro de ACL
+legenda:
+!! - em desenvolvimento
+ok - finalizado
+
+!!, adrianodemoura - implementar o layout para o cadastro listar da aplicação
+!!, adrianodemoura - implementar Models para módulo sistema
 ok, adrianodemoura - Mascarar campos na view
+

@@ -25,6 +25,7 @@ class CidadesController extends AppController {
 		{
 			case 'listar':
 				$this->view->posicao		= 'Cidades | Listar';
+				$this->view->listaMenu		= 'menu_sistema';
 				$this->view->listaCampos	= array('nome','estado');
 				$select = $this->Cidade->select()
 					->setIntegrityCheck(false)
