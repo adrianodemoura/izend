@@ -2,6 +2,9 @@
 // habilitando a visualização dos erros na tela
 error_reporting(E_ALL | E_STRICT);
 
+// definindo a url
+define('URL', 'http://'.$_SERVER['SERVER_NAME'].'/izend/');
+
 // Define path to application directory
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
 

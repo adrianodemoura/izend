@@ -1,6 +1,6 @@
 <?php
 	// definindo a url
-	define('URL', 'http://'.$_SERVER['SERVER_NAME'].$this->baseUrl().'/');
+	//define('URL', 'http://'.$_SERVER['SERVER_NAME'].$this->baseUrl().'/');
 
 	$this->headMeta()->setHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 	$this->headMeta()->appendName('keywords', 'zend, izend, php, framework');
@@ -59,7 +59,7 @@ $(document).ready (function()
 				<?php $l=0; foreach($this->menuModulos as $_titulo => $_link) : ?>
 				<li>
 						<?php if ($l) echo ' : '; $l++; ?>
-						<a href='<?=$_link ?>'><?= $_titulo ?></a>
+						<a href='<?= URL . $_link ?>'><?= $_titulo ?></a>
 				</li>
 				<?php endforeach; ?>
 			</ul>

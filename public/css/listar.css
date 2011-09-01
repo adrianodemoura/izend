@@ -1,6 +1,56 @@
 #listar
 {
-	width: 90%;
+	width: 98%;
 	margin: 0px auto;
 	font-size: 12px;
+}
+
+#listar #barra
+{
+	margin: 5px 0px 5px 0px;
+	background-color: #acc4e6;
+	height: 40px;
+}
+
+#listar #grade #menu
+{
+	float: left;
+	min-width: 120px;
+	margin: 0px 3px 0px 0px;
+}
+
+#listar #grade #menu ul
+{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+#listar #grade #menu ul li
+{
+	line-height: 20px;
+	border-bottom: 1px dashed #333;
+}
+
+#listar #grade #tabela
+{
+
+}
+
+#listar #grade #menu a
+{
+	display: block;
+	text-decoration: none;
+	color: #333333;
+}
+
+#listar #grade #menu a:hover
+{
+	color: #000;
+	background-color: #ddd;
+}
+
+#listar .cadastroAtivo
+{
+	background-color: #acc4e6;
 }

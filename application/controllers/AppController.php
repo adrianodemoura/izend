@@ -45,6 +45,7 @@ class AppController extends Zend_Controller_Action {
 		}
 
 		// atualizando a view com algumas propriedades genéricas a todas as telas
+		$this->view->url			= URL;
 		$this->view->controllerName = $this->getRequest()->getControllerName();
 		$this->view->actionName 	= $this->getRequest()->getActionName();
 		$this->view->usuario 		= isset($this->Sessao->usuario)  ? $this->Sessao->usuario   : array();
@@ -52,18 +53,33 @@ class AppController extends Zend_Controller_Action {
 		$this->view->permissao 		= isset($this->Sessao->permissao)? $this->Sessao->permissao : array();
 		$this->view->campos			= array();
 		$this->view->posicao 		= $this->view->controllerName.' | '.$this->view->actionName;
-		$url						= rtrim(Zend_Controller_Front::getInstance()->getBaseUrl(),'/').'/';
+		//$url						= rtrim(Zend_Controller_Front::getInstance()->getBaseUrl(),'/').'/';
 
-		// configurando as opções de menu para o layout 
+		// configurando as opções de menu de módulo
 		$this->view->menuModulos	= array();
-		$this->view->menuModulos['Clientes']= $url . 'clientes';
-		$this->view->menuModulos['Sistema']	= $url . 'cidades';
-	
+		$this->view->menuModulos['Clientes']= 'clientes';
+		$this->view->menuModulos['Sistema']	= 'cidades';
+
+		// configurando as opções de menu de cada módulo
+		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')))
+		{
+			$this->view->subMenuModulos = array();
+			$this->view->subMenuModulos['Cidades']	 = 'cidades';
+			$this->view->subMenuModulos['Estados']	 = 'estados';
+			$this->view->subMenuModulos['Perfis']	 = 'perfis';
+			$this->view->subMenuModulos['Permissões']= 'permissoes';
+			$this->view->subMenuModulos['Usuários']	 = 'usuarios';
+		}
+		
 		// configurando as propriedades de cada campo que será usada na view
 		$this->view->campos			= array();
 		$this->view->campos['nome']['label'] = 'Nome';
 		$this->view->campos['ultimo_acesso']['label']	= 'Último Acesso';
 		$this->view->campos['ultimo_acesso']['mascara']	= '99/99/9999 99:99:99';
+		$this->view->campos['created']['label']			= 'Criado';
+		$this->view->campos['created']['mascara']		= '99/99/9999 99:99:99';
+		$this->view->campos['modified']['label']		= 'Modificado';
+		$this->view->campos['modified']['mascara']		= '99/99/9999 99:99:99';
 	}
 
 	/**

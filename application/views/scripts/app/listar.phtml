@@ -1,6 +1,6 @@
 <div id='listar'>
 
-	<div id='barra'>
+	<div id='barra' class='quadro'>
 		<div id='botoes'><!-- botões da lista -->
 			<?php if (isset($this->listaBotoes)) : ?>
 				<?php foreach($this->listaBotoes as $_botao => $_arrOpcoes) : ?>
@@ -25,14 +25,14 @@
 			<?php if (isset($this->subMenuModulos)) : ?>
 			<ul>
 				<?php foreach($this->subMenuModulos as $_titulo => $_link) : ?>
-					<li><a href='<?=$_link?>'><?=$_titulo?></a></li>
+					<li><a href='<?= URL . $_link?>'<?= (strtolower($this->controllerName)==$_link) ? " class='cadastroAtivo'" : '' ?>><?=$_titulo?></a></li>
 				<?php endforeach ?>
 			</ul>
 			<?php endif ?>
 		</div>
 
 		<div id='tabela'><!-- registros da página -->
-			<table width='100%' cellspacing='0px' cellpadding='0px' border=1>
+			<table cellspacing='0px' cellpadding='0px'>
 			<?php foreach($this->data as $_linha => $_arrCampos) : ?>
 				<tr>
 					<?php foreach($this->listaCampos as $_campo) : ?>
@@ -48,3 +48,4 @@
 	</div>
 
 </div>
+
