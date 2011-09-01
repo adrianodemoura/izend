@@ -54,3 +54,43 @@
 {
 	background-color: #acc4e6;
 }
+
+#listar table
+{
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+#listar table th
+{
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+#listar th a.asc:after {
+	content: ' ⇣';
+	color: red;
+}
+#listar th a.desc:after {
+	content: ' ⇡';
+	color: red;
+}
+
+#listar th a
+{
+	display: block;
+	text-decoration: none;
+	color: #000;
+	border: 1px solid #fff;
+}
+
+#listar th a:hover
+{
+	background-color: #acc4e6;
+}
+
+#listar table tr td
+{
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}

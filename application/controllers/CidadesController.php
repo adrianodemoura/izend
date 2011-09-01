@@ -26,13 +26,13 @@ class CidadesController extends AppController {
 			case 'listar':
 				$this->view->posicao		= 'Cidades | Listar';
 				$this->view->listaMenu		= 'menu_sistema';
-				$this->view->listaCampos	= array('nome','estado');
+				$this->view->listaCampos	= array('nome','estado','modified','created');
 				$select = $this->Cidade->select()
 					->setIntegrityCheck(false)
 					->from(array('c'=>'cidades'), array('c.id','c.nome','e.nome as estado','c.modified','c.created'))
 					->join(array('e'=>'estados'), 'e.id = c.estado_id', array())
 					->order('c.nome ASC')
-					->limit(10);
+					->limit(20);
 				$this->view->data = $this->Cidade->fetchAll($select)->toArray();
 				break;
 			case 'editar':

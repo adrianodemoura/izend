@@ -33,14 +33,21 @@
 
 		<div id='tabela'><!-- registros da página -->
 			<table cellspacing='0px' cellpadding='0px'>
+
+			<tr>
+			<?php foreach($this->listaCampos as $_campo) : ?>
+				<th><a href=''><?= (isset($this->campos[$_campo]['label'])) ? $this->campos[$_campo]['label'] : $_campo ?></a></th>
+			<?php endforeach ?>
+			</tr>
+
 			<?php foreach($this->data as $_linha => $_arrCampos) : ?>
-				<tr>
-					<?php foreach($this->listaCampos as $_campo) : ?>
-						<td>
-							<?=$this->Mascara($_arrCampos[$_campo],(isset($this->campos[$_campo]['mascara'])) ? $this->campos[$_campo]['mascara'] : '' )?>
-						</td>
-					<?php endforeach ?>
-				</tr>
+			<tr>
+				<?php foreach($this->listaCampos as $_campo) : ?>
+					<td>
+						<?=$this->Mascara($_arrCampos[$_campo],(isset($this->campos[$_campo]['mascara'])) ? $this->campos[$_campo]['mascara'] : '' )?>
+					</td>
+				<?php endforeach ?>
+			</tr>
 			<?php endforeach; ?>
 			</table>
 		</div>
