@@ -54,7 +54,7 @@ $(document).ready (function()
 		</div>
 
 		<div id='menu_modulos'>
-		<?php if (isset($this->usuario['login'])) : ?>
+		<?php if (isset($this->menuModulos)) : ?>
 			<ul>
 				<?php $l=0; foreach($this->menuModulos as $_titulo => $_link) : ?>
 				<li>
