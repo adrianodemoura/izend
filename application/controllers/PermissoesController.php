@@ -24,6 +24,7 @@ class PermissoesController extends AppController {
 		switch($this->getRequest()->getActionName())
 		{
 			case 'listar':
+				$this->view->posicao		= 'Permissões | Listar';
 				$this->view->listaMenu		= 'menu_sistema';
 				$this->view->listaCampos	= array('controlador','acao','modificado','criado');
 				$select = $this->Permissao->select()->order('controlador ASC')->limit(20);

@@ -60,13 +60,13 @@ class FerramentasController extends Zend_Controller_Action {
 								$this->view->message = 'As senhas não estão iguais !!!';
 							} else
 							{
-								// instala módulos nativo
-								if ($this->getInstalaModulos()) 
+								// instala módulo sistema
+								if ($this->getInstalaSistema()) 
 								{
-									// insere usuários administrador
+									// inclui o usuário administrador
 									$bd   = Zend_Db_Table_Abstract::getDefaultAdapter();
 									$sql  = 'INSERT INTO usuarios (login,senha,nome,email,ativo,acessos,ultimo_acesso,criado,modificado) ';
-									$sql .= 'VALUES ("'.$dataForm['login'].'",sha1("'.$dataForm['login'].'"),"'.$dataForm['nome'].'","'.$dataForm['email'].'",1,1,sysdate(),sysdate(),sysdate())';
+									$sql .= 'VALUES ("'.$dataForm['login'].'",sha1("'.$dataForm['login'].'"),"'.mb_strtoupper($dataForm['nome']).'","'.mb_strtolower($dataForm['email']).'",1,1,sysdate(),sysdate(),sysdate())';
 									try
 									{
 										$bd->query($sql);
@@ -78,7 +78,7 @@ class FerramentasController extends Zend_Controller_Action {
 									$sessao = new Zend_Session_Namespace(SISTEMA);
 									$sessao->msg = 'A instalação foi executada com sucesso!!!';
 									$this->_redirect('usuarios/login');
-								} else $this->view->message = 'Erro ao tentar instalar módulos navitos do sistema!!!';
+								} else $this->view->message = 'Erro ao tentar instalar módulo sistema!!!';
 							}
 						}
 					}
@@ -86,7 +86,6 @@ class FerramentasController extends Zend_Controller_Action {
 					$this->view->form = $form;
 					break;
 			}
-			
 		}
 	}
 
@@ -100,7 +99,7 @@ class FerramentasController extends Zend_Controller_Action {
 	 * 
 	 * @return	boolean
 	 */
-	private function getInstalaModulos()
+	private function getInstalaSistema()
 	{
 		// csv a importar
 		$arrCsv = array('estados','cidades','perfis','usuarios_perfis');
@@ -110,11 +109,7 @@ class FerramentasController extends Zend_Controller_Action {
 
 		// instala todas as tabelas do sistema
 		$arq = '../docs/sql/'.mb_strtolower(SISTEMA).'.sql';
-		if (!file_exists($arq))
-		{
-			exit('não foi possível localizar o arquivo '.$arq);
-			return false;
-		}
+		if (!file_exists($arq)) exit('não foi possível localizar o arquivo '.$arq);
 		$handle  = fopen($arq,"r");
 		$texto   = fread($handle, filesize($arq));
 		$sqls	 = explode(";",$texto);
@@ -133,7 +128,7 @@ class FerramentasController extends Zend_Controller_Action {
 			}
 		}
 
-		// atualiza outras tabelas vias CSV
+		// populando tabelas via csv
 		foreach($arrCsv as $tabela)
 		{
 			$arq = '../docs/sql/'.$tabela.'.csv';
@@ -187,9 +182,8 @@ class FerramentasController extends Zend_Controller_Action {
 				}
 				fclose($handle);
 
-				// verificando se a tabela possui criado e modificado
+				// verificando se a tabela possui os campos criado e modificado, se sim atualiza-os
 				$res = $bd->fetchAll('SHOW FULL COLUMNS FROM '.$tabela);
-
 				foreach($res as $_linha => $_arrCmp)
 				{
 					if ($_arrCmp['Field']=='modificado')	array_push($cmps,'modificado');
