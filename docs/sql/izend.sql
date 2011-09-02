@@ -12,12 +12,12 @@ CREATE  TABLE IF NOT EXISTS `estados` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `nome` VARCHAR(45) NOT NULL COMMENT 'nome do estado por extenso' ,
   `uf` VARCHAR(2) NOT NULL COMMENT 'sigla do estado' ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
+  `criado` DATETIME NOT NULL ,
+  `modificado` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `i_nome` (`nome` ASC) ,
   UNIQUE INDEX `i_sigla` (`uf` ASC) ,
-  INDEX `i_modified` (`modified` ASC) )
+  INDEX `i_modified` (`modificado` ASC) )
 ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci;
@@ -31,12 +31,12 @@ DROP TABLE IF EXISTS `cidades` ;
 CREATE  TABLE IF NOT EXISTS `cidades` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `nome` VARCHAR(45) NOT NULL COMMENT 'nome da cidade' ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
+  `criado` DATETIME NOT NULL ,
+  `modificado` DATETIME NOT NULL ,
   `estado_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `i_nome` (`nome` ASC) ,
-  INDEX `i_modified` (`modified` ASC) ,
+  INDEX `i_modified` (`modificado` ASC) ,
   INDEX `fk_cidades_estados1` (`estado_id` ASC) ,
   CONSTRAINT `fk_cidades_estados1`
     FOREIGN KEY (`estado_id` )
@@ -45,7 +45,7 @@ CREATE  TABLE IF NOT EXISTS `cidades` (
     ON UPDATE NO ACTION)
 ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci
+COLLATE = utf8_general_ci, 
 COMMENT = 'Tabela que contém todas as cidades do brasil' ;
 
 
@@ -65,8 +65,8 @@ CREATE  TABLE IF NOT EXISTS `clientes` (
   `celular` VARCHAR(13) NOT NULL ,
   `email` VARCHAR(90) NOT NULL ,
   `obs` TEXT NOT NULL ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
+  `criado` DATETIME NOT NULL ,
+  `modificado` DATETIME NOT NULL ,
   `cidade_id` INT NOT NULL DEFAULT 2302 ,
   `estado_id` INT NOT NULL DEFAULT 1 ,
   `cpf` INT(11) NOT NULL DEFAULT 0 ,
@@ -74,7 +74,7 @@ CREATE  TABLE IF NOT EXISTS `clientes` (
   PRIMARY KEY (`id`) ,
   INDEX `i_nome` (`nome` ASC) ,
   INDEX `i_email` (`email` ASC) ,
-  INDEX `i_modified` (`modified` ASC) ,
+  INDEX `i_modified` (`modificado` ASC) ,
   INDEX `i_endereco` (`endereco` ASC) ,
   INDEX `i_tel` (`celular` ASC, `telefone` ASC) ,
   INDEX `fk_clientes_cidades1` (`cidade_id` ASC) ,
@@ -105,8 +105,8 @@ DROP TABLE IF EXISTS `perfis` ;
 CREATE  TABLE IF NOT EXISTS `perfis` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `nome` VARCHAR(45) NOT NULL ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
+  `criado` DATETIME NOT NULL ,
+  `modificado` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `i_nome` (`nome` ASC) )
 ENGINE = MyISAM
@@ -124,8 +124,8 @@ CREATE  TABLE IF NOT EXISTS `usuarios` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `login` VARCHAR(45) NOT NULL ,
   `senha` VARCHAR(45) NOT NULL ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
+  `criado` DATETIME NOT NULL ,
+  `modificado` DATETIME NOT NULL ,
   `ativo` TINYINT(1)  NOT NULL DEFAULT true ,
   `nome` VARCHAR(60) NOT NULL ,
   `email` VARCHAR(45) NOT NULL ,
@@ -177,8 +177,8 @@ CREATE  TABLE IF NOT EXISTS `permissoes` (
   `controlador` VARCHAR(50) NOT NULL ,
   `acao` VARCHAR(99) NOT NULL ,
   `acesso` TINYINT(1)  NOT NULL DEFAULT true ,
-  `created` DATETIME NOT NULL ,
-  `modified` DATETIME NOT NULL ,
+  `criado` DATETIME NOT NULL ,
+  `modificado` DATETIME NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `i_controlador` (`controlador` ASC) ,
   INDEX `i_acao` (`acao` ASC) )

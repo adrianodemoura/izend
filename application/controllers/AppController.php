@@ -52,12 +52,10 @@ class AppController extends Zend_Controller_Action {
 		$this->view->perfis  		= isset($this->Sessao->perfis)   ? $this->Sessao->perfis    : array();
 		$this->view->permissao 		= isset($this->Sessao->permissao)? $this->Sessao->permissao : array();
 		$this->view->campos			= array();
-		$this->view->posicao 		= $this->view->controllerName.' | '.$this->view->actionName;
-		//$url						= rtrim(Zend_Controller_Front::getInstance()->getBaseUrl(),'/').'/';
+		$this->view->posicao 		= ucfirst(mb_strtolower($this->view->controllerName)).' | '.ucfirst(mb_strtolower($this->view->actionName));
 
 		// configurando as opções de menu de módulo
 		$this->view->menuModulos	= array();
-		$this->view->menuModulos['Clientes']= 'clientes';
 		$this->view->menuModulos['Sistema']	= 'cidades';
 
 		// configurando as opções de menu de cada módulo
@@ -73,13 +71,33 @@ class AppController extends Zend_Controller_Action {
 		
 		// configurando as propriedades de cada campo que será usada na view
 		$this->view->campos			= array();
-		$this->view->campos['nome']['label'] = 'Nome';
+		$this->view->campos['nome']['label'] 			= 'Nome';
+		$this->view->campos['nome']['td']['width']		= '200px';
+
 		$this->view->campos['ultimo_acesso']['label']	= 'Último Acesso';
 		$this->view->campos['ultimo_acesso']['mascara']	= '99/99/9999 99:99:99';
-		$this->view->campos['created']['label']			= 'Criado';
-		$this->view->campos['created']['mascara']		= '99/99/9999 99:99:99';
-		$this->view->campos['modified']['label']		= 'Modificado';
-		$this->view->campos['modified']['mascara']		= '99/99/9999 99:99:99';
+
+		$this->view->campos['estado']['label']			= 'Estado';
+		$this->view->campos['estado']['td']['width']	= '130px';
+		
+		$this->view->campos['login']['label']			= 'Login';
+
+		$this->view->campos['uf']['label']				= 'Uf';
+		$this->view->campos['uf']['td']['width']		= '50px';
+		$this->view->campos['uf']['td']['align']		= 'center';
+
+		$this->view->campos['controlador']['label']		= 'Cadastro';
+
+		$this->view->campos['acao']['label']		= 'Ação';
+
+		$this->view->campos['criado']['label']			= 'Criado';
+		$this->view->campos['criado']['td']['width']	= '130px';
+		$this->view->campos['criado']['td']['align']	= 'center';
+		$this->view->campos['criado']['mascara']		= '99/99/9999 99:99:99';
+		$this->view->campos['modificado']['label']		= 'Modificado';
+		$this->view->campos['modificado']['mascara']	= '99/99/9999 99:99:99';
+		$this->view->campos['modificado']['td']['width']= '130px';
+		$this->view->campos['modificado']['td']['align']= 'center';
 	}
 
 	/**

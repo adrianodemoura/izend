@@ -65,7 +65,7 @@ class FerramentasController extends Zend_Controller_Action {
 								{
 									// insere usuários administrador
 									$bd   = Zend_Db_Table_Abstract::getDefaultAdapter();
-									$sql  = 'INSERT INTO usuarios (login,senha,nome,email,ativo,acessos,ultimo_acesso,created,modified) ';
+									$sql  = 'INSERT INTO usuarios (login,senha,nome,email,ativo,acessos,ultimo_acesso,criado,modificado) ';
 									$sql .= 'VALUES ("'.$dataForm['login'].'",sha1("'.$dataForm['login'].'"),"'.$dataForm['nome'].'","'.$dataForm['email'].'",1,1,sysdate(),sysdate(),sysdate())';
 									try
 									{
@@ -169,7 +169,7 @@ class FerramentasController extends Zend_Controller_Action {
 						$t = count($linha);
 						foreach($linha as $valor)
 						{
-							if ($arr_campos[$i]=='created' || $arr_campos[$i]=='modified') $valor = date("Y-m-d H:i:s");
+							if ($arr_campos[$i]=='criado' || $arr_campos[$i]=='modificado') $valor = date("Y-m-d H:i:s");
 							$valores .= "'".str_replace("'","\'",$valor)."'";
 							$i++;
 							if ($i!=$t) $valores .= ',';
@@ -187,13 +187,13 @@ class FerramentasController extends Zend_Controller_Action {
 				}
 				fclose($handle);
 
-				// verificando se a tabela possui created e modified
+				// verificando se a tabela possui criado e modificado
 				$res = $bd->fetchAll('SHOW FULL COLUMNS FROM '.$tabela);
 
 				foreach($res as $_linha => $_arrCmp)
 				{
-					if ($_arrCmp['Field']=='modified')	array_push($cmps,'modified');
-					if ($_arrCmp['Field']=='created')	array_push($cmps,'created');
+					if ($_arrCmp['Field']=='modificado')	array_push($cmps,'modificado');
+					if ($_arrCmp['Field']=='criado')	array_push($cmps,'criado');
 				}
 				if (count($cmps))
 				{

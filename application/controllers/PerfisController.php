@@ -25,7 +25,7 @@ class PerfisController extends AppController {
 		{
 			case 'listar':
 				$this->view->listaMenu		= 'menu_sistema';
-				$this->view->listaCampos	= array('nome','modified','created');
+				$this->view->listaCampos	= array('nome','modificado','criado');
 				$select = $this->Perfil->select()->order('nome ASC')->limit(20);
 				$this->view->data = $this->Perfil->fetchAll($select)->toArray();
 				break;

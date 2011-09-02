@@ -23,7 +23,7 @@ class UsuariosController extends AppController {
 		{
 			case 'listar':
 				$this->view->posicao 		= 'Usuários | Listar';
-				$this->view->listaCampos	= array('login','nome');
+				$this->view->listaCampos	= array('login','nome','modificado','criado');
 				$select = $this->Usuario->select()
 					->from(array('u'=>'usuarios'), array())
 					->order('login ASC')

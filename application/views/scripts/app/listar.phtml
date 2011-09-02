@@ -43,7 +43,7 @@
 			<?php foreach($this->data as $_linha => $_arrCampos) : ?>
 			<tr>
 				<?php foreach($this->listaCampos as $_campo) : ?>
-					<td>
+					<td<?php if(isset($this->campos[$_campo]['td'])) foreach($this->campos[$_campo]['td'] as $_tag => $_valor) echo " $_tag='$_valor'"; ?>>
 						<?=$this->Mascara($_arrCampos[$_campo],(isset($this->campos[$_campo]['mascara'])) ? $this->campos[$_campo]['mascara'] : '' )?>
 					</td>
 				<?php endforeach ?>

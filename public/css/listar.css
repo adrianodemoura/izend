@@ -8,7 +8,7 @@
 #listar #barra
 {
 	margin: 5px 0px 5px 0px;
-	background-color: #acc4e6;
+	background-color: #D1D194;
 	height: 40px;
 }
 
@@ -29,7 +29,7 @@
 #listar #grade #menu ul li
 {
 	line-height: 20px;
-	border-bottom: 1px dashed #333;
+	border-bottom: 1px dashed #ccc;
 }
 
 #listar #grade #tabela
@@ -41,24 +41,36 @@
 {
 	display: block;
 	text-decoration: none;
-	color: #333333;
+	color: #333;
 }
 
 #listar #grade #menu a:hover
 {
 	color: #000;
-	background-color: #ddd;
+	background-color: #E5E5BE;
 }
 
 #listar .cadastroAtivo
 {
-	background-color: #acc4e6;
+	background-color: #D1D194;
 }
 
 #listar table
 {
 	border-top: 1px solid #ccc;
 	border-right: 1px solid #ccc;
+	font-size: 10px;
+}
+
+#listar table tr:hover
+{
+	background-color: #D1D194;
+	cursor: pointer;
+}
+
+#listar table tr td
+{
+	padding: 1px 3px 1px 3px;
 }
 
 #listar table th

@@ -25,7 +25,7 @@ class EstadosController extends AppController {
 		{
 			case 'listar':
 				$this->view->listaMenu		= 'menu_sistema';
-				$this->view->listaCampos	= array('nome','uf');
+				$this->view->listaCampos	= array('nome','uf','modificado','criado');
 				$select = $this->Estado->select()
 					->order('nome ASC')
 					->limit(20);
