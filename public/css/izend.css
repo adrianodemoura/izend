@@ -124,3 +124,10 @@ label
 	right: 200px;
 	top: 30px;
 }
+
+.btForm
+{
+	width: 30px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}

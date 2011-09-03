@@ -3,7 +3,8 @@
 	<div id='barra' class='quadro'>
 		<div id='botoes'><!-- botões da lista -->
 			<?php if (isset($this->listaBotoes)) : ?>
-				<?php foreach($this->listaBotoes as $_botao => $_arrOpcoes) : ?>
+				<?php foreach($this->listaBotoes as $_botao => $_link) : ?>
+					<input type='button' class='btForm' id='bt<?= ucfirst(strtolower($_botao)) ?>' onclick='javascript:document.location.href="<?= $_link ?>"' />
 				<?php endforeach ?>
 			<?php endif ?>
 		</div>
@@ -38,6 +39,7 @@
 			<?php foreach($this->listaCampos as $_campo) : ?>
 				<th><a href=''><?= (isset($this->campos[$_campo]['label'])) ? $this->campos[$_campo]['label'] : $_campo ?></a></th>
 			<?php endforeach ?>
+				<th colspan='<?= count($this->listaFerramentas) ?>'></th>
 			</tr>
 
 			<?php foreach($this->data as $_linha => $_arrCampos) : ?>
@@ -45,6 +47,11 @@
 				<?php foreach($this->listaCampos as $_campo) : ?>
 					<td<?php if(isset($this->campos[$_campo]['td'])) foreach($this->campos[$_campo]['td'] as $_tag => $_valor) echo " $_tag='$_valor'"; ?>>
 						<?=$this->Mascara($_arrCampos[$_campo],(isset($this->campos[$_campo]['mascara'])) ? $this->campos[$_campo]['mascara'] : '' )?>
+					</td>
+				<?php endforeach ?>
+				<?php foreach($this->listaFerramentas as $_campo => $_arrProp) : ?>
+					<td align='center'>
+						<a href='<?= $_arrProp['link'] ?>'><img src='<?= $_arrProp['img'] ?>' border='0'/></a>
 					</td>
 				<?php endforeach ?>
 			</tr>
@@ -55,4 +62,3 @@
 	</div>
 
 </div>
-

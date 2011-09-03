@@ -106,3 +106,14 @@
 	border-bottom: 1px solid #ccc;
 	border-left: 1px solid #ccc;
 }
+
+#listar #botoes
+{
+	float: left;
+	margin: 8px 0px 0px 9px;
+}
+
+#listar #btNovo
+{
+	background: #cacaca url('../img/bt_novo.png') no-repeat 5px;
+}

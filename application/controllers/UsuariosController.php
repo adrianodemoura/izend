@@ -11,6 +11,14 @@
  */
 class UsuariosController extends AppController {
 	/**
+	 * Nome do model
+	 * 
+	 * @var		private
+	 * @access	protected
+	 */
+	protected $model	= 'Usuario';
+
+	/**
 	 * Método de inicialização do controlador
 	 * 
 	 * @return void
@@ -18,17 +26,12 @@ class UsuariosController extends AppController {
 	public function init()
 	{
 		parent::init();
-		$this->Usuario 	= new Application_Model_Usuario();
 		switch($this->getRequest()->getActionName())
 		{
 			case 'listar':
 				$this->view->posicao 		= 'Usuários | Listar';
 				$this->view->listaCampos	= array('login','nome','modificado','criado');
-				$select = $this->Usuario->select()
-					->from(array('u'=>'usuarios'), array())
-					->order('login ASC')
-					->limit(10);
-				$this->view->data = $this->Usuario->fetchAll($select)->toArray();
+				$this->select 				= $this->Usuario->select()->from(array('u'=>'usuarios'), array())->order('login ASC')->limit(10);
 				break;
 			case 'editar':
 				$this->view->posicao = 'Usuários | Edição';

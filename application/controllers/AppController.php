@@ -14,10 +14,12 @@ class AppController extends Zend_Controller_Action {
 	 * Método de inicialização do controlador.
 	 * 
 	 * Inicia a sessão para todos os controladores.
+	 * Inicia o model do controlador filho
 	 * Verifica se o usuário está logado, caso não esteja, redireciona para tela de login.
 	 * Atualiza a camada de visão com alguns itens importantes de cada controlador.
 	 * Verifica a permissão do usuário com o método solicitado, caso o mesmo não tenha 
 	 * permissão, redireciona para a tela de erro de permissão.
+	 * Exibe as telas de: paginação, edição, inclusão e exclusão
 	 * 
 	 * @return void
 	 */
@@ -25,13 +27,20 @@ class AppController extends Zend_Controller_Action {
 	{
 		// instanciando sessão
 		$this->Sessao	= new Zend_Session_Namespace(SISTEMA);
+		
+		// instanciando o model
+		$model			= $this->model;
+		$tmpModel		= 'Application_Model_'.$model;
+		$this->$model	= new $tmpModel();
+
+		// jogando a mensagem para a visão
 		if (isset($this->Sessao->msg))
 		{
 			$this->view->msg = $this->Sessao->msg;
 			unset($this->Sessao->msg);
 		}
-		
-		// área administrativa só logado
+
+		// se não está logado é redirecionado para a tela de login
 		if (!isset($this->Sessao->usuario) && $this->getRequest()->getPathInfo() != '/usuarios/login')
 		{
 			$this->Sessao->msg = 'Autenticação necessária !!!';
@@ -58,7 +67,7 @@ class AppController extends Zend_Controller_Action {
 		$this->view->menuModulos	= array();
 		$this->view->menuModulos['Sistema']	= 'cidades';
 
-		// configurando as opções de menu de cada módulo
+		// configurando as opções de menu para o módulo sistema
 		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')))
 		{
 			$this->view->subMenuModulos = array();
@@ -68,7 +77,7 @@ class AppController extends Zend_Controller_Action {
 			$this->view->subMenuModulos['Permissões']= 'permissoes';
 			$this->view->subMenuModulos['Usuários']	 = 'usuarios';
 		}
-		
+
 		// configurando as propriedades de cada campo que será usada na view
 		$this->view->campos			= array();
 		$this->view->campos['nome']['label'] 			= 'Nome';
@@ -79,7 +88,7 @@ class AppController extends Zend_Controller_Action {
 
 		$this->view->campos['estado']['label']			= 'Estado';
 		$this->view->campos['estado']['td']['width']	= '130px';
-		
+
 		$this->view->campos['login']['label']			= 'Login';
 
 		$this->view->campos['uf']['label']				= 'Uf';
@@ -88,7 +97,7 @@ class AppController extends Zend_Controller_Action {
 
 		$this->view->campos['controlador']['label']		= 'Cadastro';
 
-		$this->view->campos['acao']['label']		= 'Ação';
+		$this->view->campos['acao']['label']			= 'Ação';
 
 		$this->view->campos['criado']['label']			= 'Criado';
 		$this->view->campos['criado']['td']['width']	= '130px';
@@ -138,7 +147,35 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function listarAction($pag=1)
 	{
+		$model = $this->model;
+		$this->view->listaFerramentas 	= array();
+		$this->view->listaBotoes		= array();
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Lista';
+		if (!isset($this->view->listaBotoes['Novo'])) $this->view->listaBotoes['Novo'] = URL . strtolower($this->view->controllerName) . '/novo';
+		$data = $this->$model->fetchAll($this->select)->toArray();
+		$this->view->data = $data;
+		foreach($data as $_linha => $_arrCampos)
+		{
+			// botão editar
+			if (!isset($this->view->listaFerramentas['editar']))
+			{
+				$this->view->listaFerramentas['editar']['img']  = URL . '/img/bt_editar.png';
+				$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/'.$_arrCampos['id'];
+			}
+			// botão excluir
+			if (!isset($this->listaFerramentas['excluir']))
+			{
+				$this->view->listaFerramentas['excluir']['img']  = URL . '/img/bt_excluir.png';
+				$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/'.$_arrCampos['id'];
+			}
+			// botão imprimir
+			if (!isset($this->view->listaFerramentas['imprimir']))
+			{
+				$this->view->listaFerramentas['imprimir']['img']  = URL . '/img/bt_imprimir.png';
+				$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/'.$_arrCampos['id'];
+			}
+		}
+		
 		$this->renderScript('app/listar.phtml');
 	}
 
@@ -151,6 +188,8 @@ class AppController extends Zend_Controller_Action {
 	public function editarAction($id=0)
 	{
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Edição';
+		$model 	= $this->model;
+		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->renderScript('app/editar.phtml');
 	}
 
@@ -174,6 +213,8 @@ class AppController extends Zend_Controller_Action {
 	public function excluirAction($id=0)
 	{
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Exclusão';
+		$model 	= $this->model;
+		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->view->excluir = true;
 		$this->renderScript('app/editar.phtml');
 	}
@@ -186,8 +227,9 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function deleteAction($id=0)
 	{
+		$model 	= $this->model;
+		//if ($this->$model->delete($id))
 		$this->_redirect('listar');
 	}
 }
-
 ?>

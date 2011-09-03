@@ -11,6 +11,14 @@
  */
 class PerfisController extends AppController {
 	/**
+	 * Nome do model
+	 * 
+	 * @var		string
+	 * @access	protected
+	 */
+	protected $model	= 'Perfil';
+
+	/**
 	 * Método de inicialização do controlador
 	 * 
 	 * @return void
@@ -18,7 +26,6 @@ class PerfisController extends AppController {
 	public function init()
 	{
 		parent::init();
-		$this->Perfil = new Application_Model_Perfil();
 		
 		// atualizando a camada de visão com base na action solicitada
 		switch($this->getRequest()->getActionName())
@@ -26,8 +33,7 @@ class PerfisController extends AppController {
 			case 'listar':
 				$this->view->listaMenu		= 'menu_sistema';
 				$this->view->listaCampos	= array('nome','modificado','criado');
-				$select = $this->Perfil->select()->order('nome ASC')->limit(20);
-				$this->view->data = $this->Perfil->fetchAll($select)->toArray();
+				$this->select				= $this->Perfil->select()->order('nome ASC')->limit(20);
 				break;
 			case 'editar':
 				break;

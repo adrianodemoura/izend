@@ -11,6 +11,14 @@
  */
 class EstadosController extends AppController {
 	/**
+	 * Nome do model
+	 * 
+	 * @var		string
+	 * @access	protected
+	 */
+	protected $model	= 'Estado';
+
+	/**
 	 * Método de inicialização do controlador
 	 * 
 	 * @return void
@@ -18,7 +26,6 @@ class EstadosController extends AppController {
 	public function init()
 	{
 		parent::init();
-		$this->Estado = new Application_Model_Estado();
 		
 		// atualizando a camada de visão com base na action solicitada
 		switch($this->getRequest()->getActionName())
@@ -26,10 +33,9 @@ class EstadosController extends AppController {
 			case 'listar':
 				$this->view->listaMenu		= 'menu_sistema';
 				$this->view->listaCampos	= array('nome','uf','modificado','criado');
-				$select = $this->Estado->select()
-					->order('nome ASC')
-					->limit(20);
-				$this->view->data = $this->Estado->fetchAll($select)->toArray();
+				$this->select 				= $this->Estado->select()->order('nome ASC')->limit(20);
+				$this->listaFerramentas = array();
+				$this->listaFerramentas['excluir'] = false;
 				break;
 			case 'editar':
 				break;

@@ -1,4 +1,33 @@
-<br /><br />
-<center>
-aqui eu vou editar o cadastro ...
-</center>
+<div id='editar'>
+<form method='post' action='' name='formEdicao'>
+
+	<div id='barra'>
+
+		<div id='botoes'><!-- botões de edição -->
+			<?php if (isset($this->edicaoBotoes)) : ?>
+				<?php foreach($this->edicaoBotoes as $_botao => $_arrOpcoes) : ?>
+				<?php endforeach ?>
+			<?php endif ?>
+		</div>
+
+		<div id='pesquisa'>
+			<?php if (isset($this->edicaoPesquisa)) : ?>
+				<form>
+				<?php foreach($this->edicaoPesquisa as $_campo => $_valor) : ?>
+				<?php endforeach ?>
+				</form>
+			<?php endif ?>
+		</div>
+
+	</div>
+
+	<div id='campos'>
+		<?php if isset($this->edicaoCampos) : ?>
+				<?php foreach($this->edicaoCampos as $_campo => $_arrProp) : ?> 
+				<?= $this->Input($_campo,$this->data[$_campo],$_arrProp) ?>
+				<?php endforeach ?>
+		<?php endif ?>
+	</div>
+
+</form>
+</div>
