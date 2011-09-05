@@ -220,6 +220,20 @@ class AppController extends Zend_Controller_Action {
 	}
 
 	/**
+	 * Exibe a tela de impressão do cadastro
+	 * 
+	 * @param	integer	$id	ID do registro a ser editado
+	 * @return	void
+	 */
+	public function imprimirAction($id=0)
+	{
+		if (!isset($this->view->titulo)) $this->view->titulo  = 'Impressão';
+		$model 	= $this->model;
+		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
+		$this->renderScript('app/editar.phtml');
+	}
+
+	/**
 	 * Executa a exclusão do registro passado no parâmetro
 	 * 
 	 * @param	integer	$id	ID a ser excluido

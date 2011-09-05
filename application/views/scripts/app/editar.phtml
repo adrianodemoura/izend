@@ -22,7 +22,7 @@
 	</div>
 
 	<div id='campos'>
-		<?php if isset($this->edicaoCampos) : ?>
+		<?php if (isset($this->edicaoCampos)) : ?>
 				<?php foreach($this->edicaoCampos as $_campo => $_arrProp) : ?> 
 				<?= $this->Input($_campo,$this->data[$_campo],$_arrProp) ?>
 				<?php endforeach ?>
@@ -31,3 +31,4 @@
 
 </form>
 </div>
+<?php if (!isset($this->edicaoCampos)) echo '<center>Os campos para edição não foram definidos !!!</center>' ?>
