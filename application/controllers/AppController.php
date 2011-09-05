@@ -150,9 +150,10 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function listarAction($pag=1)
 	{
+		//exit('<pre>'.print_r($this->view->listaFerramentas,true).'</pre>');
 		$model = $this->model;
-		$this->view->listaFerramentas 	= array();
-		$this->view->listaBotoes		= array();
+		$this->view->listaFerramentas 	= (isset($this->view->listaFerramentas)) 	? $this->view->listaFerramentas : array();
+		$this->view->listaBotoes		= (isset($this->view->listaBotoes)) 		? $this->view->listaBotoes		: array();
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Lista';
 		if (!isset($this->view->listaBotoes['Novo'])) $this->view->listaBotoes['Novo'] = URL . strtolower($this->view->controllerName) . '/novo';
 		$data = $this->$model->fetchAll($this->select)->toArray();
@@ -164,7 +165,7 @@ class AppController extends Zend_Controller_Action {
 				$this->view->listaFerramentas['editar']['img']  = URL . '/img/bt_editar.png';
 				$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/'.$_arrCampos['id'];
 			}
-			if (!isset($this->listaFerramentas['excluir']))			// botão padrão excluir
+			if (!isset($this->view->listaFerramentas['excluir']))			// botão padrão excluir
 			{
 				$this->view->listaFerramentas['excluir']['img']  = URL . '/img/bt_excluir.png';
 				$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/'.$_arrCampos['id'];

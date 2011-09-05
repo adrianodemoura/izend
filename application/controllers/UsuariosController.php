@@ -2,6 +2,8 @@
 /**
  * Controlador para cadastro de usuários
  * 
+ * Usuário administrador não pode ser excluído
+ * 
  * @package		izend
  * @subpackage	izend.controller
  */
@@ -28,6 +30,9 @@ class UsuariosController extends AppController {
 	{
 		$this->view->posicao 		= 'Usuários | Listar';
 		$this->view->listaCampos	= array('login','nome','modificado','criado');
+		$this->view->listaFerramentas = array();
+		$this->view->listaFerramentas['excluir']['img'] = URL . '/img/bt_excluir_off.png';
+		$this->view->listaFerramentas['excluir'][1] 	= true;
 		$this->select 				= $this->Usuario->select()->from(array('u'=>'usuarios'), array())->order('login ASC')->limit(20);
 		parent::listarAction($pag);
 	}

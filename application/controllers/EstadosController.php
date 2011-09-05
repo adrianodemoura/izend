@@ -19,29 +19,19 @@ class EstadosController extends AppController {
 	protected $model	= 'Estado';
 
 	/**
-	 * Método de inicialização do controlador
+	 * Exibe a tela de listagem
 	 * 
-	 * @return void
+	 * @param	integer	$pag	Número da página a ser listada
+	 * @return	void
 	 */
-	public function init()
+	public function listarAction($pag=1)
 	{
-		parent::init();
-		
-		// atualizando a camada de visão com base na action solicitada
-		switch($this->getRequest()->getActionName())
-		{
-			case 'listar':
-				$this->view->listaMenu		= 'menu_sistema';
-				$this->view->listaCampos	= array('nome','uf','modificado','criado');
-				$this->select 				= $this->Estado->select()->order('nome ASC')->limit(20);
-				$this->listaFerramentas = array();
-				$this->listaFerramentas['excluir'] = false;
-				break;
-			case 'editar':
-				break;
-			case 'novo':
-				break;
-		}
+		$this->view->listaMenu			= 'menu_sistema';
+		$this->view->listaFerramentas 	= array();
+		$this->view->listaFerramentas['excluir'] = false;
+		$this->view->listaCampos		= array('nome','uf','modificado','criado');
+		$this->select 					= $this->Estado->select()->order('nome ASC')->limit(20);
+		parent::listarAction($pag);
 	}
 }
 ?>

@@ -53,9 +53,14 @@
 					</td>
 				<?php endforeach ?>
 				<?php foreach($this->listaFerramentas as $_campo => $_arrProp) : ?>
+				<?php if (isset($_arrProp['img']) ) : ?>
 					<td align='center'>
-						<a href='<?= $_arrProp['link'] ?>'><img src='<?= $_arrProp['img'] ?>' border='0'/></a>
+						<a
+							<?php if (!isset($_arrProp[$_linha]) && isset($_arrProp['link'])) : ?> href='<?= $_arrProp['link'] ?>'> <?php endif ?>
+							<img src='<?= $_arrProp['img'] ?>' border='0'/>
+						</a>
 					</td>
+				<?php endif ?>
 				<?php endforeach ?>
 			</tr>
 			<?php endforeach; ?>
