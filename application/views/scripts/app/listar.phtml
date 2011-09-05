@@ -36,12 +36,15 @@
 			<table cellspacing='0px' cellpadding='0px'>
 
 			<tr>
+			<?php if (isset($this->listaCampos)) : ?>
 			<?php foreach($this->listaCampos as $_campo) : ?>
 				<th><a href=''><?= (isset($this->campos[$_campo]['label'])) ? $this->campos[$_campo]['label'] : $_campo ?></a></th>
 			<?php endforeach ?>
 				<th colspan='<?= count($this->listaFerramentas) ?>'></th>
+			<?php endif ?>
 			</tr>
 
+			<?php if (isset($this->listaCampos)) : ?>
 			<?php foreach($this->data as $_linha => $_arrCampos) : ?>
 			<tr>
 				<?php foreach($this->listaCampos as $_campo) : ?>
@@ -56,10 +59,12 @@
 				<?php endforeach ?>
 			</tr>
 			<?php endforeach; ?>
+			<?php endif ?>
+
 			</table>
 		</div>
 
 	</div>
 
 </div>
-<?php if (!isset($this->listaCampos)) echo '<center>Os campos para edição não foram definidos !!!</center>' ?>
+<?php if (!isset($this->listaCampos)) echo '<center>Os campos para lista não foram definidos !!!</center>' ?>

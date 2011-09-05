@@ -19,27 +19,17 @@ class UsuariosController extends AppController {
 	protected $model	= 'Usuario';
 
 	/**
-	 * Método de inicialização do controlador
+	 * Exibe a tela de listagem
 	 * 
-	 * @return void
+	 * @param	integer	$pag	Número da página a ser listada
+	 * @return	void
 	 */
-	public function init()
+	public function listarAction($pag=1)
 	{
-		parent::init();
-		switch($this->getRequest()->getActionName())
-		{
-			case 'listar':
-				$this->view->posicao 		= 'Usuários | Listar';
-				$this->view->listaCampos	= array('login','nome','modificado','criado');
-				$this->select 				= $this->Usuario->select()->from(array('u'=>'usuarios'), array())->order('login ASC')->limit(10);
-				break;
-			case 'editar':
-				$this->view->posicao = 'Usuários | Edição';
-				break;
-			case 'novo':
-				$this->view->posicao = 'Usuários | Inclusão';
-				break;
-		}
+		$this->view->posicao 		= 'Usuários | Listar';
+		$this->view->listaCampos	= array('login','nome','modificado','criado');
+		$this->select 				= $this->Usuario->select()->from(array('u'=>'usuarios'), array())->order('login ASC')->limit(20);
+		parent::listarAction($pag);
 	}
 
 	/**

@@ -25,9 +25,12 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function init()
 	{
+		// sem model, nem a pau juvenal
+		if (!isset($this->model)) die('O nome do model é obrigatório !!!');
+
 		// instanciando sessão
 		$this->Sessao	= new Zend_Session_Namespace(SISTEMA);
-		
+
 		// instanciando o model
 		$model			= $this->model;
 		$tmpModel		= 'Application_Model_'.$model;
@@ -156,26 +159,22 @@ class AppController extends Zend_Controller_Action {
 		$this->view->data = $data;
 		foreach($data as $_linha => $_arrCampos)
 		{
-			// botão editar
-			if (!isset($this->view->listaFerramentas['editar']))
+			if (!isset($this->view->listaFerramentas['editar'])) 	// botão padrão editar
 			{
 				$this->view->listaFerramentas['editar']['img']  = URL . '/img/bt_editar.png';
 				$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/'.$_arrCampos['id'];
 			}
-			// botão excluir
-			if (!isset($this->listaFerramentas['excluir']))
+			if (!isset($this->listaFerramentas['excluir']))			// botão padrão excluir
 			{
 				$this->view->listaFerramentas['excluir']['img']  = URL . '/img/bt_excluir.png';
 				$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/'.$_arrCampos['id'];
 			}
-			// botão imprimir
-			if (!isset($this->view->listaFerramentas['imprimir']))
+			if (!isset($this->view->listaFerramentas['imprimir']))	// botão padrão imprimir
 			{
 				$this->view->listaFerramentas['imprimir']['img']  = URL . '/img/bt_imprimir.png';
 				$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/'.$_arrCampos['id'];
 			}
 		}
-		
 		$this->renderScript('app/listar.phtml');
 	}
 
