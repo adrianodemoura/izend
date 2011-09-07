@@ -108,9 +108,7 @@ class UsuariosController extends AppController {
 	 */
 	public function sairAction()
 	{
-		unset($this->Sessao->usuario);
-		unset($this->Sessao->perfis);
-		unset($this->Sessao->permissao);
+		Zend_Session::destroy();
 		$this->_redirect('/');
 	}
 

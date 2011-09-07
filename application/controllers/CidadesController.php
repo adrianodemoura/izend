@@ -32,12 +32,12 @@ class CidadesController extends AppController {
 		$this->view->listaFerramentas 	= array();
 		$this->view->listaFerramentas['excluir'] = false;
 		
-		$this->select = $this->Cidade->select()
-			->setIntegrityCheck(false)
-			->from(array('c'=>'cidades'), array('c.id','c.nome','e.nome as estado','c.modificado','c.criado'))
-			->join(array('e'=>'estados'), 'e.id = c.estado_id', array())
-			->order('c.nome ASC')
-			->limit(20);
+		$this->select = $this->Cidade->select();
+		$this->select->setIntegrityCheck(false);
+		$this->select->from(array('c'=>'cidades'), array('c.id','c.nome','e.nome as estado','c.modificado','c.criado'));
+		$this->select->join(array('e'=>'estados'), 'e.id = c.estado_id', array());
+		$this->select->order('c.nome asc');
+
 		parent::listarAction($pag);
 	}
 }
