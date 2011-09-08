@@ -26,7 +26,7 @@ class UsuariosController extends AppController {
 	 * @param	integer	$pag	Número da página a ser listada
 	 * @return	void
 	 */
-	public function listarAction($pag=1)
+	public function listarAction($pag=1, $ord='', $dir='asc')
 	{
 		$this->view->posicao 		= 'Usuários | Listar';
 		$this->view->listaCampos	= array('login','nome','modificado','criado');
@@ -34,7 +34,7 @@ class UsuariosController extends AppController {
 		$this->view->listaFerramentas['excluir']['img'] = URL . '/img/bt_excluir_off.png';
 		$this->view->listaFerramentas['excluir'][1] 	= true;
 		$this->select 				= $this->Usuario->select()->from(array('u'=>'usuarios'), array())->order('login ASC')->limit(20);
-		parent::listarAction($pag);
+		parent::listarAction($pag, $ord, $dir);
 	}
 
 	/**

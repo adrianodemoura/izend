@@ -68,17 +68,17 @@ class AppController extends Zend_Controller_Action {
 
 		// configurando as opções de menu de módulo
 		$this->view->menuModulos	= array();
-		$this->view->menuModulos['Sistema']	= 'cidades/listar/pag:'.$this->getPag('Cidades','pag').'/ord:'.$this->getPag('Cidades','ord').'/dir:'.$this->getPag('Cidades','dir');
+		$this->view->menuModulos['Sistema']	= 'cidades/listar/'.$this->getPag('cidades','num').'/'.$this->getPag('cidades','ord').'/'.$this->getPag('cidades','dir');
 
 		// configurando as opções de menu para o módulo sistema
-		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')))
+		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')) && in_array($this->view->actionName,array('editar','novo','exclur','listar')))
 		{
 			$this->view->subMenuModulos = array();
-			$this->view->subMenuModulos['Cidades']	 = 'cidades/listar/pag:'	.$this->getPag('Cidades','pag')		.'/ord:'.$this->getPag('Cidades','ord')		.'/dir:'.$this->getPag('Cidades','dir');
-			$this->view->subMenuModulos['Estados']	 = 'estados/listar/pag:'	.$this->getPag('Estados','pag')		.'/ord:'.$this->getPag('Estados','ord')		.'/dir:'.$this->getPag('Estados','dir');
-			$this->view->subMenuModulos['Perfis']	 = 'perfis/listar/pag:'		.$this->getPag('Perfis','pag')		.'/ord:'.$this->getPag('Perfis','ord')		.'/dir:'.$this->getPag('Perfis','dir');
-			$this->view->subMenuModulos['Permissões']= 'permissoes/listar/pag:'	.$this->getPag('Permissoes','pag')	.'/ord:'.$this->getPag('Permissoes','ord')	.'/dir:'.$this->getPag('Permissoes','dir');
-			$this->view->subMenuModulos['Usuários']	 = 'usuarios/listar/pag:'	.$this->getPag('Usuarios','pag')	.'/ord:'.$this->getPag('Usuarios','ord')	.'/dir:'.$this->getPag('Usuarios','dir');
+			$this->view->subMenuModulos['cidades']	 = 'cidades/listar/'	.$this->getPag('cidades','num')		.'/'.$this->getPag('cidades','ord')		.'/'.$this->getPag('cidades','dir');
+			$this->view->subMenuModulos['estados']	 = 'estados/listar/'	.$this->getPag('estados','num')		.'/'.$this->getPag('estados','ord')		.'/'.$this->getPag('estados','dir');
+			$this->view->subMenuModulos['perfis']	 = 'perfis/listar/'		.$this->getPag('perfis','num')		.'/'.$this->getPag('perfis','ord')		.'/'.$this->getPag('perfis','dir');
+			$this->view->subMenuModulos['permissões']= 'permissoes/listar/'	.$this->getPag('permissoes','num')	.'/'.$this->getPag('permissoes','ord')	.'/'.$this->getPag('permissoes','dir');
+			$this->view->subMenuModulos['usuários']	 = 'usuarios/listar/'	.$this->getPag('usuarios','num')	.'/'.$this->getPag('usuarios','ord')	.'/'.$this->getPag('usuarios','dir');
 		}
 
 		// configurando as propriedades de cada campo que será usada na view
@@ -148,16 +148,18 @@ class AppController extends Zend_Controller_Action {
 	 * @param	integer	$pag	Número da Página
 	 * @return	void
 	 */
-	public function listarAction($pag=1)
+	public function listarAction($num=1, $ord='', $dir='asc')
 	{
 		$model = $this->model;
+		if (empty($ord) && isset($this->$model->_ordem)) $ord = $this->$model->_ordem;
+		$this->setPag($num,$ord,$dir);
 		$this->view->listaFerramentas 	= (isset($this->view->listaFerramentas)) 	? $this->view->listaFerramentas : array();
 		$this->view->listaBotoes		= (isset($this->view->listaBotoes)) 		? $this->view->listaBotoes		: array();
 
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Lista';
 		if (!isset($this->view->listaBotoes['Novo'])) $this->view->listaBotoes['Novo'] = URL . strtolower($this->view->controllerName) . '/novo';
 
-		$this->select->limit(20);
+		$this->select->limit(10);
 		$data = $this->$model->fetchAll($this->select)->toArray();
 		$this->view->data = $data;
 		foreach($data as $_linha => $_arrCampos)
@@ -249,6 +251,21 @@ class AppController extends Zend_Controller_Action {
 	}
 
 	/**
+	 * Configura os parâmetros da página do cadastro corrente
+	 * 
+	 * @param	integer		$num	Número da página
+	 * @param	string		$ord	Ordenação
+	 * @param	string		$dir	Direção ASC|DESC
+	 */
+	private function setPag($num=1, $ord='', $dir='asc')
+	{
+		$controlador = $this->getRequest()->getControllerName();
+		$this->Sessao->$controlador->pag['num'] = $num;
+		$this->Sessao->$controlador->pag['ord'] = $ord;
+		$this->Sessao->$controlador->pag['dir'] = $dir;
+	}
+
+	/**
 	 * Retorna o parâmetro da paginação.
 	 * 
 	 * @param	string	$controlador	Nome do controlador, importante pra identificar na sessão.
@@ -257,26 +274,10 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function getPag($controlador=null, $param=null)
 	{
-		$campo = '';
-		$this->Sessao->$controlador = isset($this->Sessao->$controlador) ? $this->Sessao->$controlador : array();
-		switch($param)
-		{
-			case 'pag':
-				$campo = isset($this->Sessao->$controlador['pag']) ? $this->Sessao->$controlador['pag'] : 1;
-				break;
-			case 'ord':
-				$model	= $this->model;
-				$ord	= isset($this->$model->_ordem) ? $this->$model->_ordem : '';
-				$campo 	= isset($this->Sessao->$controlador['ord']) ? $this->Sessao->$controlador['ord'] : $ord;
-				if (empty($campo) && !empty($ord)) $campo = $ord;
-				break;
-			case 'dir':
-				$campo 	= isset($this->Sessao->$controlador['dir']) ? $this->Sessao->$controlador['dir'] : 'asc';
-				break;
-		}
-		$this->Sessao->$controlador[$param] = $campo;
-
-		return $campo;
+		$this->Sessao->$controlador->pag['num'] = isset($this->Sessao->$controlador->pag['num']) ? $this->Sessao->$controlador->pag['num'] : 1;
+		$this->Sessao->$controlador->pag['ord'] = isset($this->Sessao->$controlador->pag['ord']) ? $this->Sessao->$controlador->pag['ord'] : '';
+		$this->Sessao->$controlador->pag['dir'] = isset($this->Sessao->$controlador->pag['dir']) ? $this->Sessao->$controlador->pag['dir'] : 'asc';
+		return $this->Sessao->$controlador->pag[$param];
 	}
 }
 ?>

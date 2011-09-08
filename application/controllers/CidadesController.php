@@ -19,18 +19,17 @@ class CidadesController extends AppController {
 	protected $model	= 'Cidade';
 
 	/**
-	 * Exibe a tela de listagem
+	 * Exibe a tela de paginação
 	 * 
-	 * @param	integer	$pag	Número da página a ser listada
 	 * @return	void
 	 */
-	public function listarAction($pag=1)
+	public function listarAction($pag=1, $ord='', $dir='asc')
 	{
-		$this->view->posicao		= 'Cidades | Listar';
-		$this->view->listaMenu		= 'menu_sistema';
-		$this->view->listaCampos	= array('nome','estado','modificado','criado');
-		$this->view->listaFerramentas 	= array();
-		$this->view->listaFerramentas['excluir'] = false;
+		$this->view->posicao						= 'Cidades | Listar';
+		$this->view->listaMenu						= 'menu_sistema';
+		$this->view->listaCampos					= array('nome','estado','modificado','criado');
+		$this->view->listaFerramentas 				= array();
+		$this->view->listaFerramentas['excluir'] 	= false;
 		
 		$this->select = $this->Cidade->select();
 		$this->select->setIntegrityCheck(false);
@@ -38,7 +37,7 @@ class CidadesController extends AppController {
 		$this->select->join(array('e'=>'estados'), 'e.id = c.estado_id', array());
 		$this->select->order('c.nome asc');
 
-		parent::listarAction($pag);
+		parent::listarAction($pag, $ord, $dir);
 	}
 }
 ?>
