@@ -1,8 +1,0 @@
-legenda:
-!! - em desenvolvimento
-ok - finalizado
-
-!!, adrianodemoura - implementar layout genérico 'listar'
-ok, adrianodemoura - implementar Models para módulo sistema
-ok, adrianodemoura - Mascarar campos na view
-
