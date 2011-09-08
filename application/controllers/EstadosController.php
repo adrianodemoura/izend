@@ -24,13 +24,13 @@ class EstadosController extends AppController {
 	 * @param	integer	$pag	Número da página a ser listada
 	 * @return	void
 	 */
-	public function listarAction($pag=1, $ord='', $dir='asc')
+	public function listarAction($pag=1, $ord='nome', $dir='asc')
 	{
 		$this->view->listaMenu			= 'menu_sistema';
 		$this->view->listaFerramentas 	= array();
 		$this->view->listaFerramentas['excluir'] = false;
 		$this->view->listaCampos		= array('nome','uf','modificado','criado');
-		$this->select 					= $this->Estado->select()->order('nome ASC')->limit(20);
+		$this->select = $this->Estado->select();
 		parent::listarAction($pag, $ord, $dir);
 	}
 }

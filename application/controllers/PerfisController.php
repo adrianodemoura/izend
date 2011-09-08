@@ -18,28 +18,13 @@ class PerfisController extends AppController {
 	 */
 	protected $model	= 'Perfil';
 
-	/**
-	 * Método de inicialização do controlador
-	 * 
-	 * @return void
-	 */
-	public function init()
+	public function listarAction($pag=1, $ord='nome', $dir='asc')
 	{
-		parent::init();
-		
-		// atualizando a camada de visão com base na action solicitada
-		switch($this->getRequest()->getActionName())
-		{
-			case 'listar':
-				$this->view->listaMenu		= 'menu_sistema';
-				$this->view->listaCampos	= array('nome','modificado','criado');
-				$this->select				= $this->Perfil->select()->order('nome ASC')->limit(20);
-				break;
-			case 'editar':
-				break;
-			case 'novo':
-				break;
-		}
+		$this->view->listaCampos					= array('nome','modificado','criado');
+		$this->select = $this->Perfil->select();
+		$this->select->setIntegrityCheck(false);
+		$this->select->from(array('p'=>'perfis'), array('p.id','p.nome','p.modificado','p.criado'));
+		parent::listarAction($pag, $ord, $dir);
 	}
 }
 ?>

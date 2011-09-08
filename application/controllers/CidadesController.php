@@ -23,7 +23,7 @@ class CidadesController extends AppController {
 	 * 
 	 * @return	void
 	 */
-	public function listarAction($pag=1, $ord='', $dir='asc')
+	public function listarAction($pag=1, $ord='nome', $dir='asc')
 	{
 		$this->view->posicao						= 'Cidades | Listar';
 		$this->view->listaMenu						= 'menu_sistema';
@@ -35,9 +35,8 @@ class CidadesController extends AppController {
 		$this->select->setIntegrityCheck(false);
 		$this->select->from(array('c'=>'cidades'), array('c.id','c.nome','e.nome as estado','c.modificado','c.criado'));
 		$this->select->join(array('e'=>'estados'), 'e.id = c.estado_id', array());
-		$this->select->order('c.nome asc');
 
-		parent::listarAction($pag, 'nome', $dir);
+		parent::listarAction($pag, $ord, $dir);
 	}
 }
 ?>

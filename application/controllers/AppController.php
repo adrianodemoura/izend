@@ -27,7 +27,7 @@ class AppController extends Zend_Controller_Action {
 	{
 		// sem model, nem a pau juvenal
 		if (!isset($this->model)) die('O nome do model é obrigatório !!!');
-		
+
 		// configuração padrão para a camada de visão (em segundos)
 		$this->view->tempoOn = 300;
 
@@ -78,11 +78,11 @@ class AppController extends Zend_Controller_Action {
 		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')) && in_array($this->view->actionName,array('editar','novo','exclur','listar')))
 		{
 			$this->view->subMenuModulos = array();
-			$this->view->subMenuModulos['cidades']	 = 'cidades/listar/'	.$this->getPag('cidades','num')		.'/'.$this->getPag('cidades','ord')		.'/'.$this->getPag('cidades','dir');
-			$this->view->subMenuModulos['estados']	 = 'estados/listar/'	.$this->getPag('estados','num')		.'/'.$this->getPag('estados','ord')		.'/'.$this->getPag('estados','dir');
-			$this->view->subMenuModulos['perfis']	 = 'perfis/listar/'		.$this->getPag('perfis','num')		.'/'.$this->getPag('perfis','ord')		.'/'.$this->getPag('perfis','dir');
-			$this->view->subMenuModulos['permissões']= 'permissoes/listar/'	.$this->getPag('permissoes','num')	.'/'.$this->getPag('permissoes','ord')	.'/'.$this->getPag('permissoes','dir');
-			$this->view->subMenuModulos['usuários']	 = 'usuarios/listar/'	.$this->getPag('usuarios','num')	.'/'.$this->getPag('usuarios','ord')	.'/'.$this->getPag('usuarios','dir');
+			$this->view->subMenuModulos['Cidades']	 = 'cidades/listar/'	.$this->getPag('cidades','num')		.'/'.$this->getPag('cidades','ord')		.'/'.$this->getPag('cidades','dir');
+			$this->view->subMenuModulos['Estados']	 = 'estados/listar/'	.$this->getPag('estados','num')		.'/'.$this->getPag('estados','ord')		.'/'.$this->getPag('estados','dir');
+			$this->view->subMenuModulos['Perfis']	 = 'perfis/listar/'		.$this->getPag('perfis','num')		.'/'.$this->getPag('perfis','ord')		.'/'.$this->getPag('perfis','dir');
+			$this->view->subMenuModulos['Permissões']= 'permissoes/listar/'	.$this->getPag('permissoes','num')	.'/'.$this->getPag('permissoes','ord')	.'/'.$this->getPag('permissoes','dir');
+			$this->view->subMenuModulos['Usuários']	 = 'usuarios/listar/'	.$this->getPag('usuarios','num')	.'/'.$this->getPag('usuarios','ord')	.'/'.$this->getPag('usuarios','dir');
 		}
 
 		// configurando as propriedades de cada campo que será usada na view
@@ -156,13 +156,17 @@ class AppController extends Zend_Controller_Action {
 	{
 		$model = $this->model;
 		$this->setPag($num,$ord,$dir);
+		$num = $this->getPag($this->view->controllerName,'num');
+		$ord = $this->getPag($this->view->controllerName,'ord');
+		$dir = $this->getPag($this->view->controllerName,'dir');
+
 		$this->view->listaFerramentas 	= (isset($this->view->listaFerramentas)) 	? $this->view->listaFerramentas : array();
 		$this->view->listaBotoes		= (isset($this->view->listaBotoes)) 		? $this->view->listaBotoes		: array();
-
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Lista';
 		if (!isset($this->view->listaBotoes['Novo'])) $this->view->listaBotoes['Novo'] = URL . strtolower($this->view->controllerName) . '/novo';
 
-		$this->select->limit(10);
+		$this->select->limit(20);
+		$this->select->order($ord.' '.$dir);
 		$data = $this->$model->fetchAll($this->select)->toArray();
 		$this->view->data = $data;
 		foreach($data as $_linha => $_arrCampos)
