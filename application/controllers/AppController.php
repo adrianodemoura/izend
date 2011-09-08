@@ -27,9 +27,13 @@ class AppController extends Zend_Controller_Action {
 	{
 		// sem model, nem a pau juvenal
 		if (!isset($this->model)) die('O nome do model é obrigatório !!!');
+		
+		// configuração padrão para a camada de visão (em segundos)
+		$this->view->tempoOn = 300;
 
-		// instanciando sessão
+		// instanciando sessão e configurando alguns itens
 		$this->Sessao	= new Zend_Session_Namespace(SISTEMA);
+		$this->Sessao->setExpirationSeconds($this->view->tempoOn);
 
 		// instanciando o model
 		$model			= $this->model;
@@ -151,7 +155,6 @@ class AppController extends Zend_Controller_Action {
 	public function listarAction($num=1, $ord='', $dir='asc')
 	{
 		$model = $this->model;
-		if (empty($ord) && isset($this->$model->_ordem)) $ord = $this->$model->_ordem;
 		$this->setPag($num,$ord,$dir);
 		$this->view->listaFerramentas 	= (isset($this->view->listaFerramentas)) 	? $this->view->listaFerramentas : array();
 		$this->view->listaBotoes		= (isset($this->view->listaBotoes)) 		? $this->view->listaBotoes		: array();

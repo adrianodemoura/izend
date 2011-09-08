@@ -37,7 +37,7 @@ class CidadesController extends AppController {
 		$this->select->join(array('e'=>'estados'), 'e.id = c.estado_id', array());
 		$this->select->order('c.nome asc');
 
-		parent::listarAction($pag, $ord, $dir);
+		parent::listarAction($pag, 'nome', $dir);
 	}
 }
 ?>

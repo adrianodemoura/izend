@@ -131,3 +131,27 @@ label
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 }
+
+#contador
+{
+	position: absolute;
+	right: 200px;
+	top: 5px;
+	color: #fff;
+	font-size: 11px;
+}
+
+#contador #cTxt
+{
+	margin: 0px 10px 0px 0px;
+}
+
+#contador .countdown_section
+{
+	padding: 0px 3px 0px 3px;
+}
+#contador .countdown_amount
+{
+	padding: 0px 2px 0px 2px;
+}
+

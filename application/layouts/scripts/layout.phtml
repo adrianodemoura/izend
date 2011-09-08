@@ -1,7 +1,4 @@
 <?php
-	// definindo a url
-	//define('URL', 'http://'.$_SERVER['SERVER_NAME'].$this->baseUrl().'/');
-
 	$this->headMeta()->setHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 	$this->headMeta()->appendName('keywords', 'zend, izend, php, framework');
 
@@ -13,6 +10,11 @@
 	$this->headScript()->appendFile(URL.'js/izend.js');
 	if (file_exists('js/'.$this->controllerName.'.js')) $this->headScript()->appendFile(URL.'js/'.$this->controllerName.'.js');
 	if (file_exists('js/'.$this->actionName.'.js')) $this->headScript()->appendFile(URL.'js/'.$this->actionName.'.js');
+	if (isset($this->usuario['login']))
+	{
+		$this->headScript()->appendFile(URL.'js/countdown/jquery.countdown.js');
+		$this->headScript()->appendFile(URL.'js/countdown/jquery.countdown-pt-BR.js');
+	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,8 +29,14 @@
 <script type="text/javascript">
 $(document).ready (function()
 {
+	<?php if (isset($this->usuario['login'])) : ?>
+
+	$("#regressivo").countdown({until: <?php echo $this->tempoOn; ?>, format: "MS"});
+	setTimeout(function () { window.location='<?php echo URL.'usuarios/login'; ?>' }, <?php echo ($this->tempoOn*1001) ?>);
+	<?php endif; ?>
 	setTimeout(function(){ $("#msg").fadeOut(4000); },3000);
 	<?php if (isset($this->on_read)) echo $this->on_read; ?>
+
 });
 </script>
 
@@ -43,6 +51,12 @@ $(document).ready (function()
 		<div id='sigla'>
 			<a href='<?=URL?>'><?=SISTEMA?></a><?php if (isset($this->posicao)) echo ' | '.$this->posicao; ?>
 		</div>
+
+		<?php if (isset($this->usuario['login'])) : ?>
+		<div id="contador">
+			<span id='cTxt'>sua sessão expira em</span><span id="regressivo"></span>
+		</div>
+		<?php endif ?>
 		
 		<div id='msg'>
 			<?php if(isset($this->msg)) echo $this->msg; ?>
