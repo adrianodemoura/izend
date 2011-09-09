@@ -19,28 +19,19 @@ class PermissoesController extends AppController {
 	protected $model	= 'Permissao';
 
 	/**
-	 * Método de inicialização do controlador
+	 * Exibe a tela de paginação
 	 * 
-	 * @return void
+	 * @return	void
 	 */
-	public function init()
+	public function listarAction($pag=1, $ord='controlador', $dir='asc')
 	{
-		parent::init();
-
-		// atualizando a camada de visão com base na action solicitada
-		switch($this->getRequest()->getActionName())
-		{
-			case 'listar':
-				$this->view->posicao		= 'Permissões | Listar';
-				$this->view->listaMenu		= 'menu_sistema';
-				$this->view->listaCampos	= array('controlador','acao','modificado','criado');
-				$this->select				= $this->Permissao->select()->order('controlador ASC')->limit(20);
-				break;
-			case 'editar':
-				break;
-			case 'novo':
-				break;
-		}
+		$this->view->listaMenu		= 'menu_sistema';
+		$this->view->listaCampos	= array('controlador','acao','modificado','criado');
+		
+		$this->select = $this->Permissao->select();
+		$this->select->setIntegrityCheck(false);
+		$this->select->from(array('p'=>'permissoes'), array('p.id','p.controlador','p.acao','p.modificado','p.criado'));
+		parent::listarAction($pag, $ord, $dir);
 	}
 }
 ?>

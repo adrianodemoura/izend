@@ -26,14 +26,16 @@ class UsuariosController extends AppController {
 	 * @param	integer	$pag	Número da página a ser listada
 	 * @return	void
 	 */
-	public function listarAction($pag=1, $ord='', $dir='asc')
+	public function listarAction($pag=1, $ord='nome', $dir='asc')
 	{
 		$this->view->posicao 		= 'Usuários | Listar';
 		$this->view->listaCampos	= array('login','nome','modificado','criado');
 		$this->view->listaFerramentas = array();
 		$this->view->listaFerramentas['excluir']['img'] = URL . '/img/bt_excluir_off.png';
 		$this->view->listaFerramentas['excluir'][1] 	= true;
-		$this->select 				= $this->Usuario->select()->from(array('u'=>'usuarios'), array())->order('login ASC')->limit(20);
+		$this->select = $this->Usuario->select();
+		$this->select->setIntegrityCheck(false);
+		$this->select->from(array('u'=>'usuarios'), array('u.id','u.login','u.nome','u.modificado','u.criado'));
 		parent::listarAction($pag, $ord, $dir);
 	}
 
