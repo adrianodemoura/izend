@@ -70,7 +70,7 @@
 
 #listar table tr td
 {
-	padding: 1px 3px 1px 3px;
+	padding: 0px 3px 0px 3px;
 }
 
 #listar table th
@@ -116,4 +116,37 @@
 #listar #btNovo
 {
 	background: #cacaca url('../img/bt_novo.png') no-repeat 5px;
+}
+
+#listar #navegacao
+{
+	float: left;
+	position: relative;
+	margin: 6px 0px 0px 20px;
+}
+
+#listar #navegacao ul
+{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+#listar #navegacao ul li
+{
+	display: inline;
+}
+
+#listar #navegacao ul li a
+{
+	text-align: center;
+	display: block;
+	margin: 2px;
+	background-color: #ddd;
+	float: left;
+	width: 30px;
+	height: 24px;
+	line-height: 24px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
 }

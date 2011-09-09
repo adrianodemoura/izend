@@ -29,7 +29,7 @@ class AppController extends Zend_Controller_Action {
 		if (!isset($this->model)) die('O nome do model é obrigatório !!!');
 
 		// configuração padrão para a camada de visão (em segundos)
-		$this->view->tempoOn = 300;
+		$this->view->tempoOn = isset($this->view->tempoOn) ? $this->view->tempoOn : 300;
 
 		// instanciando sessão e configurando alguns itens
 		$this->Sessao	= new Zend_Session_Namespace(SISTEMA);
@@ -150,14 +150,16 @@ class AppController extends Zend_Controller_Action {
 	/**
 	 * Exibe a lista do cadastro
 	 * 
-	 * @param	integer	$pag	Número da Página
+	 * @param	integer	$num	Número da Página
+	 * @param	string	$ord	Campo de ordem
+	 * @param	string	$dir	Ordenação, ascendente ou descendente
 	 * @return	void
 	 */
 	public function listarAction()
 	{
 		if (!isset($this->view->listaCampos)) die('Os campos para a lista não foram definidos !!!');
 		$model = $this->model;
-		$toPag = 20;
+		$this->view->totPag = isset($this->view->totPag) ? $this->view->totPag : 20;
 
 		// configurando os parâmetros da paginação
 		$arrPams = $this->getRequest()->getParams();
@@ -174,32 +176,31 @@ class AppController extends Zend_Controller_Action {
 		$this->view->titulo				= (isset($this->view->titulo))				? $this->view->titulo			: 'Lista';
 		$this->view->listaBotoes['Novo']= (isset($this->view->listaBotoes['Novo']))	? $this->view->listaBotoes['Novo'] : URL . strtolower($this->view->controllerName) . '/novo';
 
+		// descobrindo o total da consulta sem a paginação
+		//$this->view->totReg = count($this->$model->fetchAll($this->select->limit(50000))->toArray());
+
 		// configurando a ordem e o limite da paginação
 		$this->select->order($param['ord'].' '.$param['dir']);
-		$this->select->limit($toPag,($param['num']*$toPag)-$toPag);
+		$this->select->limit($this->view->totPag,($param['num']*$this->view->totPag)-$this->view->totPag);
 
 		// recuperando o a página do banco
 		$data = $this->$model->fetchAll($this->select)->toArray();
 		$this->view->data = $data;
 
-		// configurando as ferramentas para cada linha retornada
-		foreach($data as $_linha => $_arrCampos)
+		if (!isset($this->view->listaFerramentas['editar'])) 	// botão padrão editar
 		{
-			if (!isset($this->view->listaFerramentas['editar'])) 	// botão padrão editar
-			{
-				$this->view->listaFerramentas['editar']['img']  = URL . '/img/bt_editar.png';
-				$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/id/{id}';
-			}
-			if (!isset($this->view->listaFerramentas['excluir']))			// botão padrão excluir
-			{
-				$this->view->listaFerramentas['excluir']['img']  = URL . '/img/bt_excluir.png';
-				$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/id/{id}';
-			}
-			if (!isset($this->view->listaFerramentas['imprimir']))	// botão padrão imprimir
-			{
-				$this->view->listaFerramentas['imprimir']['img']  = URL . '/img/bt_imprimir.png';
-				$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/id/{id}';
-			}
+			$this->view->listaFerramentas['editar']['img']  = URL . '/img/bt_editar.png';
+			$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/id/{id}';
+		}
+		if (!isset($this->view->listaFerramentas['excluir']))			// botão padrão excluir
+		{
+			$this->view->listaFerramentas['excluir']['img']  = URL . '/img/bt_excluir.png';
+			$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/id/{id}';
+		}
+		if (!isset($this->view->listaFerramentas['imprimir']))	// botão padrão imprimir
+		{
+			$this->view->listaFerramentas['imprimir']['img']  = URL . '/img/bt_imprimir.png';
+			$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/id/{id}';
 		}
 
 		$this->renderScript('app/listar.phtml');
@@ -213,13 +214,10 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function editarAction()
 	{
-		// recuperando o id
 		$id = $this->getId();
 
-		// configurando parâmetros da visão
 		$this->view->titulo = (isset($this->view->titulo)) ? $this->view->titulo : 'Edição';
 
-		// recuperando o registro do banco de dados
 		$model = $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->renderScript('app/editar.phtml');
@@ -239,18 +237,16 @@ class AppController extends Zend_Controller_Action {
 	/**
 	 * Exibe a tela de exclusão do cadastro
 	 * 
+	 * @param	integer	$id	Id do registro a ser recuperado
 	 * @return	void
 	 */
 	public function excluirAction()
 	{
-		// recuperando o id
 		$id = $this->getId();
 
-		// configurando parâmetros da visão
 		$this->view->titulo = (isset($this->view->titulo)) ? $this->view->titulo : 'Edição';
 
-		// recuperando os dados do registro no banco de dados
-		$model 	= $this->model;
+		$model = $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->view->excluir = true;
 		$this->renderScript('app/editar.phtml');
@@ -263,14 +259,11 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function imprimirAction()
 	{
-		// recuperando o id
 		$id = $this->getId();
 
-		// configurando parâmetros da visão
 		$this->view->titulo = (isset($this->view->titulo)) ? $this->view->titulo : 'Impressão';
 
-		// recuperando os dados do registro no banco de dados
-		$model 	= $this->model;
+		$model = $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->renderScript('app/editar.phtml');
 	}
@@ -283,7 +276,7 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function deleteAction()
 	{
-		$model 	= $this->model;
+		$model = $this->model;
 		//if ($this->$model->delete($id))
 		$this->_redirect('listar');
 	}

@@ -9,6 +9,15 @@
 			<?php endif ?>
 		</div>
 
+		<div id='navegacao'>
+			<ul>
+				<li><a href='<?php echo URL . strtolower($this->controllerName) . '/listar/num/1/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> << </a></li>
+				<li><a href='<?php $num=$this->param['num']; $num--; if ($num<1) $num = 1; echo URL . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> < </a></li>
+				<li><a href='<?php $num=$this->param['num']; $num++; echo URL . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> > </a></li>
+				<li><a href=''> >> </a></li>
+			</ul>
+		</div>
+
 		<div id='pesquisa'><!-- campos para pesquisa -->
 			<?php if (isset($this->listaPesquisa)) : ?>
 				<form>
