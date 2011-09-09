@@ -72,31 +72,32 @@ class AppController extends Zend_Controller_Action {
 
 		// configurando as opções de menu de módulo
 		$this->view->menuModulos	= array();
-		$this->view->menuModulos['Sistema']	= 'cidades/listar/'.$this->getPag('cidades','num').'/'.$this->getPag('cidades','ord').'/'.$this->getPag('cidades','dir');
+		$this->view->menuModulos['Sistema']	= 'cidades';
 
 		// configurando as opções de menu para o módulo sistema
 		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')) && in_array($this->view->actionName,array('editar','novo','exclur','listar')))
 		{
 			$this->view->subMenuModulos = array();
-			$this->view->subMenuModulos['Cidades']	 = 'cidades/listar/'	.$this->getPag('cidades','num')		.'/'.$this->getPag('cidades','ord')		.'/'.$this->getPag('cidades','dir');
-			$this->view->subMenuModulos['Estados']	 = 'estados/listar/'	.$this->getPag('estados','num')		.'/'.$this->getPag('estados','ord')		.'/'.$this->getPag('estados','dir');
-			$this->view->subMenuModulos['Perfis']	 = 'perfis/listar/'		.$this->getPag('perfis','num')		.'/'.$this->getPag('perfis','ord')		.'/'.$this->getPag('perfis','dir');
-			$this->view->subMenuModulos['Permissões']= 'permissoes/listar/'	.$this->getPag('permissoes','num')	.'/'.$this->getPag('permissoes','ord')	.'/'.$this->getPag('permissoes','dir');
-			$this->view->subMenuModulos['Usuários']	 = 'usuarios/listar/'	.$this->getPag('usuarios','num')	.'/'.$this->getPag('usuarios','ord')	.'/'.$this->getPag('usuarios','dir');
+			$this->view->subMenuModulos['Cidades']	 = 'cidades';
+			$this->view->subMenuModulos['Estados']	 = 'estados';
+			$this->view->subMenuModulos['Perfis']	 = 'perfis';
+			$this->view->subMenuModulos['Permissões']= 'permissoes';
+			$this->view->subMenuModulos['Usuários']	 = 'usuarios';
 		}
 
 		// configurando as propriedades de cada campo que será usada na view
 		$this->view->campos	= isset($this->view->campos) ? $this->view->campos : array();
 		$this->view->campos['nome']['label'] 			= 'Nome';
-		$this->view->campos['nome']['td']['width']		= '300px';
+		$this->view->campos['nome']['th']['width']		= '300px';
 
 		$this->view->campos['ultimo_acesso']['label']	= 'Último Acesso';
 		$this->view->campos['ultimo_acesso']['mascara']	= '99/99/9999 99:99:99';
 
 		$this->view->campos['estado']['label']			= 'Estado';
-		$this->view->campos['estado']['td']['width']	= '230px';
+		$this->view->campos['estado']['th']['width']	= '230px';
 
 		$this->view->campos['login']['label']			= 'Login';
+		$this->view->campos['login']['th']['width']		= '100px';
 
 		$this->view->campos['uf']['label']				= 'Uf';
 		$this->view->campos['uf']['td']['width']		= '50px';
@@ -137,7 +138,7 @@ class AppController extends Zend_Controller_Action {
 	}
 
 	/**
-	 * Redireciona para a tela de login ou para tela de informação caso o usuário já esteja logado
+	 * Redireciona para a tela de lista
 	 * 
 	 * @return void
 	 */
@@ -152,68 +153,74 @@ class AppController extends Zend_Controller_Action {
 	 * @param	integer	$pag	Número da Página
 	 * @return	void
 	 */
-	public function listarAction($num=1, $ord='', $dir='asc')
+	public function listarAction()
 	{
 		if (!isset($this->view->listaCampos)) die('Os campos para a lista não foram definidos !!!');
 		$model = $this->model;
 		$toPag = 20;
 
-		$this->setPag($num,$ord,$dir);
-		$num = $this->getPag($this->view->controllerName,'num');
-		$ord = $this->getPag($this->view->controllerName,'ord');
-		$dir = $this->getPag($this->view->controllerName,'dir');
+		// configurando os parâmetros da paginação
+		$arrPams = $this->getRequest()->getParams();
+		$param['num'] = isset($arrPams['num']) ? $arrPams['num'] : 1;
+		$param['ord'] = isset($arrPams['ord']) ? $arrPams['ord'] : '';
+		$param['dir'] = isset($arrPams['dir']) ? $arrPams['dir'] : 'asc';
+		if (empty($param['ord'])) if (isset($this->$model->_order)) $param['ord'] = $this->$model->_order;
+		if (empty($param['ord'])) die('O campo de ordenação não foi definido !!!');
 
+		// configurando alguns parâmetros da visão listar
+		$this->view->param				= $param;
 		$this->view->listaFerramentas 	= (isset($this->view->listaFerramentas)) 	? $this->view->listaFerramentas : array();
 		$this->view->listaBotoes		= (isset($this->view->listaBotoes)) 		? $this->view->listaBotoes		: array();
-		if (!isset($this->view->titulo)) $this->view->titulo  = 'Lista';
-		if (!isset($this->view->listaBotoes['Novo'])) $this->view->listaBotoes['Novo'] = URL . strtolower($this->view->controllerName) . '/novo';
+		$this->view->titulo				= (isset($this->view->titulo))				? $this->view->titulo			: 'Lista';
+		$this->view->listaBotoes['Novo']= (isset($this->view->listaBotoes['Novo']))	? $this->view->listaBotoes['Novo'] : URL . strtolower($this->view->controllerName) . '/novo';
 
-		// configurando a SQL a ser executada
-		$this->select->limit($toPag,($num*$toPag)-$toPag);
-		$this->select->order($ord.' '.$dir);
+		// configurando a ordem e o limite da paginação
+		$this->select->order($param['ord'].' '.$param['dir']);
+		$this->select->limit($toPag,($param['num']*$toPag)-$toPag);
 
+		// recuperando o a página do banco
 		$data = $this->$model->fetchAll($this->select)->toArray();
 		$this->view->data = $data;
+
+		// configurando as ferramentas para cada linha retornada
 		foreach($data as $_linha => $_arrCampos)
 		{
 			if (!isset($this->view->listaFerramentas['editar'])) 	// botão padrão editar
 			{
 				$this->view->listaFerramentas['editar']['img']  = URL . '/img/bt_editar.png';
-				//$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/'.$_arrCampos['id'];
-				$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/{id}';
+				$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/id/{id}';
 			}
 			if (!isset($this->view->listaFerramentas['excluir']))			// botão padrão excluir
 			{
 				$this->view->listaFerramentas['excluir']['img']  = URL . '/img/bt_excluir.png';
-				$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/{id}';
+				$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/id/{id}';
 			}
 			if (!isset($this->view->listaFerramentas['imprimir']))	// botão padrão imprimir
 			{
 				$this->view->listaFerramentas['imprimir']['img']  = URL . '/img/bt_imprimir.png';
-				$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/{id}';
+				$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/id/{id}';
 			}
 		}
-		/*
-		//
-		$paginator = Zend_Paginator::factory($res);
-		$paginator->setItemCountPerPage(2);
-		$paginator->setCurrentPageNumber($this->_request->getParam('page'));
 
-		$this->view->paginator = $paginator;
-		*/
 		$this->renderScript('app/listar.phtml');
 	}
 
 	/**
 	 * Exibe a tela de edição do cadastro
 	 * 
-	 * @param	integer	$id	ID do registro a ser editado
+	 * @param	integer	$id Id a ser editado
 	 * @return	void
 	 */
-	public function editarAction($id=0)
+	public function editarAction()
 	{
-		if (!isset($this->view->titulo)) $this->view->titulo  = 'Edição';
-		$model 	= $this->model;
+		// recuperando o id
+		$id = $this->getId();
+
+		// configurando parâmetros da visão
+		$this->view->titulo = (isset($this->view->titulo)) ? $this->view->titulo : 'Edição';
+
+		// recuperando o registro do banco de dados
+		$model = $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->renderScript('app/editar.phtml');
 	}
@@ -232,12 +239,17 @@ class AppController extends Zend_Controller_Action {
 	/**
 	 * Exibe a tela de exclusão do cadastro
 	 * 
-	 * @param	integer	$id	ID do registro a ser editado
 	 * @return	void
 	 */
-	public function excluirAction($id=0)
+	public function excluirAction()
 	{
-		if (!isset($this->view->titulo)) $this->view->titulo  = 'Exclusão';
+		// recuperando o id
+		$id = $this->getId();
+
+		// configurando parâmetros da visão
+		$this->view->titulo = (isset($this->view->titulo)) ? $this->view->titulo : 'Edição';
+
+		// recuperando os dados do registro no banco de dados
 		$model 	= $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->view->excluir = true;
@@ -247,12 +259,17 @@ class AppController extends Zend_Controller_Action {
 	/**
 	 * Exibe a tela de impressão do cadastro
 	 * 
-	 * @param	integer	$id	ID do registro a ser editado
 	 * @return	void
 	 */
-	public function imprimirAction($id=0)
+	public function imprimirAction()
 	{
-		if (!isset($this->view->titulo)) $this->view->titulo  = 'Impressão';
+		// recuperando o id
+		$id = $this->getId();
+
+		// configurando parâmetros da visão
+		$this->view->titulo = (isset($this->view->titulo)) ? $this->view->titulo : 'Impressão';
+
+		// recuperando os dados do registro no banco de dados
 		$model 	= $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->renderScript('app/editar.phtml');
@@ -261,10 +278,10 @@ class AppController extends Zend_Controller_Action {
 	/**
 	 * Executa a exclusão do registro passado no parâmetro
 	 * 
-	 * @param	integer	$id	ID a ser excluido
+	 * @param	integer	$id	Id do registro a ser recuperado no banco de dados
 	 * @return	void
 	 */
-	public function deleteAction($id=0)
+	public function deleteAction()
 	{
 		$model 	= $this->model;
 		//if ($this->$model->delete($id))
@@ -272,33 +289,14 @@ class AppController extends Zend_Controller_Action {
 	}
 
 	/**
-	 * Configura os parâmetros da página do cadastro corrente
+	 * Retorna o id passado no parâmetro
 	 * 
-	 * @param	integer		$num	Número da página
-	 * @param	string		$ord	Ordenação
-	 * @param	string		$dir	Direção ASC|DESC
+	 * @return	integer $id Número do id
 	 */
-	private function setPag($num=1, $ord='', $dir='asc')
+	private function getId()
 	{
-		$controlador = $this->getRequest()->getControllerName();
-		$this->Sessao->$controlador->pag['num'] = $num;
-		$this->Sessao->$controlador->pag['ord'] = $ord;
-		$this->Sessao->$controlador->pag['dir'] = $dir;
-	}
-
-	/**
-	 * Retorna o parâmetro da paginação.
-	 * 
-	 * @param	string	$controlador	Nome do controlador, importante pra identificar na sessão.
-	 * @param	string	$param			Nome do campo a ser retornado, pagina, ordem ou direção
-	 * @return	string	$campo			Valor do parâmetro solicitado
-	 */
-	public function getPag($controlador=null, $param=null)
-	{
-		$this->Sessao->$controlador->pag['num'] = isset($this->Sessao->$controlador->pag['num']) ? $this->Sessao->$controlador->pag['num'] : 1;
-		$this->Sessao->$controlador->pag['ord'] = isset($this->Sessao->$controlador->pag['ord']) ? $this->Sessao->$controlador->pag['ord'] : '';
-		$this->Sessao->$controlador->pag['dir'] = isset($this->Sessao->$controlador->pag['dir']) ? $this->Sessao->$controlador->pag['dir'] : 'asc';
-		return $this->Sessao->$controlador->pag[$param];
+		$id = $this->getRequest()->getParam('id');
+		return $id;
 	}
 }
 ?>

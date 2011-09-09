@@ -25,6 +25,14 @@ class Application_Model_Perfil extends AppModel {
 	 * @access	protected
 	 */
 	protected $_primary	= 'id';
+
+	/**
+	 * Ordem padrão
+	 * 
+	 * @var		string
+	 * @access	public
+	 */
+	public $_order		= 'nome';
 }
 
 ?>

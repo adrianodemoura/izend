@@ -26,9 +26,10 @@ class UsuariosController extends AppController {
 	 * @param	integer	$pag	Número da página a ser listada
 	 * @return	void
 	 */
-	public function listarAction($pag=1, $ord='nome', $dir='asc')
+	public function listarAction()
 	{
 		$this->view->posicao 		= 'Usuários | Listar';
+		$this->view->campos['login']['td']['align']	= 'center';
 		$this->view->listaCampos	= array('login','nome','modificado','criado');
 		$this->view->listaFerramentas = array();
 		$this->view->listaFerramentas['excluir']['img'] = URL . '/img/bt_excluir_off.png';
@@ -36,7 +37,7 @@ class UsuariosController extends AppController {
 		$this->select = $this->Usuario->select();
 		$this->select->setIntegrityCheck(false);
 		$this->select->from(array('u'=>'usuarios'), array('u.id','u.login','u.nome','u.modificado','u.criado'));
-		parent::listarAction($pag, $ord, $dir);
+		parent::listarAction();
 	}
 
 	/**
@@ -75,7 +76,6 @@ class UsuariosController extends AppController {
 					// jogando na sessão os perfis do usuário
 					
 					// jogando na sessão as permissão do usuário
-					//$this->Sessao->permissao['usuarios'] = array('editar');
 
 					// msg de saudação
 					$this->Sessao->msg = 'Usuário autenticado com sucesso !!!';

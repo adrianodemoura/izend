@@ -38,7 +38,11 @@
 			<tr>
 			<?php if (isset($this->listaCampos)) : ?>
 			<?php foreach($this->listaCampos as $_campo) : ?>
-				<th><a href=''><?= (isset($this->campos[$_campo]['label'])) ? $this->campos[$_campo]['label'] : $_campo ?></a></th>
+				<th<?php if(isset($this->campos[$_campo]['th'])) foreach($this->campos[$_campo]['th'] as $_tag => $_valor) echo " $_tag='$_valor'"; ?>>
+					<a href='<?= URL . $this->controllerName . '/listar/num/'.$this->param['num'] . '/ord/'.$_campo . '/dir/'.($this->param['dir']=='asc' ? 'desc' : 'asc')  ?>'>
+						<?= (isset($this->campos[$_campo]['label'])) ? $this->campos[$_campo]['label'] : $_campo ?>
+					</a>
+				</th>
 			<?php endforeach ?>
 				<th colspan='<?= count($this->listaFerramentas) ?>'></th>
 			<?php endif ?>

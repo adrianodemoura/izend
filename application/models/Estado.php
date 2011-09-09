@@ -27,6 +27,14 @@ class Application_Model_Estado extends AppModel {
 	protected $_primary	= 'id';
 
 	/**
+	 * Ordem padrão
+	 * 
+	 * @var		string
+	 * @access	public
+	 */
+	public $_order		= 'nome';
+
+	/**
 	 * Referências
 	 * 
 	 * @var		array

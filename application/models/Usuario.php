@@ -25,5 +25,13 @@ class Application_Model_Usuario extends AppModel {
 	 * @access	public
 	 */
 	protected $_primary	= 'id';
+
+	/**
+	 * Ordem padrão
+	 * 
+	 * @var		string
+	 * @access	protected
+	 */
+	public $_order	= 'nome';
 }
 ?>

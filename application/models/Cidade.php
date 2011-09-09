@@ -27,6 +27,14 @@ class Application_Model_Cidade extends AppModel {
 	protected $_primary	= 'id';
 
 	/**
+	 * Ordem padrão
+	 * 
+	 * @var		string
+	 * @access	public
+	 */
+	public $_order		= 'nome';
+
+	/**
 	 * Relacionamentos 1 para N
 	 * 
 	 * @var		array

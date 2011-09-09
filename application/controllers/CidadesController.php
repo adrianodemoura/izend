@@ -23,8 +23,9 @@ class CidadesController extends AppController {
 	 * 
 	 * @return	void
 	 */
-	public function listarAction($num=1, $ord='nome', $dir='asc')
+	public function listarAction()
 	{
+		// configurando alguns parâmetros da visão
 		$this->view->posicao						= 'Cidades | Listar';
 		$this->view->listaMenu						= 'menu_sistema';
 		$this->view->listaCampos					= array('nome','estado','modificado','criado');
@@ -37,19 +38,18 @@ class CidadesController extends AppController {
 		$this->select->join(array('Estado'=>'estados'), 'Estado.id = Cidade.estado_id', array());
 		$this->select->setIntegrityCheck(false);
 
-		parent::listarAction($num, $ord, $dir);
+		parent::listarAction();
 	}
 
 	/**
 	 * Exibe a tela de edição
 	 * 
-	 * @param	integer	$id	Id do registro a ser editado
 	 * @return	void
 	 */
-	public function editarAction($id=0)
+	public function editarAction()
 	{
 		$this->view->edicaoCampos = array('nome','modificado','criado');
-		parent::editarAction($id);
+		parent::editarAction();
 	}
 }
 ?>
