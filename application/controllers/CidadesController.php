@@ -23,20 +23,21 @@ class CidadesController extends AppController {
 	 * 
 	 * @return	void
 	 */
-	public function listarAction($pag=1, $ord='nome', $dir='asc')
+	public function listarAction($num=1, $ord='nome', $dir='asc')
 	{
 		$this->view->posicao						= 'Cidades | Listar';
 		$this->view->listaMenu						= 'menu_sistema';
 		$this->view->listaCampos					= array('nome','estado','modificado','criado');
 		$this->view->listaFerramentas 				= array();
 		$this->view->listaFerramentas['excluir'] 	= false;
-		
-		$this->select = $this->Cidade->select();
-		$this->select->setIntegrityCheck(false);
-		$this->select->from(array('c'=>'cidades'), array('c.id','c.nome','e.nome as estado','c.modificado','c.criado'));
-		$this->select->join(array('e'=>'estados'), 'e.id = c.estado_id', array());
 
-		parent::listarAction($pag, $ord, $dir);
+		// configurando a sql
+		$this->select = $this->Cidade->select();
+		$this->select->from(array('Cidade'=>'cidades'), array('id','nome','Estado.nome as estado','modificado','criado'));
+		$this->select->join(array('Estado'=>'estados'), 'Estado.id = Cidade.estado_id', array());
+		$this->select->setIntegrityCheck(false);
+
+		parent::listarAction($num, $ord, $dir);
 	}
 }
 ?>

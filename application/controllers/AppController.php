@@ -86,15 +86,15 @@ class AppController extends Zend_Controller_Action {
 		}
 
 		// configurando as propriedades de cada campo que será usada na view
-		$this->view->campos			= array();
+		$this->view->campos	= isset($this->view->campos) ? $this->view->campos : array();
 		$this->view->campos['nome']['label'] 			= 'Nome';
-		$this->view->campos['nome']['td']['width']		= '200px';
+		$this->view->campos['nome']['td']['width']		= '300px';
 
 		$this->view->campos['ultimo_acesso']['label']	= 'Último Acesso';
 		$this->view->campos['ultimo_acesso']['mascara']	= '99/99/9999 99:99:99';
 
 		$this->view->campos['estado']['label']			= 'Estado';
-		$this->view->campos['estado']['td']['width']	= '130px';
+		$this->view->campos['estado']['td']['width']	= '230px';
 
 		$this->view->campos['login']['label']			= 'Login';
 
@@ -154,7 +154,10 @@ class AppController extends Zend_Controller_Action {
 	 */
 	public function listarAction($num=1, $ord='', $dir='asc')
 	{
+		if (!isset($this->view->listaCampos)) die('Os campos para a lista não foram definidos !!!');
 		$model = $this->model;
+		$toPag = 20;
+
 		$this->setPag($num,$ord,$dir);
 		$num = $this->getPag($this->view->controllerName,'num');
 		$ord = $this->getPag($this->view->controllerName,'ord');
@@ -165,8 +168,10 @@ class AppController extends Zend_Controller_Action {
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Lista';
 		if (!isset($this->view->listaBotoes['Novo'])) $this->view->listaBotoes['Novo'] = URL . strtolower($this->view->controllerName) . '/novo';
 
-		$this->select->limit(20);
+		// configurando a SQL a ser executada
+		$this->select->limit($toPag,($num*$toPag)-$toPag);
 		$this->select->order($ord.' '.$dir);
+
 		$data = $this->$model->fetchAll($this->select)->toArray();
 		$this->view->data = $data;
 		foreach($data as $_linha => $_arrCampos)
@@ -187,6 +192,14 @@ class AppController extends Zend_Controller_Action {
 				$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/'.$_arrCampos['id'];
 			}
 		}
+		/*
+		//
+		$paginator = Zend_Paginator::factory($res);
+		$paginator->setItemCountPerPage(2);
+		$paginator->setCurrentPageNumber($this->_request->getParam('page'));
+
+		$this->view->paginator = $paginator;
+		*/
 		$this->renderScript('app/listar.phtml');
 	}
 

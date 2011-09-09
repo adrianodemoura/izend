@@ -30,7 +30,7 @@ class PermissoesController extends AppController {
 		
 		$this->select = $this->Permissao->select();
 		$this->select->setIntegrityCheck(false);
-		$this->select->from(array('p'=>'permissoes'), array('p.id','p.controlador','p.acao','p.modificado','p.criado'));
+		//$this->select->from(array('p'=>'permissoes'), array('p.id','p.controlador','p.acao','p.modificado','p.criado'));
 		parent::listarAction($pag, $ord, $dir);
 	}
 }
