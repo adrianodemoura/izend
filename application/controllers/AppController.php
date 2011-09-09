@@ -179,17 +179,18 @@ class AppController extends Zend_Controller_Action {
 			if (!isset($this->view->listaFerramentas['editar'])) 	// botão padrão editar
 			{
 				$this->view->listaFerramentas['editar']['img']  = URL . '/img/bt_editar.png';
-				$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/'.$_arrCampos['id'];
+				//$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/'.$_arrCampos['id'];
+				$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/{id}';
 			}
 			if (!isset($this->view->listaFerramentas['excluir']))			// botão padrão excluir
 			{
 				$this->view->listaFerramentas['excluir']['img']  = URL . '/img/bt_excluir.png';
-				$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/'.$_arrCampos['id'];
+				$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/{id}';
 			}
 			if (!isset($this->view->listaFerramentas['imprimir']))	// botão padrão imprimir
 			{
 				$this->view->listaFerramentas['imprimir']['img']  = URL . '/img/bt_imprimir.png';
-				$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/'.$_arrCampos['id'];
+				$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/{id}';
 			}
 		}
 		/*

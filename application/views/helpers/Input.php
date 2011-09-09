@@ -20,7 +20,7 @@ class Zend_View_Helper_Input extends Zend_View_Helper_Abstract {
 	public function Input($campo='', $valor='', $arrProp=array())
 	{
 		$input	= '';
-		$tipo	= isset($arrProp['type']) $arrProp['type'] : 'text';
+		$tipo	= isset($arrProp['type']) ? $arrProp['type'] : 'text';
 		switch($tipo)
 		{
 			default:

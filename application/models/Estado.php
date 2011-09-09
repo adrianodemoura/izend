@@ -25,6 +25,22 @@ class Application_Model_Estado extends AppModel {
 	 * @access	protected
 	 */
 	protected $_primary	= 'id';
+
+	/**
+	 * Referências
+	 * 
+	 * @var		array
+	 * @access	protected
+	 */
+	protected $_referenceMap = array
+	(
+		array
+		(
+			'refTableClass'	=> 'Cidade',
+			'refColumns'	=> 'estado_id',
+			'coluns'		=> 'id, nome'
+		),
+	);
 }
 
 ?>

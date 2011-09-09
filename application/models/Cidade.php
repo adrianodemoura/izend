@@ -25,6 +25,14 @@ class Application_Model_Cidade extends AppModel {
 	 * @access	protected
 	 */
 	protected $_primary	= 'id';
+
+	/**
+	 * Relacionamentos 1 para N
+	 * 
+	 * @var		array
+	 * @access	protected
+	 */
+    protected $_dependentTables = array('Estado');
 }
 
 ?>

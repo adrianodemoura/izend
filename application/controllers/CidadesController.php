@@ -39,5 +39,17 @@ class CidadesController extends AppController {
 
 		parent::listarAction($num, $ord, $dir);
 	}
+
+	/**
+	 * Exibe a tela de edição
+	 * 
+	 * @param	integer	$id	Id do registro a ser editado
+	 * @return	void
+	 */
+	public function editarAction($id=0)
+	{
+		$this->view->edicaoCampos = array('nome','modificado','criado');
+		parent::editarAction($id);
+	}
 }
 ?>

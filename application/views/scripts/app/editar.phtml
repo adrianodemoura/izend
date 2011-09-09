@@ -23,8 +23,8 @@
 
 	<div id='campos'>
 		<?php if (isset($this->edicaoCampos)) : ?>
-				<?php foreach($this->edicaoCampos as $_campo => $_arrProp) : ?> 
-				<?= $this->Input($_campo,$this->data[$_campo],$_arrProp) ?>
+				<?php foreach($this->edicaoCampos as $_campo) : ?> 
+				<?= $this->Input($_campo,$this->data[$_campo],(isset($this->campos[$_campo]['input'])) ? $this->campos[$_campo]['input'] : array()) ?>
 				<?php endforeach ?>
 		<?php endif ?>
 	</div>
