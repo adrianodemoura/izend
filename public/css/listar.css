@@ -98,7 +98,7 @@
 
 #listar th a:hover
 {
-	background-color: #acc4e6;
+	background-color: #EAEAEA;
 }
 
 #listar table tr td
@@ -149,4 +149,10 @@
 	line-height: 24px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
+}
+
+#listar .linhaTotal
+{
+	background-color: #EAEAEA;
+	border: none;
 }

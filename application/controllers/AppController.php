@@ -20,6 +20,7 @@ class AppController extends Zend_Controller_Action {
 	 * Verifica a permissão do usuário com o método solicitado, caso o mesmo não tenha 
 	 * permissão, redireciona para a tela de erro de permissão.
 	 * Exibe as telas de: paginação, edição, inclusão e exclusão
+	 * O conteúdo da paginação é salvo no cache, (memcache), caso o cadastro sofra alguma alteração o mesmo deve ser refeito.
 	 * 
 	 * @return void
 	 */
@@ -34,6 +35,14 @@ class AppController extends Zend_Controller_Action {
 		// instanciando sessão e configurando alguns itens
 		$this->Sessao	= new Zend_Session_Namespace(SISTEMA);
 		$this->Sessao->setExpirationSeconds($this->view->tempoOn);
+
+		// instanciando cache, caso ele esteja instaldo
+		if( class_exists('Memcache') )
+		{
+			$frontendOpts	= array('caching' => true, 'lifetime' => 1800, 'automatic_serialization' => true);
+			$backendOpts	= array('servers' =>array(array('host' => '127.0.0.1','port' => 11211)),'compression' => false);
+			$this->Cache	= Zend_Cache::factory('Core', 'Memcached', $frontendOpts, $backendOpts);
+		}
 
 		// instanciando o model
 		$model			= $this->model;
@@ -176,15 +185,49 @@ class AppController extends Zend_Controller_Action {
 		$this->view->titulo				= (isset($this->view->titulo))				? $this->view->titulo			: 'Lista';
 		$this->view->listaBotoes['Novo']= (isset($this->view->listaBotoes['Novo']))	? $this->view->listaBotoes['Novo'] : URL . strtolower($this->view->controllerName) . '/novo';
 
-		// descobrindo o total da consulta sem a paginação
-		//$this->view->totReg = count($this->$model->fetchAll($this->select->limit(50000))->toArray());
+		// se o memcache está instalado
+		if( class_exists('Memcache') )
+		{
+			// descobrindo o total da consulta sem a paginação e calculando a última página, primeiro pesquisa no cache
+			if (!$this->view->totReg = $this->Cache->load('totReg_'.$this->$model->getName()))
+			{
+				$this->view->totReg = count($this->$model->fetchAll('select count(*) FROM '.$this->$model->getName())->toArray());
+				$this->Cache->save($this->view->totReg, 'totReg_'.$this->$model->getName());
+				$this->view->msg = 'Salvei o total no cache ...';
+			} else
+			{
+				$this->view->msg = 'Recuperei o total no cache ...';
+			}
+		} else
+		{
+			$this->view->totReg = count($this->$model->fetchAll('select count(*) FROM '.$this->$model->getName())->toArray());
+			$this->view->msg = 'O cache não está instalado !!!';
+		}
+		
+		$this->view->ultPag = round($this->view->totReg/$this->view->totPag)+1;
 
 		// configurando a ordem e o limite da paginação
 		$this->select->order($param['ord'].' '.$param['dir']);
 		$this->select->limit($this->view->totPag,($param['num']*$this->view->totPag)-$this->view->totPag);
 
-		// recuperando o a página do banco
-		$data = $this->$model->fetchAll($this->select)->toArray();
+		// se o memcache está instalado
+		if( class_exists('Memcache') )
+		{
+			// recuperando o a página do banco, primeiro pesquisa no cache
+			if (!$data = $this->Cache->load('pag_'.$param['num'].'_'.$this->$model->getName()))
+			{
+				$data = $this->$model->fetchAll($this->select)->toArray();
+				$this->Cache->save($data, 'pag_'.$param['num'].'_'.$this->$model->getName());
+				$this->view->msg = 'Salvei a página '.$param['num'].' no cache ...';
+			} else
+			{
+				$this->view->msg = 'Recuperei a página '.$param['num'].' no cache ...';
+			}
+		} else
+		{
+			$data = $this->$model->fetchAll($this->select)->toArray();
+			$this->view->msg = 'O cache não está instalado !!!';
+		}
 		$this->view->data = $data;
 
 		if (!isset($this->view->listaFerramentas['editar'])) 	// botão padrão editar

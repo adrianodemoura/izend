@@ -13,8 +13,8 @@
 			<ul>
 				<li><a href='<?php echo URL . strtolower($this->controllerName) . '/listar/num/1/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> << </a></li>
 				<li><a href='<?php $num=$this->param['num']; $num--; if ($num<1) $num = 1; echo URL . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> < </a></li>
-				<li><a href='<?php $num=$this->param['num']; $num++; echo URL . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> > </a></li>
-				<li><a href=''> >> </a></li>
+				<li><a href='<?php $num=$this->param['num']; $num++; if ($num>$this->ultPag) $num=$this->ultPag; echo URL . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> > </a></li>
+				<li><a href='<?php echo URL . strtolower($this->controllerName) . '/listar/num/'.$this->ultPag.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> >> </a></li>
 			</ul>
 		</div>
 
@@ -79,6 +79,9 @@
 			<?php endforeach; ?>
 			<?php endif ?>
 
+			<tr>
+				<td class='linhaTotal' colspan='<?= count($this->listaCampos)+count($this->listaFerramentas) ?>'>total de registros: <?= number_format($this->totReg,0,',','.') ?></td>
+			</tr>
 			</table>
 		</div>
 
