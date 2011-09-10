@@ -21,13 +21,17 @@ resources.frontController.baseUrl = /izend
 
 Certifique-se de o módulo rewrite do apache esteja ativado.
 
+Se o memcache estiver instalado sua configuração pode ser veito no arquivo '/var/www/izend/controllers/AppController.php'
+
 A aplicação pode ser acessada no link http://localhost/izend
 
 Na primeira tentativa de login você será redirecionado para a página de instalação, aonde receberá 
 informações da instalação do banco de dados e/ou dos módulos nativos da aplicação.
+
 
 3 - Requisitos
 * Sistema operacional GNU/Linux, debian ou derivado.
 * Apache 2
 * PHP 5 ou superior
 * mysql 5 ou superior
+* Memcache 1.4 ou superior

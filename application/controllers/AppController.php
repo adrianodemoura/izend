@@ -218,10 +218,10 @@ class AppController extends Zend_Controller_Action {
 			{
 				$data = $this->$model->fetchAll($this->select)->toArray();
 				$this->Cache->save($data, 'pag_'.$param['num'].'_'.$this->$model->getName());
-				$this->view->msg = 'Salvei a página '.$param['num'].' no cache ...';
+				$this->view->msg = '<span style="color: blue; font-bold: weight;">Salvei a página '.$param['num'].' no cache ...</span>';
 			} else
 			{
-				$this->view->msg = 'Recuperei a página '.$param['num'].' no cache ...';
+				$this->view->msg = '<span style="color: green; font-bold: weight;">Recuperei a página '.$param['num'].' no cache ...</span>';
 			}
 		} else
 		{
