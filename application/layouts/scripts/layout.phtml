@@ -2,18 +2,18 @@
 	$this->headMeta()->setHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 	$this->headMeta()->appendName('keywords', 'zend, izend, php, framework');
 
-	$this->headLink()->appendStylesheet(URL.'css/izend.css',array('media'=>'all'));
-	if (file_exists('css/'.$this->controllerName.'.css')) $this->headLink()->appendStylesheet(URL.'css/'.$this->controllerName.'.css',array('media'=>'all'));
-	if (file_exists('css/'.$this->actionName.'.css')) $this->headLink()->appendStylesheet(URL.'css/'.$this->actionName.'.css',array('media'=>'all'));
+	$this->headLink()->appendStylesheet($this->baseUrl().'/css/izend.css',array('media'=>'all'));
+	if (file_exists('css/'.$this->controllerName.'.css')) $this->headLink()->appendStylesheet($this->baseUrl().'/css/'.$this->controllerName.'.css',array('media'=>'all'));
+	if (file_exists('css/'.$this->actionName.'.css')) $this->headLink()->appendStylesheet($this->baseUrl().'/css/'.$this->actionName.'.css',array('media'=>'all'));
 	
-	$this->headScript()->appendFile(URL.'js/jquery-1.6.2.min.js');
-	$this->headScript()->appendFile(URL.'js/izend.js');
-	if (file_exists('js/'.$this->controllerName.'.js')) $this->headScript()->appendFile(URL.'js/'.$this->controllerName.'.js');
-	if (file_exists('js/'.$this->actionName.'.js')) $this->headScript()->appendFile(URL.'js/'.$this->actionName.'.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/jquery-1.6.2.min.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/izend.js');
+	if (file_exists('js/'.$this->controllerName.'.js')) $this->headScript()->appendFile($this->baseUrl().'/js/'.$this->controllerName.'.js');
+	if (file_exists('js/'.$this->actionName.'.js')) $this->headScript()->appendFile($this->baseUrl().'/js/'.$this->actionName.'.js');
 	if (isset($this->usuario['login']))
 	{
-		$this->headScript()->appendFile(URL.'js/countdown/jquery.countdown.js');
-		$this->headScript()->appendFile(URL.'js/countdown/jquery.countdown-pt-BR.js');
+		$this->headScript()->appendFile($this->baseUrl().'/js/countdown/jquery.countdown.js');
+		$this->headScript()->appendFile($this->baseUrl().'/js/countdown/jquery.countdown-pt-BR.js');
 	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,7 +32,7 @@ $(document).ready (function()
 	<?php if (isset($this->usuario['login'])) : ?>
 
 	$("#regressivo").countdown({until: <?php echo $this->tempoOn; ?>, format: "MS"});
-	setTimeout(function () { window.location='<?php echo URL.'usuarios/login'; ?>' }, <?php echo ($this->tempoOn*1001) ?>);
+	setTimeout(function () { window.location='<?php echo $this->baseUrl().'/usuarios/login'; ?>' }, <?php echo ($this->tempoOn*1001) ?>);
 	<?php endif; ?>
 	setTimeout(function(){ $("#msg").fadeOut(4000); },3000);
 	<?php if (isset($this->on_read)) echo $this->on_read; ?>
@@ -49,7 +49,7 @@ $(document).ready (function()
 	<div id="cabecalho">
 
 		<div id='sigla'>
-			<a href='<?=URL?>'><?=SISTEMA?></a><?php if (isset($this->posicao)) echo ' | '.$this->posicao; ?>
+			<a href='<?=$this->baseUrl()?>'><?=SISTEMA?></a><?php if (isset($this->posicao)) echo ' | '.$this->posicao; ?>
 		</div>
 
 		<?php if (isset($this->usuario['login'])) : ?>
@@ -63,8 +63,8 @@ $(document).ready (function()
 		</div>
 
 		<div id="logos">
-			<a href='http://www.zendbrasil.com.br/' target='_blanck'><img src='<?=URL?>img/zend_power.png'   border='none' alt='' /></a>
-			<a href='http://www.jquery.com'  		target='_blanck'><img src='<?=URL?>img/jquery_power.png' border='none' alt='' /></a>
+			<a href='http://www.zendbrasil.com.br/' target='_blanck'><img src='<?=$this->baseUrl()?>/img/zend_power.png'   border='none' alt='' /></a>
+			<a href='http://www.jquery.com'  		target='_blanck'><img src='<?=$this->baseUrl()?>/img/jquery_power.png' border='none' alt='' /></a>
 		</div>
 
 		<div id='menu_modulos'>
@@ -73,7 +73,7 @@ $(document).ready (function()
 				<?php $l=0; foreach($this->menuModulos as $_titulo => $_link) : ?>
 				<li>
 						<?php if ($l) echo ' : '; $l++; ?>
-						<a href='<?= URL . $_link ?>'><?= $_titulo ?></a>
+						<a href='<?= $this->baseUrl() . $_link ?>'><?= $_titulo ?></a>
 				</li>
 				<?php endforeach; ?>
 			</ul>
@@ -83,17 +83,17 @@ $(document).ready (function()
 		<div id='menu_sistema'>
 			<?php if (isset($this->menu_sistema)) : ?>
 			<?php foreach($this->menu_sistema as $_campo => $_link) : ?>
-			<li><a href='<?=URL.$_link?>'><?=$_campo?></a></li>
+			<li><a href='<?=$this->baseUrl().$_link?>'><?=$_campo?></a></li>
 			<?php endforeach; ?>
 			<?php endif; ?>
 		</div>
 
 		<div id='menu_usuario'>
 			<?php if (isset($this->usuario['login'])) : ?>
-			<a href='<?=URL?>usuarios/info'><?php echo $this->usuario['login']; ?></a> |
-			<a href='<?=URL?>usuarios/sair'>sair</a>
+			<a href='<?=$this->baseUrl()?>/usuarios/info'><?php echo $this->usuario['login']; ?></a> |
+			<a href='<?=$this->baseUrl()?>/usuarios/sair'>sair</a>
 			<?php else : ?>
-			<a href='<?=URL?>usuarios/login'>login</a>
+			<a href='<?=$this->baseUrl()?>/usuarios/login'>login</a>
 			<?php endif ?>
 		</div>
 

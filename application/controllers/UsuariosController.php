@@ -32,7 +32,7 @@ class UsuariosController extends AppController {
 		$this->view->campos['login']['td']['align']	= 'center';
 		$this->view->listaCampos	= array('login','nome','modificado','criado');
 		$this->view->listaFerramentas = array();
-		$this->view->listaFerramentas['excluir']['img'] = URL . '/img/bt_excluir_off.png';
+		$this->view->listaFerramentas['excluir']['img'] = $this->getRequest()->getHttpHost() . '/img/bt_excluir_off.png';
 		$this->view->listaFerramentas['excluir'][1] 	= true;
 		$this->select = $this->Usuario->select();
 		$this->select->setIntegrityCheck(false);

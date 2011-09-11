@@ -70,7 +70,6 @@ class AppController extends Zend_Controller_Action {
 		}
 
 		// atualizando a view com algumas propriedades genéricas a todas as telas
-		$this->view->url			= URL;
 		$this->view->controllerName = $this->getRequest()->getControllerName();
 		$this->view->actionName 	= $this->getRequest()->getActionName();
 		$this->view->usuario 		= isset($this->Sessao->usuario)  ? $this->Sessao->usuario   : array();
@@ -81,17 +80,17 @@ class AppController extends Zend_Controller_Action {
 
 		// configurando as opções de menu de módulo
 		$this->view->menuModulos	= array();
-		$this->view->menuModulos['Sistema']	= 'cidades';
+		$this->view->menuModulos['Sistema']	= '/cidades';
 
 		// configurando as opções de menu para o módulo sistema
 		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')) && in_array($this->view->actionName,array('editar','novo','exclur','listar')))
 		{
 			$this->view->subMenuModulos = array();
-			$this->view->subMenuModulos['Cidades']	 = 'cidades';
-			$this->view->subMenuModulos['Estados']	 = 'estados';
-			$this->view->subMenuModulos['Perfis']	 = 'perfis';
-			$this->view->subMenuModulos['Permissões']= 'permissoes';
-			$this->view->subMenuModulos['Usuários']	 = 'usuarios';
+			$this->view->subMenuModulos['Cidades']	 = '/cidades';
+			$this->view->subMenuModulos['Estados']	 = '/estados';
+			$this->view->subMenuModulos['Perfis']	 = '/perfis';
+			$this->view->subMenuModulos['Permissões']= '/permissoes';
+			$this->view->subMenuModulos['Usuários']	 = '/usuarios';
 		}
 
 		// configurando as propriedades de cada campo que será usada na view
@@ -183,7 +182,7 @@ class AppController extends Zend_Controller_Action {
 		$this->view->listaFerramentas 	= (isset($this->view->listaFerramentas)) 	? $this->view->listaFerramentas : array();
 		$this->view->listaBotoes		= (isset($this->view->listaBotoes)) 		? $this->view->listaBotoes		: array();
 		$this->view->titulo				= (isset($this->view->titulo))				? $this->view->titulo			: 'Lista';
-		$this->view->listaBotoes['Novo']= (isset($this->view->listaBotoes['Novo']))	? $this->view->listaBotoes['Novo'] : URL . strtolower($this->view->controllerName) . '/novo';
+		$this->view->listaBotoes['Novo']= (isset($this->view->listaBotoes['Novo']))	? $this->view->listaBotoes['Novo'] : $this->getRequest()->getHttpHost() . strtolower($this->view->controllerName) . '/novo';
 
 		// se o memcache está instalado
 		if( class_exists('Memcache') )
@@ -232,18 +231,18 @@ class AppController extends Zend_Controller_Action {
 
 		if (!isset($this->view->listaFerramentas['editar'])) 	// botão padrão editar
 		{
-			$this->view->listaFerramentas['editar']['img']  = URL . '/img/bt_editar.png';
-			$this->view->listaFerramentas['editar']['link'] = URL . strtolower($this->view->controllerName) . '/editar/id/{id}';
+			$this->view->listaFerramentas['editar']['img']  = 'bt_editar.png';
+			$this->view->listaFerramentas['editar']['link'] = strtolower($this->view->controllerName) . '/editar/id/{id}';
 		}
 		if (!isset($this->view->listaFerramentas['excluir']))			// botão padrão excluir
 		{
-			$this->view->listaFerramentas['excluir']['img']  = URL . '/img/bt_excluir.png';
-			$this->view->listaFerramentas['excluir']['link'] = URL . strtolower($this->view->controllerName) . '/excluir/id/{id}';
+			$this->view->listaFerramentas['excluir']['img']  = 'bt_excluir.png';
+			$this->view->listaFerramentas['excluir']['link'] = strtolower($this->view->controllerName) . '/excluir/id/{id}';
 		}
 		if (!isset($this->view->listaFerramentas['imprimir']))	// botão padrão imprimir
 		{
-			$this->view->listaFerramentas['imprimir']['img']  = URL . '/img/bt_imprimir.png';
-			$this->view->listaFerramentas['imprimir']['link'] = URL . strtolower($this->view->controllerName) . '/imprimir/id/{id}';
+			$this->view->listaFerramentas['imprimir']['img']  = 'bt_imprimir.png';
+			$this->view->listaFerramentas['imprimir']['link'] = strtolower($this->view->controllerName) . '/imprimir/id/{id}';
 		}
 
 		$this->renderScript('app/listar.phtml');

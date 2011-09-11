@@ -11,10 +11,10 @@
 
 		<div id='navegacao'>
 			<ul>
-				<li><a href='<?php echo URL . strtolower($this->controllerName) . '/listar/num/1/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> << </a></li>
-				<li><a href='<?php $num=$this->param['num']; $num--; if ($num<1) $num = 1; echo URL . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> < </a></li>
-				<li><a href='<?php $num=$this->param['num']; $num++; if ($num>$this->ultPag) $num=$this->ultPag; echo URL . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> > </a></li>
-				<li><a href='<?php echo URL . strtolower($this->controllerName) . '/listar/num/'.$this->ultPag.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> >> </a></li>
+				<li><a href='<?php echo $this->baseUrl().'/' . strtolower($this->controllerName) . '/listar/num/1/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> << </a></li>
+				<li><a href='<?php $num=$this->param['num']; $num--; if ($num<1) $num = 1; echo $this->baseUrl().'/' . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> < </a></li>
+				<li><a href='<?php $num=$this->param['num']; $num++; if ($num>$this->ultPag) $num=$this->ultPag; echo $this->baseUrl().'/' . strtolower($this->controllerName) . '/listar/num/'.$num.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> > </a></li>
+				<li><a href='<?php echo $this->baseUrl().'/' . strtolower($this->controllerName) . '/listar/num/'.$this->ultPag.'/ord/'.$this->param['ord'] . '/dir/'.$this->param['dir'] ?>'> >> </a></li>
 			</ul>
 		</div>
 
@@ -35,7 +35,7 @@
 			<?php if (isset($this->subMenuModulos)) : ?>
 			<ul>
 				<?php foreach($this->subMenuModulos as $_titulo => $_link) : ?>
-					<li><a href='<?= URL . $_link?>'<?= ( strpos($_link,strtolower($this->controllerName))===0 ) ? " class='cadastroAtivo'" : '' ?>><?=$_titulo?></a></li>
+					<li><a href='<?= $this->baseUrl() . $_link?>'<?= ( strpos($_link,strtolower($this->controllerName))===0 ) ? " class='cadastroAtivo'" : '' ?>><?=$_titulo?></a></li>
 				<?php endforeach ?>
 			</ul>
 			<?php endif ?>
@@ -48,7 +48,7 @@
 			<?php if (isset($this->listaCampos)) : ?>
 			<?php foreach($this->listaCampos as $_campo) : ?>
 				<th<?php if(isset($this->campos[$_campo]['th'])) foreach($this->campos[$_campo]['th'] as $_tag => $_valor) echo " $_tag='$_valor'"; ?>>
-					<a href='<?= URL . $this->controllerName . '/listar/num/'.$this->param['num'] . '/ord/'.$_campo . '/dir/'.($this->param['dir']=='asc' ? 'desc' : 'asc')  ?>'>
+					<a href='<?= $this->baseUrl() . $this->controllerName . '/listar/num/'.$this->param['num'] . '/ord/'.$_campo . '/dir/'.($this->param['dir']=='asc' ? 'desc' : 'asc')  ?>'>
 						<?= (isset($this->campos[$_campo]['label'])) ? $this->campos[$_campo]['label'] : $_campo ?>
 					</a>
 				</th>
@@ -69,8 +69,8 @@
 				<?php if (isset($_arrProp['img']) ) : ?>
 					<td align='center'>
 						<a
-							<?php if (!isset($_arrProp[$_linha]) && isset($_arrProp['link'])) : ?> href='<?= str_replace('{id}',$_arrCampos['id'],$_arrProp['link']) ?>'> <?php endif ?>
-							<img src='<?= $_arrProp['img'] ?>' border='0'/>
+							<?php if (!isset($_arrProp[$_linha]) && isset($_arrProp['link'])) : ?> href='<?= $this->baseUrl() . '/ ' . str_replace('{id}',$_arrCampos['id'],$_arrProp['link']) ?>'> <?php endif ?>
+							<img src='<?= $this->baseUrl() . '/img/' . $_arrProp['img'] ?>' border='0'/>
 						</a>
 					</td>
 				<?php endif ?>
