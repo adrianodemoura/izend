@@ -18,6 +18,10 @@
 			</ul>
 		</div>
 
+		<div id='msgLista'>
+			<?php if (isset($this->msgLista)) echo $this->msgLista; ?>
+		</div>
+
 		<div id='pesquisa'><!-- campos para pesquisa -->
 			<?php if (isset($this->listaPesquisa)) : ?>
 				<form>
@@ -35,7 +39,7 @@
 			<?php if (isset($this->subMenuModulos)) : ?>
 			<ul>
 				<?php foreach($this->subMenuModulos as $_titulo => $_link) : ?>
-					<li><a href='<?= $this->baseUrl() . $_link?>'<?= ( strpos($_link,strtolower($this->controllerName))===0 ) ? " class='cadastroAtivo'" : '' ?>><?=$_titulo?></a></li>
+					<li><a href='<?= $this->baseUrl().'/' . $_link?>'<?= ( strpos($_link,strtolower($this->controllerName))===0 ) ? " class='cadastroAtivo'" : '' ?>><?=$_titulo?></a></li>
 				<?php endforeach ?>
 			</ul>
 			<?php endif ?>

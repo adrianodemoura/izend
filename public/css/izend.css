@@ -140,18 +140,20 @@ label
 	color: #fff;
 	font-size: 11px;
 }
-
 #contador #cTxt
 {
-	margin: 0px 10px 0px 0px;
+	float: left;
 }
-
 #contador .countdown_section
 {
 	padding: 0px 3px 0px 3px;
+	float: left;
 }
 #contador .countdown_amount
 {
 	padding: 0px 2px 0px 2px;
+	width: 20px;
+	text-align: center;
+	display: block;
+	float: left;
 }
-

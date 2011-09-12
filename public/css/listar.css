@@ -156,3 +156,12 @@
 	background-color: #EAEAEA;
 	border: none;
 }
+
+#listar #msgLista
+{
+	position: relative;
+	top: 7px;
+	margin-left: 210px;
+	font-size: 16px;
+	color: #898946;
+}

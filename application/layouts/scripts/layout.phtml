@@ -71,10 +71,7 @@ $(document).ready (function()
 		<?php if (isset($this->menuModulos)) : ?>
 			<ul>
 				<?php $l=0; foreach($this->menuModulos as $_titulo => $_link) : ?>
-				<li>
-						<?php if ($l) echo ' : '; $l++; ?>
-						<a href='<?= $this->baseUrl() . $_link ?>'><?= $_titulo ?></a>
-				</li>
+				<li><?php if ($l) echo ' : '; $l++; ?><a href='<?= $this->baseUrl().'/' . $_link ?>'><?= $_titulo ?></a></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>

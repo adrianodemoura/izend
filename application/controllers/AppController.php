@@ -82,17 +82,17 @@ class AppController extends Zend_Controller_Action {
 
 		// configurando as opções de menu de módulo
 		$this->view->menuModulos	= array();
-		$this->view->menuModulos['Sistema']	= '/cidades';
+		$this->view->menuModulos['Sistema']	= 'cidades';
 
 		// configurando as opções de menu para o módulo sistema
 		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')) && in_array($this->view->actionName,array('editar','novo','exclur','listar')))
 		{
 			$this->view->subMenuModulos = array();
-			$this->view->subMenuModulos['Cidades']	 = '/cidades';
-			$this->view->subMenuModulos['Estados']	 = '/estados';
-			$this->view->subMenuModulos['Perfis']	 = '/perfis';
-			$this->view->subMenuModulos['Permissões']= '/permissoes';
-			$this->view->subMenuModulos['Usuários']	 = '/usuarios';
+			$this->view->subMenuModulos['Cidades']	 = 'cidades';
+			$this->view->subMenuModulos['Estados']	 = 'estados';
+			$this->view->subMenuModulos['Perfis']	 = 'perfis';
+			$this->view->subMenuModulos['Permissões']= 'permissoes';
+			$this->view->subMenuModulos['Usuários']	 = 'usuarios';
 		}
 
 		// configurando as propriedades de cada campo que será usada na view
@@ -194,16 +194,17 @@ class AppController extends Zend_Controller_Action {
 			{
 				$this->view->totReg = count($this->$model->fetchAll('select count(*) FROM '.$this->$model->getName())->toArray());
 				$this->Cache->save($this->view->totReg, 'totReg_'.$this->$model->getName());
-				$this->view->msg = 'Salvei o total no cache ...';
+				$this->view->msgLista = 'Salvei o total do cache ...';
 			} else
 			{
-				$this->view->msg = 'Recuperei o total no cache ...';
+				$this->view->msgLista = 'Recuperei o total do cache ...';
 			}
 		} else
 		{
 			$this->view->totReg = count($this->$model->fetchAll('select count(*) FROM '.$this->$model->getName())->toArray());
-			$this->view->msg = 'O cache não está instalado !!!';
+			$this->view->msgLista = 'O cache não está instalado !!!';
 		}
+		$this->view->on_read	= 'setTimeout(function(){ $("#msgLista").fadeOut(4000); },3000);';
 		
 		$this->view->ultPag = round($this->view->totReg/$this->view->totPag)+1;
 
@@ -219,15 +220,15 @@ class AppController extends Zend_Controller_Action {
 			{
 				$data = $this->$model->fetchAll($this->select)->toArray();
 				$this->Cache->save($data, 'pag_'.$param['num'].'_'.$param['ord'].'_'.$param['dir'].'_'.$this->$model->getName());
-				$this->view->msg = '<span style="color: blue; font-bold: weight;">Salvei a página '.$param['num'].' no cache ...</span>';
+				$this->view->msgLista = 'Salvei a página '.$param['num'].' no cache ...';
 			} else
 			{
-				$this->view->msg = '<span style="color: green; font-bold: weight;">Recuperei a página '.$param['num'].' no cache ...</span>';
+				$this->view->msgLista = 'Recuperei a página '.$param['num'].' no cache ...';
 			}
 		} else
 		{
 			$data = $this->$model->fetchAll($this->select)->toArray();
-			$this->view->msg = 'O cache não está instalado !!!';
+			$this->view->msgLista = 'O cache não está instalado !!!';
 		}
 		$this->view->data = $data;
 
