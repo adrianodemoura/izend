@@ -213,10 +213,10 @@ class AppController extends Zend_Controller_Action {
 		if( class_exists('Memcache') )
 		{
 			// recuperando o a página do banco, primeiro pesquisa no cache
-			if (!$data = $this->Cache->load('pag_'.$param['num'].'_'.$this->$model->getName()))
+			if (!$data = $this->Cache->load('pag_'.$param['num'].'_'.$param['ord'].'_'.$param['dir'].'_'.$this->$model->getName()))
 			{
 				$data = $this->$model->fetchAll($this->select)->toArray();
-				$this->Cache->save($data, 'pag_'.$param['num'].'_'.$this->$model->getName());
+				$this->Cache->save($data, 'pag_'.$param['num'].'_'.$param['ord'].'_'.$param['dir'].'_'.$this->$model->getName());
 				$this->view->msg = '<span style="color: blue; font-bold: weight;">Salvei a página '.$param['num'].' no cache ...</span>';
 			} else
 			{
