@@ -2,6 +2,8 @@
 /**
  * Controlador pai de todos
  * 
+ * Aqui vão as implementações do controlador que são genéricas a todo o sistema.
+ * 
  * @package		izend
  * @subpackage	izend.controller
  */
