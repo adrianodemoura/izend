@@ -155,12 +155,14 @@
 {
 	background-color: #EAEAEA;
 	border: none;
+	line-height: 30px;
+	border-left: 1px solid #ccc;
 }
 
 #listar #msgLista
 {
 	position: relative;
-	top: 7px;
+	top: 12px;
 	margin-left: 210px;
 	font-size: 16px;
 	color: #898946;
