@@ -4,7 +4,7 @@
 		<div id='botoes'><!-- botões da lista -->
 			<?php if (isset($this->listaBotoes)) : ?>
 				<?php foreach($this->listaBotoes as $_botao => $_link) : ?>
-					<input type='button' class='btForm' id='bt<?= ucfirst(strtolower($_botao)) ?>' onclick='javascript:document.location.href="<?= $_link ?>"' />
+					<input type='button' class='btForm' id='bt<?= ucfirst(strtolower($_botao)) ?>' onclick='javascript:document.location.href="<?= $this->baseUrl().'/' . strtolower($this->controllerName).'/' . $_link ?>"' />
 				<?php endforeach ?>
 			<?php endif ?>
 		</div>

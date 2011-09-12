@@ -184,7 +184,7 @@ class AppController extends Zend_Controller_Action {
 		$this->view->listaFerramentas 	= (isset($this->view->listaFerramentas)) 	? $this->view->listaFerramentas : array();
 		$this->view->listaBotoes		= (isset($this->view->listaBotoes)) 		? $this->view->listaBotoes		: array();
 		$this->view->titulo				= (isset($this->view->titulo))				? $this->view->titulo			: 'Lista';
-		$this->view->listaBotoes['Novo']= (isset($this->view->listaBotoes['Novo']))	? $this->view->listaBotoes['Novo'] : $this->getRequest()->getHttpHost() . strtolower($this->view->controllerName) . '/novo';
+		$this->view->listaBotoes['Novo']= (isset($this->view->listaBotoes['Novo']))	? $this->view->listaBotoes['Novo'] : 'novo';
 
 		// se o memcache está instalado
 		if( class_exists('Memcache') )
