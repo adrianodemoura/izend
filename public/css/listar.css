@@ -137,6 +137,11 @@
 	display: inline;
 }
 
+#listar #navegacao a:hover
+{
+	background-color: #fff;
+}
+
 #listar #navegacao ul li a
 {
 	text-align: center;
