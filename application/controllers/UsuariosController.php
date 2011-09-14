@@ -124,5 +124,17 @@ class UsuariosController extends AppController {
 		$this->view->titulo  = 'Informações do Usuário';
 		$this->view->posicao = 'Usuários | Informações';
 	}
+
+	/**
+	 * Exibe a tela de expiração
+	 * 
+	 * Quando a sessão expira, o usuário é direcionado para esta tela.
+	 * 
+	 * @retun	void
+	 */
+	public function expiradoAction()
+	{
+		Zend_Session::destroy();
+	}
 }
 

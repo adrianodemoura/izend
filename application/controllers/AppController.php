@@ -59,7 +59,9 @@ class AppController extends Zend_Controller_Action {
 		}
 
 		// se não está logado é redirecionado para a tela de login
-		if (!isset($this->Sessao->usuario) && $this->getRequest()->getPathInfo() != '/usuarios/login')
+		if (!isset($this->Sessao->usuario) &&  
+			(!in_array($this->getRequest()->getPathInfo(),array('/usuarios/login','/usuarios/expirado')))
+			)
 		{
 			$this->Sessao->msg = 'Autenticação necessária !!!';
 			$this->_redirect('usuarios/login');
