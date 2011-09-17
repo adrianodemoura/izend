@@ -32,7 +32,7 @@ class FerramentasController extends Zend_Controller_Action {
 	{
 		try
 		{
-			$Usuario = new Application_Model_Usuario();
+			$Usuario = new Admin_Model_Usuario();
 			$dataUsuario= $Usuario->fetchAll();
 			$this->_redirect('usuarios/login');
 		} catch (Exception $e)
@@ -77,7 +77,7 @@ class FerramentasController extends Zend_Controller_Action {
 									}
 									$sessao = new Zend_Session_Namespace(SISTEMA);
 									$sessao->msg = 'A instalação foi executada com sucesso!!!';
-									$this->_redirect('usuarios/login');
+									$this->_redirect('admin/usuarios/login');
 								} else $this->view->message = 'Erro ao tentar instalar módulo sistema!!!';
 							}
 						}

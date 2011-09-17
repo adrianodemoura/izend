@@ -9,7 +9,7 @@
  * @package		izend
  * @subpackage	izend.controller
  */
-class PerfisController extends AppController {
+class Admin_PerfisController extends AppController {
 	/**
 	 * Nome do model
 	 * 

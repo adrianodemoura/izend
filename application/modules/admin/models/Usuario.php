@@ -2,14 +2,14 @@
 /**
  * Model Usuários
  * 
- * @package		izend
- * @subpackage	izend.model
+ * @package		admin
+ * @subpackage	admin.model
  */
 /**
- * @package		izend
- * @subpackage	izend.model 
+ * @package		admin
+ * @subpackage	admin.model 
  */
-class Application_Model_Usuario extends AppModel {
+class Admin_Model_Usuario extends AppModel {
 	/**
 	 * Nome do model
 	 * 

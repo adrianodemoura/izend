@@ -47,9 +47,12 @@ class AppController extends Zend_Controller_Action {
 		}
 
 		// instanciando o model
-		$model			= $this->model;
-		$tmpModel		= 'Application_Model_'.$model;
-		$this->$model	= new $tmpModel();
+		if (isset($this->model))
+		{
+			$model			= $this->model;
+			$tmpModel		= ucfirst(strtolower($this->getRequest()->getModuleName())).'_Model_'.$model;
+			$this->$model	= new $tmpModel();
+		}
 
 		// jogando a mensagem para a visão
 		if (isset($this->Sessao->msg))
@@ -60,20 +63,21 @@ class AppController extends Zend_Controller_Action {
 
 		// se não está logado é redirecionado para a tela de login
 		if (!isset($this->Sessao->usuario) &&  
-			(!in_array($this->getRequest()->getPathInfo(),array('/usuarios/login','/usuarios/expirado')))
+			(!in_array($this->getRequest()->getPathInfo(),array('/admin/usuarios/login','/admin/usuarios/expirado')))
 			)
 		{
 			$this->Sessao->msg = 'Autenticação necessária !!!';
-			$this->_redirect('usuarios/login');
+			$this->_redirect('admin/usuarios/login');
 		}
 
 		// verifica permissão
-		if ($this->getRequest()->getPathInfo() != '/usuarios/sair')
+		if ($this->getRequest()->getPathInfo() != '/admin/usuarios/sair')
 		{
 			if (!$this->getPermissao()) $this->_redirect('index/erro_permissao');
 		}
 
 		// atualizando a view com algumas propriedades genéricas a todas as telas
+		$this->view->moduleName		= $this->getRequest()->getModuleName();
 		$this->view->controllerName = $this->getRequest()->getControllerName();
 		$this->view->actionName 	= $this->getRequest()->getActionName();
 		$this->view->usuario 		= isset($this->Sessao->usuario)  ? $this->Sessao->usuario   : array();
@@ -82,20 +86,22 @@ class AppController extends Zend_Controller_Action {
 		$this->view->campos			= array();
 		$this->view->posicao 		= ucfirst(mb_strtolower($this->view->controllerName)).' | '.ucfirst(mb_strtolower($this->view->actionName));
 
+		//
+		switch($this->view->moduleName)
+		{
+			case 'admin':
+				$this->view->subMenuModulos = array();
+				$this->view->subMenuModulos['Cidades']	 = 'cidades';
+				$this->view->subMenuModulos['Estados']	 = 'estados';
+				$this->view->subMenuModulos['Perfis']	 = 'perfis';
+				$this->view->subMenuModulos['Permissões']= 'permissoes';
+				$this->view->subMenuModulos['Usuários']	 = 'usuarios';
+				break;
+		}
+
 		// configurando as opções de menu de módulo
 		$this->view->menuModulos	= array();
-		$this->view->menuModulos['Sistema']	= 'cidades';
-
-		// configurando as opções de menu para o módulo sistema
-		if (in_array($this->view->controllerName,array('cidades','estados','usuarios','perfis','permissoes')) && in_array($this->view->actionName,array('editar','novo','exclur','listar')))
-		{
-			$this->view->subMenuModulos = array();
-			$this->view->subMenuModulos['Cidades']	 = 'cidades';
-			$this->view->subMenuModulos['Estados']	 = 'estados';
-			$this->view->subMenuModulos['Perfis']	 = 'perfis';
-			$this->view->subMenuModulos['Permissões']= 'permissoes';
-			$this->view->subMenuModulos['Usuários']	 = 'usuarios';
-		}
+		$this->view->menuModulos['Sistema']	= 'admin/cidades';
 
 		// configurando as propriedades de cada campo que será usada na view
 		$this->view->campos	= isset($this->view->campos) ? $this->view->campos : array();
@@ -250,6 +256,7 @@ class AppController extends Zend_Controller_Action {
 			$this->view->listaFerramentas['imprimir']['link'] = strtolower($this->view->controllerName) . '/imprimir/id/{id}';
 		}
 
+		$this->view->setScriptPath('../application/views/scripts/');
 		$this->renderScript('app/listar.phtml');
 	}
 
@@ -267,6 +274,7 @@ class AppController extends Zend_Controller_Action {
 
 		$model = $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
+		$this->view->setScriptPath('../application/views/scripts/');
 		$this->renderScript('app/editar.phtml');
 	}
 
@@ -278,6 +286,7 @@ class AppController extends Zend_Controller_Action {
 	public function novoAction()
 	{
 		if (!isset($this->view->titulo)) $this->view->titulo  = 'Inclusão';
+		$this->view->setScriptPath('../application/views/scripts/');
 		$this->renderScript('app/editar.phtml');
 	}
 
@@ -296,6 +305,7 @@ class AppController extends Zend_Controller_Action {
 		$model = $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
 		$this->view->excluir = true;
+		$this->view->setScriptPath('../application/views/scripts/');
 		$this->renderScript('app/editar.phtml');
 	}
 
@@ -312,6 +322,7 @@ class AppController extends Zend_Controller_Action {
 
 		$model = $this->model;
 		$this->view->data = $this->$model->fetchRow($this->$model->select()->where('id='.$id));
+		$this->view->setScriptPath('../application/views/scripts/');
 		$this->renderScript('app/editar.phtml');
 	}
 

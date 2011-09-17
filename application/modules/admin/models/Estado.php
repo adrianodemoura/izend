@@ -1,22 +1,22 @@
 <?php
 /**
- * Model Cidades
+ * Model Estado
  * 
- * @package		izend
- * @subpackage	izend.model
+ * @package		admin
+ * @subpackage	admin.model
  */
 /**
- * @package		izend
- * @subpackage	izend.model 
+ * @package		admin
+ * @subpackage	admin.model 
  */
-class Application_Model_Cidade extends AppModel {
+class Admin_Model_Estado extends AppModel {
 	/**
 	 * Nome do model
 	 * 
 	 * @var		string
 	 * @access	protected
 	 */
-	protected $_name 	= 'cidades';
+	protected $_name 	= 'estados';
 
 	/**
 	 * Chave primária
@@ -35,12 +35,20 @@ class Application_Model_Cidade extends AppModel {
 	public $_order		= 'nome';
 
 	/**
-	 * Relacionamentos 1 para N
+	 * Referências
 	 * 
 	 * @var		array
 	 * @access	protected
 	 */
-    protected $_dependentTables = array('Estado');
+	protected $_referenceMap = array
+	(
+		array
+		(
+			'refTableClass'	=> 'Cidade',
+			'refColumns'	=> 'estado_id',
+			'coluns'		=> 'id, nome'
+		),
+	);
 }
 
 ?>

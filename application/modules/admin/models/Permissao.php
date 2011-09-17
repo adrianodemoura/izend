@@ -1,22 +1,22 @@
 <?php
 /**
- * Model Perfil
+ * Model Permissão
  * 
- * @package		izend
- * @subpackage	izend.model
+ * @package		admin
+ * @subpackage	admin.model
  */
 /**
- * @package		izend
- * @subpackage	izend.model 
+ * @package		admin
+ * @subpackage	admin.model 
  */
-class Application_Model_Perfil extends AppModel {
+class Admin_Model_Permissao extends AppModel {
 	/**
 	 * Nome do model
 	 * 
 	 * @var		string
 	 * @access	protected
 	 */
-	protected $_name 	= 'perfis';
+	protected $_name 	= 'permissoes';
 
 	/**
 	 * Chave primária
@@ -32,7 +32,7 @@ class Application_Model_Perfil extends AppModel {
 	 * @var		string
 	 * @access	public
 	 */
-	public $_order		= 'nome';
+	public $_order	= 'controlador';
 }
 
 ?>

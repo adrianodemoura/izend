@@ -67,30 +67,12 @@ $(document).ready (function()
 			<a href='http://www.jquery.com'  		target='_blanck'><img src='<?=$this->baseUrl()?>/img/jquery_power.png' border='none' alt='' /></a>
 		</div>
 
-		<div id='menu_modulos'>
-		<?php if (isset($this->menuModulos)) : ?>
-			<ul>
-				<?php $l=0; foreach($this->menuModulos as $_titulo => $_link) : ?>
-				<li><?php if ($l) echo ' : '; $l++; ?><a href='<?= $this->baseUrl().'/' . $_link ?>'><?= $_titulo ?></a></li>
-				<?php endforeach; ?>
-			</ul>
-		<?php endif; ?>
-		</div>
-
-		<div id='menu_sistema'>
-			<?php if (isset($this->menu_sistema)) : ?>
-			<?php foreach($this->menu_sistema as $_campo => $_link) : ?>
-			<li><a href='<?=$this->baseUrl().$_link?>'><?=$_campo?></a></li>
-			<?php endforeach; ?>
-			<?php endif; ?>
-		</div>
-
 		<div id='menu_usuario'>
 			<?php if (isset($this->usuario['login'])) : ?>
-			<a href='<?=$this->baseUrl()?>/usuarios/info'><?php echo $this->usuario['login']; ?></a> |
-			<a href='<?=$this->baseUrl()?>/usuarios/sair'>sair</a>
+			<a href='<?=$this->baseUrl()?>/admin/usuarios/info'><?php echo $this->usuario['login']; ?></a> |
+			<a href='<?=$this->baseUrl()?>/admin/usuarios/sair'>sair</a>
 			<?php else : ?>
-			<a href='<?=$this->baseUrl()?>/usuarios/login'>login</a>
+			<a href='<?=$this->baseUrl()?>/admin/usuarios/login'>login</a>
 			<?php endif ?>
 		</div>
 

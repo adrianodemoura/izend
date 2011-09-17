@@ -9,7 +9,7 @@
  * @package		izend
  * @subpackage	izend.controller
  */
-class PermissoesController extends AppController {
+class Admin_PermissoesController extends AppController {
 	/**
 	 * Nome do model
 	 * 

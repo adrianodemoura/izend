@@ -1,0 +1,100 @@
+<?php
+
+	$this->headMeta()->setHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+	$this->headMeta()->appendName('keywords', 'zend, izend, php, framework');
+
+	$this->headLink()->appendStylesheet($this->baseUrl().'/css/izend.css',array('media'=>'all'));
+	if (file_exists('css/'.$this->controllerName.'.css')) $this->headLink()->appendStylesheet($this->baseUrl().'/css/'.$this->controllerName.'.css',array('media'=>'all'));
+	if (file_exists('css/'.$this->actionName.'.css')) $this->headLink()->appendStylesheet($this->baseUrl().'/css/'.$this->actionName.'.css',array('media'=>'all'));
+	
+	$this->headScript()->appendFile($this->baseUrl().'/js/jquery-1.6.2.min.js');
+	$this->headScript()->appendFile($this->baseUrl().'/js/izend.js');
+	if (file_exists('js/'.$this->controllerName.'.js')) $this->headScript()->appendFile($this->baseUrl().'/js/'.$this->controllerName.'.js');
+	if (file_exists('js/'.$this->actionName.'.js')) $this->headScript()->appendFile($this->baseUrl().'/js/'.$this->actionName.'.js');
+	if (isset($this->usuario['login']))
+	{
+		$this->headScript()->appendFile($this->baseUrl().'/js/countdown/jquery.countdown.js');
+		$this->headScript()->appendFile($this->baseUrl().'/js/countdown/jquery.countdown-pt-BR.js');
+	}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?php echo $this->headTitle($this->titulo); ?>
+
+<?php echo $this->headMeta(); ?>
+
+<?php echo $this->headScript(); ?>
+
+
+<script type="text/javascript">
+$(document).ready (function()
+{
+	<?php if (isset($this->usuario['login'])) : ?>
+
+	$("#regressivo").countdown({until: <?php echo $this->tempoOn; ?>, format: "MS"});
+	setTimeout(function () { window.location='<?php echo $this->baseUrl().'/admin/usuarios/expirado'; ?>' }, <?php echo ($this->tempoOn*1001) ?>);
+	<?php endif; ?>
+	setTimeout(function(){ $("#msg").fadeOut(4000); },3000);
+	<?php if (isset($this->on_read)) echo $this->on_read; ?>
+
+});
+</script>
+
+<?php echo $this->headLink(); ?>
+
+</head>
+
+<body>
+<div id="corpo">
+	<div id="cabecalho">
+
+		<div id='sigla'>
+			<a href='<?=$this->baseUrl()?>'><?=SISTEMA?></a><?php if (isset($this->posicao)) echo ' | '.$this->posicao; ?>
+		</div>
+
+		<?php if (isset($this->usuario['login'])) : ?>
+		<div id="contador">
+			<span id='cTxt'>sua sessão expira em</span><span id="regressivo"></span>
+		</div>
+		<?php endif ?>
+		
+		<div id='msg'>
+			<?php if(isset($this->msg)) echo $this->msg; ?>
+		</div>
+
+		<div id="logos">
+			<a href='http://www.zendbrasil.com.br/' target='_blanck'><img src='<?=$this->baseUrl()?>/img/zend_power.png'   border='none' alt='' /></a>
+			<a href='http://www.jquery.com'  		target='_blanck'><img src='<?=$this->baseUrl()?>/img/jquery_power.png' border='none' alt='' /></a>
+		</div>
+
+		<div id='menu_modulos'>
+		<?php if (isset($this->menuModulos)) : ?>
+			<ul>
+				<?php $l=0; foreach($this->menuModulos as $_titulo => $_link) : ?>
+				<li><?php if ($l) echo ' : '; $l++; ?><a href='<?= $this->baseUrl().'/' . $_link ?>'><?= $_titulo ?></a></li>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
+		</div>
+
+		<div id='menu_usuario'>
+			<?php if (isset($this->usuario['login'])) : ?>
+			<a href='<?=$this->baseUrl()?>/admin/usuarios/info'><?php echo $this->usuario['login']; ?></a> |
+			<a href='<?=$this->baseUrl()?>/admin/usuarios/sair'>sair</a>
+			<?php else : ?>
+			<a href='<?=$this->baseUrl()?>/admin/usuarios/login'>login</a>
+			<?php endif ?>
+		</div>
+
+	</div>
+
+	<div id="conteudo">
+		<?=$this->layout()->content?>
+
+	</div>
+
+</div>
+
+</body>
+</html>

@@ -9,10 +9,6 @@
  * @package		izend
  * @subpacakge	izend.config
  */
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
-{
-	protected function _initView()
-	{
-	}
+class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 }
 

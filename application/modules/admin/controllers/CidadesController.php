@@ -2,14 +2,14 @@
 /**
  * Controller para o cadastro de Cidades
  * 
- * @package		izend
- * @subpackage	izend.controller
+ * @package		admin
+ * @subpackage	admin.controller
  */
 /**
- * @package		izend
- * @subpackage	izend.controller
+ * @package		admin
+ * @subpackage	admin.controller
  */
-class CidadesController extends AppController {
+class Admin_CidadesController extends AppController {
 	/**
 	 * Nome do model
 	 * 

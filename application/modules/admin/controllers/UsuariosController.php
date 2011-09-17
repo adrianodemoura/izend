@@ -4,14 +4,14 @@
  * 
  * Usuário administrador não pode ser excluído
  * 
- * @package		izend
- * @subpackage	izend.controller
+ * @package		admin
+ * @subpackage	admin.controller
  */
 /**
- * @package		izend
- * @subpackage	izend.controller
+ * @package		admin
+ * @subpackage	admin.controller
  */
-class UsuariosController extends AppController {
+class Admin_UsuariosController extends AppController {
 	/**
 	 * Nome do model
 	 * 

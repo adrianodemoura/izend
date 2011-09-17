@@ -9,7 +9,7 @@
  * @package		izend
  * @subpackage	izend.controller
  */
-class EstadosController extends AppController {
+class Admin_EstadosController extends AppController {
 	/**
 	 * Nome do model
 	 * 
