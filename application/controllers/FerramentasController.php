@@ -101,29 +101,36 @@ class FerramentasController extends Zend_Controller_Action {
 	 */
 	private function getInstalaSistema()
 	{
+		// sql a instalar
+		$arrSql = array('admin');
+
 		// csv a importar
 		$arrCsv = array('estados','cidades','perfis','usuarios_perfis');
 
 		// instanciando o banco de dados
 		$bd = Zend_Db_Table_Abstract::getDefaultAdapter();
 
-		// instala todas as tabelas do sistema
-		$arq = '../docs/sql/'.mb_strtolower(SISTEMA).'.sql';
-		if (!file_exists($arq)) exit('não foi possível localizar o arquivo '.$arq);
-		$handle  = fopen($arq,"r");
-		$texto   = fread($handle, filesize($arq));
-		$sqls	 = explode(";",$texto);
-		fclose($handle);
-		foreach($sqls as $sql) // executando sql a sql
+		// criando as tabelas via sql
+		foreach($arrSql as $_modulo)
 		{
-			if (trim($sql))
+			// instala todas as tabelas do sistema
+			$arq = '../docs/sql/'.$_modulo.'.sql';
+			if (!file_exists($arq)) exit('não foi possível localizar o arquivo '.$arq);
+			$handle  = fopen($arq,"r");
+			$texto   = fread($handle, filesize($arq));
+			$sqls	 = explode(";",$texto);
+			fclose($handle);
+			foreach($sqls as $sql) // executando sql a sql
 			{
-				try
+				if (trim($sql))
 				{
-					$bd->query($sql);
-				} catch(Exception $e)
-				{
-					exit($e->getMessage());
+					try
+					{
+						$bd->query($sql);
+					} catch(Exception $e)
+					{
+						exit($e->getMessage());
+					}
 				}
 			}
 		}
@@ -131,7 +138,7 @@ class FerramentasController extends Zend_Controller_Action {
 		// populando tabelas via csv
 		foreach($arrCsv as $tabela)
 		{
-			$arq = '../docs/sql/'.$tabela.'.csv';
+			$arq = '../docs/csv/'.$tabela.'.csv';
 
 			// mandando bala se o csv existe
 			if (file_exists($arq))
