@@ -32,7 +32,7 @@ $(document).ready (function()
 	<?php if (isset($this->usuario['login'])) : ?>
 
 	$("#regressivo").countdown({until: <?php echo $this->tempoOn; ?>, format: "MS"});
-	setTimeout(function () { window.location='<?php echo $this->baseUrl().'/usuarios/expirado'; ?>' }, <?php echo ($this->tempoOn*1001) ?>);
+	setTimeout(function () { window.location='<?php echo $this->baseUrl().'/admin/usuarios/expirado'; ?>' }, <?php echo ($this->tempoOn*1001) ?>);
 	<?php endif; ?>
 	setTimeout(function(){ $("#msg").fadeOut(4000); },3000);
 	<?php if (isset($this->on_read)) echo $this->on_read; ?>
@@ -87,3 +87,4 @@ $(document).ready (function()
 
 </body>
 </html>
+

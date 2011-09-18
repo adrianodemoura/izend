@@ -99,6 +99,9 @@ class AppController extends Zend_Controller_Action {
 				break;
 		}
 
+		// mudando o layout
+		Zend_Layout::getMvcInstance()->setLayout($this->getRequest()->getModuleName());
+
 		// configurando as opções de menu de módulo
 		$this->view->menuModulos	= array();
 		$this->view->menuModulos['Sistema']	= 'admin/cidades';
