@@ -86,17 +86,22 @@ class AppController extends Zend_Controller_Action {
 		$this->view->campos			= array();
 		$this->view->posicao 		= ucfirst(mb_strtolower($this->view->controllerName)).' | '.ucfirst(mb_strtolower($this->view->actionName));
 
-		//
-		switch($this->view->moduleName)
+		// atualizando o subMenu da lista conforme o módulo selecionado
+		if ($this->view->actionName == 'listar')
 		{
-			case 'admin':
-				$this->view->subMenuModulos = array();
-				$this->view->subMenuModulos['Cidades']	 = 'cidades';
-				$this->view->subMenuModulos['Estados']	 = 'estados';
-				$this->view->subMenuModulos['Perfis']	 = 'perfis';
-				$this->view->subMenuModulos['Permissões']= 'permissoes';
-				$this->view->subMenuModulos['Usuários']	 = 'usuarios';
-				break;
+			switch($this->view->moduleName)
+			{
+				case 'admin':
+					$this->view->subMenuModulos = array();
+					$this->view->subMenuModulos['Cidades']	 = 'cidades';
+					$this->view->subMenuModulos['Estados']	 = 'estados';
+					$this->view->subMenuModulos['Perfis']	 = 'perfis';
+					$this->view->subMenuModulos['Permissões']= 'permissoes';
+					$this->view->subMenuModulos['Usuários']	 = 'usuarios';
+					break;
+				case 'principal':
+					break;
+			}
 		}
 
 		// mudando o layout
