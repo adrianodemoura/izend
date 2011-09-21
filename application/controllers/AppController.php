@@ -188,7 +188,7 @@ class AppController extends Zend_Controller_Action {
 		$this->view->totPag = isset($this->view->totPag) ? $this->view->totPag : 20;
 
 		// configurando os parâmetros da paginação
-		$arrPams = $this->getRequest()->getParams();
+		$arrPams 	  = $this->getRequest()->getParams();
 		$param['num'] = isset($arrPams['num']) ? $arrPams['num'] : 1;
 		$param['ord'] = isset($arrPams['ord']) ? $arrPams['ord'] : '';
 		$param['dir'] = isset($arrPams['dir']) ? $arrPams['dir'] : 'asc';
