@@ -31,6 +31,8 @@ class Admin_CidadesController extends AppController {
 		$this->view->listaCampos					= array('nome','estado','modificado','criado');
 		$this->view->listaFerramentas 				= array();
 		$this->view->listaFerramentas['excluir'] 	= false;
+		$this->view->listaPesquisa	 				= array();
+		$this->view->listaPesquisa['nome']			= 'Nome';
 
 		// configurando a sql
 		$this->select = $this->Cidade->select();

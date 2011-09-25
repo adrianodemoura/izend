@@ -34,6 +34,12 @@ class Admin_UsuariosController extends AppController {
 		$this->view->listaFerramentas = array();
 		$this->view->listaFerramentas['excluir']['img'] = $this->getRequest()->getHttpHost() . '/img/bt_excluir_off.png';
 		$this->view->listaFerramentas['excluir'][1] 	= true;
+		$this->view->listaPesquisa	 				= array();
+		$this->view->listaPesquisa['login']			= 'Login';
+		$this->view->listaPesquisa['email']			= 'e-mail';
+		$this->view->listaPesquisa['nome']			= 'Nome';
+		
+
 		$this->select = $this->Usuario->select();
 		$this->select->setIntegrityCheck(false);
 		$this->select->from(array('u'=>'usuarios'), array('u.id','u.login','u.nome','u.modificado','u.criado'));

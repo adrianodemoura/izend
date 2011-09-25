@@ -30,6 +30,9 @@ class Admin_EstadosController extends AppController {
 		$this->view->listaFerramentas 	= array();
 		$this->view->listaFerramentas['excluir'] = false;
 		$this->view->listaCampos		= array('nome','uf','modificado','criado');
+		$this->view->listaPesquisa	 				= array();
+		$this->view->listaPesquisa['nome']			= 'Nome';
+
 		$this->select = $this->Estado->select();
 		parent::listarAction($num, $ord, $dir);
 	}
