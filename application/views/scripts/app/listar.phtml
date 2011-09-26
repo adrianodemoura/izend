@@ -28,17 +28,7 @@
 		</div>
 
 		<div id='pesquisa'><!-- campos para pesquisa -->
-			<?php if (isset($this->listaPesquisa)) : ?>
-				<form>
-					<select id='slPesquisa' name='slPesquisa' class='slPesquisa'>
-					<?php foreach($this->listaPesquisa as $_campo => $_label) : ?>
-						<option value='<?= $_campo ?>'><?= $_label ?></option>
-					<?php endforeach ?>
-				</select>
-				<input type="text" name="inPesquisa" id="inPesquisa" class="quadro" /> 
-				<div id="rePesquisa"></div> 
-				</form>
-			<?php endif ?>
+			<?php if (isset($this->listaPesquisa)) echo $this->partial('partials/pesquisa.phtml',array('listaPesquisa'=>$this->listaPesquisa)); ?>
 		</div>
 
 	</div>
